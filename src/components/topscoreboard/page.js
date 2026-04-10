@@ -1,163 +1,221 @@
+"use client";
+import React from "react";
+import { useLeagueData } from "@/app/overlay/layout";
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function TopScoreboard() {
-  // Cấu hình ván đấu: "Bo1", "Bo3", hoặc "Bo5"
-  const matchType = "Bo5";
-  const teamAWin = 1;
-  const teamBWin = 2;
+  const { gameData } = useLeagueData();
+  const scoreboard = gameData?.scoreboard;
 
-  const isBo1 = matchType === "Bo1";
-  const isBo3 = matchType === "Bo3";
-  const isBo5 = matchType === "Bo5";
+  if (!scoreboard || !scoreboard.teams || scoreboard.teams.length < 2) return null;
 
-  const winDots = isBo5 ? [1, 2, 3] : isBo3 ? [1, 2] : [];
+  const blueTeam = scoreboard.teams[0];
+  const redTeam = scoreboard.teams[1];
+  const gameTime = gameData.gameTime || scoreboard.gameTime || 0;
+  const bestOf = scoreboard.bestOf || 3;
 
-  // Chiều cao thanh thắng: Bo3 (1/2 scoreboard), Bo5 (2/5 scoreboard)
-  const containerHeight = isBo3 ? "h-10" : "h-8";
+  const teamAWin = blueTeam?.seriesScore?.wins || 0;
+  const teamBWin = redTeam?.seriesScore?.wins || 0;
+
+  const formatGold = (gold) => (!gold ? "0.0k" : (gold / 1000).toFixed(1) + "k");
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  };
+
+  const getDragonIcon = (type) => {
+    const icons = {
+      air: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_clouddrake.png",
+      earth: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_mountaindrake.png",
+      fire: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_infernaldrake.png",
+      water: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_oceandrake.png",
+      hextech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_hextechdrake.png",
+      chemtech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_chemtechdrake.png",
+      elder: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_elderdrake.png"
+    };
+    return icons[type?.toLowerCase()] || "";
+  };
+
+  const goldIcon = "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-collections/global/default/icon_gold.png";
+  const towerIcon = "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/tower.png";
+  const grubsicon = "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/grub.png";
+  const blueplates = "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/tower_blue_bounty.png";
+  const redpplates = "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/tower_red_bounty.png";
 
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-center pointer-events-none mt-4 font-sans select-none">
-      {/* Container chính */}
-      <div className="flex items-center bg-black/95 text-white px-8 py-3 shadow-2xl border-b-2 border-yellow-500 scale-110 relative h-20">
-        {/* --- DẢI MÀU BIÊN --- */}
-        <div className="absolute left-1 top-1 bottom-1 w-1.5 bg-yellow-500 rounded-sm" />
-        <div className="absolute right-1 top-1 bottom-1 w-1.5 bg-red-600 rounded-sm" />
+    <AnimatePresence>
+      <motion.div 
+        className="absolute top-0 left-0 w-full flex flex-col items-center pointer-events-none mt-1 font-sans select-none origin-top"
+      >
+        <div className="flex flex-col items-center drop-shadow-2xl overflow-visible">
+          
+          {/* UPPER PART: MAIN SCOREBOARD */}
+          <motion.div 
+            initial={{ opacity: 0, scaleX: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center bg-black/70 text-white h-13 relative overflow-hidden rounded-t-lg px-2 z-10 border-b border-white/5"
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 shadow-[2px_0_10px_#3b82f6]" />
+            <div className="absolute right-0 top-0 bottom-0 w-1 bg-red-600 shadow-[-2px_0_10px_#ef4444]" />
 
-        {/* --- LEFT SIDE (TEAM A) --- */}
-        <div className="flex items-center h-full">
-          {/* Win Indicators Team A */}
-          {!isBo1 && (
-            <div
-              className={`flex flex-col justify-center space-y-2 mr-4 ${containerHeight}`}
-            >
-              {winDots.map((dot) => (
-                <div
-                  key={dot}
-                  className={`w-2 h-6 transition-all duration-500 rounded-[1px] ${
-                    dot <= teamAWin
-                      ? "bg-yellow-400 shadow-[0_0_8px_#facc15]"
-                      : "bg-zinc-800"
-                  }`}
-                  /* Ghi chú: Đã bỏ flex-1, dùng h-1.5 (6px) hoặc h-2 (8px) tùy bạn chọn */
+            {/* BLUE SIDE */}
+            <div className="flex items-center px-2 gap-4">
+              <div className="flex flex-col gap-1 w-3">
+                {[...Array(bestOf === 5 ? 3 : 2)].map((_, i) => (
+                  <div key={i} className={`h-1.5 w-full rounded-sm ${i < teamAWin ? "bg-white shadow-[0_0_5px_#ffffff]" : "bg-zinc-800"}`} />
+                ))}
+              </div>
+              <div className="w-14 h-14 p-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/T1_esports_logo.svg/1280px-T1_esports_logo.svg.png" className="w-full h-full object-contain" alt="blue-logo" />
+              </div>
+              <div className="w-16 text-center">
+                <span className="text-xl font-black uppercase tracking-tighter text-white">T1</span>
+              </div>
+              <div className="flex items-center gap-4 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <img src={goldIcon} className="w-5 h-5" alt="gold" />
+                  <span className="text-base font-bold text-white tabular-nums w-10">{formatGold(blueTeam.gold)}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <img src={towerIcon} className="w-5 h-5 opacity-80" alt="tower" />
+                  <span className="text-base font-bold text-white tabular-nums">{blueTeam.towers}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CENTER: KILLS */}
+            <div className="flex items-center justify-center px-8 h-full gap-4 border-x border-white/5 shadow-inner relative overflow-visible">
+              <span className="text-3xl font-black tabular-nums w-12 text-right text-white leading-none drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                {blueTeam.kills}
+              </span>
+
+              <div className="relative flex items-center justify-center h-full px-2">
+                <motion.img
+                  animate={{ 
+                    filter: ["brightness(1) contrast(1)", "brightness(1.5) contrast(1.2)", "brightness(1) contrast(1)"],
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  src="https://roadtovcs.vnggames.com/api/images/team_2_logo_1744360408217/png"
+                  className="relative z-10 w-12 h-12 object-contain invert grayscale"
+                  alt="vcs-logo"
                 />
-              ))}
-            </div>
-          )}
-
-          {/* Team Info */}
-          <div className="flex flex-col items-end mr-4 leading-none">
-            <span className="font-black text-xl uppercase tracking-tighter">
-              Team A
-            </span>
-            <span className="text-[10px] font-bold text-gray-500 mt-1 italic">
-              RANK 2-1
-            </span>
-          </div>
-
-          {/* Logo Team A */}
-          <div className="p-1 rounded-sm shadow-sm ring-1 ring-zinc-800 flex-shrink-0 bg-zinc-900">
-            <img
-              src="https://s-qwer.op.gg/images/lol/teams/632_1672191537262.png"
-              alt="logo"
-              className="w-10 h-10 object-contain"
-            />
-          </div>
-
-          {/* Stats Left */}
-          <div className="flex items-center ml-6 space-x-6 border-r border-zinc-800 pr-8 h-8">
-            <div className="text-center">
-              <p className="text-[9px] font-bold text-zinc-500 uppercase">
-                Turrets
-              </p>
-              <p className="font-bold text-base leading-none">5</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[9px] font-bold text-zinc-500 uppercase">
-                Gold
-              </p>
-              <p className="font-bold text-base text-yellow-400 leading-none">
-                45.2k
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* --- CENTER SECTION (SCORE & TIMER) --- */}
-        <div className="flex items-center space-x-6 px-8 h-full">
-          <span className="text-4xl font-black tabular-nums tracking-tighter w-12 text-right">
-            12
-          </span>
-
-          <div className="flex flex-col items-center justify-center min-w-[60px] border-x border-zinc-800 px-4 h-10">
-            <span className="text-[9px] font-black text-zinc-500 uppercase tracking-widest">
-              Live
-            </span>
-            <span className="text-sm font-bold text-yellow-500 font-mono">
-              24:15
-            </span>
-          </div>
-
-          <span className="text-4xl font-black tabular-nums tracking-tighter w-12 text-left">
-            10
-          </span>
-        </div>
-
-        {/* --- RIGHT SIDE (TEAM B) --- */}
-        <div className="flex items-center h-full">
-          {/* Stats Right */}
-          <div className="flex items-center mr-6 space-x-6 border-l border-zinc-800 pl-8 h-8">
-            <div className="text-center">
-              <p className="text-[9px] font-bold text-zinc-500 uppercase">
-                Gold
-              </p>
-              <p className="font-bold text-base text-yellow-400 leading-none">
-                43.8k
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-[9px] font-bold text-zinc-500 uppercase">
-                Turrets
-              </p>
-              <p className="font-bold text-base leading-none">4</p>
-            </div>
-          </div>
-
-          {/* Logo Team B */}
-          <div className="p-1 rounded-sm shadow-sm ring-1 ring-zinc-800 flex-shrink-0 bg-zinc-900">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/T1_esports_logo.svg/960px-T1_esports_logo.svg.png"
-              alt="logo"
-              className="w-10 h-10 object-contain"
-            />
-          </div>
-
-          {/* Team Info */}
-          <div className="flex flex-col items-start ml-4 leading-none">
-            <span className="font-black text-xl uppercase tracking-tighter">
-              Team B
-            </span>
-            <span className="text-[10px] font-bold text-gray-500 mt-1 italic">
-              RANK 1-2
-            </span>
-          </div>
-
-          {/* Win Indicators Team B - Sát dải biên */}
-          {!isBo1 && (
-            <div
-              className={`flex flex-col justify-center space-y-1 ml-4 ${containerHeight}`}
-            >
-              {winDots.map((dot) => (
-                <div
-                  key={dot}
-                  className={`w-1.5 flex-1 transition-all duration-500 rounded-full ${
-                    dot <= teamBWin
-                      ? "bg-red-500 shadow-[0_0_8px_#ef4444]"
-                      : "bg-zinc-800"
-                  }`}
+                <motion.div 
+                   animate={{ opacity: [0.2, 0.5, 0.2] }}
+                   transition={{ duration: 2, repeat: Infinity }}
+                   className="absolute inset-0 bg-white/20 blur-xl rounded-full"
                 />
-              ))}
+              </div>
+
+              <span className="text-3xl font-black tabular-nums w-12 text-left text-white leading-none drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                {redTeam.kills}
+              </span>
             </div>
-          )}
+
+            {/* RED SIDE */}
+            <div className="flex items-center px-2 gap-4 flex-row-reverse">
+              <div className="flex flex-col gap-1 w-3">
+                {[...Array(bestOf === 5 ? 3 : 2)].map((_, i) => (
+                  <div key={i} className={`h-1.5 w-full rounded-sm ${i < teamBWin ? "bg-white shadow-[0_0_5px_#ffffff]" : "bg-zinc-800"}`} />
+                ))}
+              </div>
+              <div className="w-14 h-14 p-2">
+                <img src="https://upload.wikimedia.org/wikipedia/vi/6/66/Bilibili_Gaming_logo_%282021%29.png" className="w-full h-full object-contain" alt="red-logo" />
+              </div>
+              <div className="w-16 text-center">
+                <span className="text-xl font-black uppercase tracking-tighter text-white">BLG</span>
+              </div>
+              <div className="flex items-center gap-4 pl-2 flex-row-reverse">
+                <div className="flex items-center gap-1.5 flex-row-reverse">
+                  <img src={goldIcon} className="w-5 h-5" alt="gold" />
+                  <span className="text-base font-bold text-white tabular-nums w-10 text-right">{formatGold(redTeam.gold)}</span>
+                </div>
+                <div className="flex items-center gap-1.5 flex-row-reverse">
+                  <img src={towerIcon} className="w-5 h-5 opacity-80" alt="tower" />
+                  <span className="text-base font-bold text-white tabular-nums">{redTeam.towers}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* LOWER PART: SUB-SCOREBOARD */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
+            className="relative w-full h-8 flex items-center rounded-b-lg border-t border-white/5"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-950/90 to-transparent backdrop-blur-sm" />
+            
+            <div className="relative z-20 flex w-full h-full items-center">
+              {/* Rồng bên trái */}
+              <div className="flex-[1.2] flex items-center justify-start pl-10 gap-2.5 overflow-visible">
+                {blueTeam.dragons?.map((drag, i) => (
+                  <motion.img
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.2 + (i * 0.1) }}
+                    key={i}
+                    src={getDragonIcon(drag)}
+                    className="w-7 h-7 object-contain drop-shadow-[0_0_4px_rgba(0,0,0,0.8)] brightness-125"
+                    alt="dragon"
+                  />
+                ))}
+              </div>
+
+              {/* Blue Stats */}
+              <div className="flex-1 flex items-center justify-end gap-5">
+                <div className="flex items-center gap-1.5">
+                  <img src={blueplates} className="w-4 h-4" alt="p" />
+                  <span className="text-sm font-black text-white tabular-nums">{blueTeam.towerPlates}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <img src={grubsicon} className="w-4 h-4" alt="g" />
+                  <span className="text-sm font-black text-white tabular-nums">{blueTeam.grubs}</span>
+                </div>
+              </div>
+
+              {/* Game Time */}
+              <div className="w-28 flex items-center justify-center">
+                <div className="px-3 py-0.5 rounded-full bg-white/5 border border-white/5 shadow-inner">
+                  <span className="text-base font-bold font-mono tracking-widest text-white">
+                    {formatTime(gameTime)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Red Stats */}
+              <div className="flex-1 flex items-center justify-start gap-5">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-black text-white tabular-nums">{redTeam.grubs}</span>
+                  <img src={grubsicon} className="w-4 h-4" alt="g" />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-black text-white tabular-nums">{redTeam.towerPlates}</span>
+                  <img src={redpplates} className="w-4 h-4" alt="p" />
+                </div>
+              </div>
+
+              {/* Rồng bên phải */}
+              <div className="flex-[1.2] flex items-center justify-end pr-10 gap-2.5 overflow-visible">
+                {redTeam.dragons?.map((drag, i) => (
+                  <motion.img
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.2 + (i * 0.1) }}
+                    key={i}
+                    src={getDragonIcon(drag)}
+                    className="w-7 h-7 object-contain drop-shadow-[0_0_4px_rgba(0,0,0,0.8)] brightness-125"
+                    alt="dragon"
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
