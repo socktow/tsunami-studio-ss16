@@ -1,9 +1,12 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export const useOverlayStore = create((set) => ({
   showOverlay: true,
-  showTop: false,
-  showBottom: false,
+  showTop: true,
+  showBottom: true,
+  showLeft: true, 
+  activeRankView: 'gold', 
+  gameData: null,
 
-  setState: (data) => set((state) => ({ ...state, ...data })),
+  setState: (newState) => set((state) => ({ ...state, ...newState })),
 }));
