@@ -11,7 +11,7 @@ import SkinShowPanel from "@/components/centerpanel/centerpanel/skinshowpanel/pa
 const socket = io("http://localhost:3001");
 
 export default function Overlay() {
-  const { showOverlay, showTop, showBottom, setState , allPlayerData} = useOverlayStore();
+  const { showOverlay, showTop, showBottom, showSkin, setState , allPlayerData} = useOverlayStore();
 
   useEffect(() => {
     socket.on("init", setState);
@@ -26,11 +26,11 @@ export default function Overlay() {
   if (!showOverlay) return null;
 
   return (
-    <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
+<div className="fixed inset-0 bg-transparent pointer-events-none select-none">
       {showTop && <TopScoreboard />}
       <TopLeftPanel />
       <Centerleftpanel />
-      <SkinShowPanel allPlayers={allPlayerData?.allPlayers || []} />
+      {showSkin && <SkinShowPanel allPlayers={allPlayerData?.allPlayers || []} />}
       {showBottom && <BottomScoreboard />}
     </div>
   );
