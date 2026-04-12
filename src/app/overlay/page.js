@@ -7,10 +7,11 @@ import TopScoreboard from "@/components/topscoreboard/page";
 import BottomScoreboard from "@/components/bottomScoreboard/page";
 import TopLeftPanel from "@/components/topleftpanel/page"; 
 import Centerleftpanel from "@/components/centerpanel/centerleftpanel/page"
+import SkinShowPanel from "@/components/centerpanel/centerpanel/skinshowpanel/page";
 const socket = io("http://localhost:3001");
 
 export default function Overlay() {
-  const { showOverlay, showTop, showBottom, setState } = useOverlayStore();
+  const { showOverlay, showTop, showBottom, setState , allPlayerData} = useOverlayStore();
 
   useEffect(() => {
     socket.on("init", setState);
@@ -29,7 +30,7 @@ export default function Overlay() {
       {showTop && <TopScoreboard />}
       <TopLeftPanel />
       <Centerleftpanel />
-      {/* <CentergoldleftPanel /> */}
+      <SkinShowPanel allPlayers={allPlayerData?.allPlayers || []} />
       {showBottom && <BottomScoreboard />}
     </div>
   );
