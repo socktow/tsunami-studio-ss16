@@ -2,104 +2,117 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLeagueData } from "@/app/overlay/layout";
+import { formatTime, getDragonType } from "@/lib/utils";
+import { OBJECTIVE_ICONS } from "@/lib/constants";
 
 const TopLeftPanel = () => {
   const { gameData } = useLeagueData();
-
+  
   if (!gameData || typeof gameData.gameTime === 'undefined') return null;
 
-  const formatTime = (seconds) => {
-    if (seconds <= 0) return null;
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return `${m}:${s < 10 ? "0" : ""}${s}`;
-  };
-
+  const currentDragonType = getDragonType(gameData.dragonPitTimer?.type);
   const baronDiff = (gameData.baronPitTimer?.timeAlive || 0) - gameData.gameTime;
   const dragonDiff = (gameData.dragonPitTimer?.timeAlive || 0) - gameData.gameTime;
 
-  const rawObjectives = [
+  const objectives = [
     { 
       id: 'baron',
       timeLeft: baronDiff,
-      icon: gameData.baronPitTimer?.type === "GRUB" 
-            ? "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/grub.png"
-            : "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/rewards-modal/epic-monster-icon.png",
-      gradient: "from-purple-600/40 to-purple-900/10",
-      glow: "shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+      icon: gameData.baronPitTimer?.type === "GRUB" ? OBJECTIVE_ICONS.GRUB : OBJECTIVE_ICONS.BARON,
+      accent: "#A855F7",
+      shadow: "0px 0px 20px rgba(168, 85, 247, 0.4)"
     },
     { 
       id: 'dragon',
       timeLeft: dragonDiff,
-      icon: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_infernaldrake.png",
-      gradient: "from-red-600/40 to-red-900/10",
-      glow: "shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+      icon: OBJECTIVE_ICONS.DRAGONS[currentDragonType] || OBJECTIVE_ICONS.DRAGONS.air,
+      accent: "#EF4444",
+      shadow: "0px 0px 20px rgba(239, 68, 68, 0.4)"
     }
   ];
 
   return (
-    <motion.div 
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      className="absolute top-4 left-2 flex flex-row gap-4 pointer-events-none select-none items-center"
-    >
+    <div className="absolute top-6 left-6 flex flex-row gap-4 pointer-events-none select-none items-center">
       <AnimatePresence mode="popLayout">
-        {rawObjectives.map((obj) => {
+        {objectives.map((obj) => {
           const isSpawned = obj.timeLeft <= 0;
           const timeDisplay = formatTime(obj.timeLeft);
 
           return (
-            <motion.div 
-              key={obj.id} 
-              layout 
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className={`flex items-center ${isSpawned ? obj.glow : ""}`}
+            <motion.div
+              key={obj.id}
+              layout
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative flex items-stretch h-10 shadow-2xl overflow-hidden rounded-sm"
+              style={isSpawned ? { boxShadow: obj.shadow } : {}}
             >
-              <motion.div
-                layout
-                className="flex items-stretch bg-black/40 backdrop-blur-xl -skew-x-12 border-l-2 border-white/10 overflow-hidden h-9 shadow-2xl"
-              >
-                <motion.div
-                  layout
-                  className={`flex items-center justify-center relative bg-gradient-to-br ${obj.gradient} ${!isSpawned ? 'w-10' : 'w-9'}`}
-                >
-                  <div className="skew-x-12 w-6 h-6 flex items-center justify-center relative z-10">
-                    <img 
-                      src={obj.icon} 
-                      className={`w-full h-full object-contain drop-shadow-[0_0_3px_rgba(255,255,255,0.4)] ${isSpawned ? 'scale-110' : 'scale-90'}`} 
-                      alt={obj.id} 
-                    />
-                  </div>
-                  
-                  {isSpawned && (
-                    <motion.div
-                      animate={{ opacity: [0, 0.4, 0] }}
-                      transition={{ repeat: Infinity, duration: 2 }}
-                      className="absolute inset-0 bg-white/10"
-                    />
-                  )}
-                </motion.div>
+              {/* ICON BOX: Giữ nguyên Đen đặc và Border rõ nét */}
+              <div className="relative z-20 flex items-center justify-center w-10 bg-black border border-white/20 overflow-hidden shrink-0">
+                {/* Overlay màu khi Spawned */}
+                {isSpawned && (
+                  <motion.div 
+                    animate={{ opacity: [0.1, 0.5, 0.1] }}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="absolute inset-0"
+                    style={{ backgroundColor: obj.accent }}
+                  />
+                )}
+                
+                <motion.img 
+                  src={obj.icon} 
+                  className="w-7 h-7 object-contain z-10"
+                  animate={isSpawned ? { 
+                    scale: [1, 1.2, 1],
+                    filter: ["brightness(1) saturate(1)", "brightness(1.6) saturate(1.4)", "brightness(1) saturate(1)"]
+                  } : { opacity: 0.8 }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                />
+              </div>
 
-                <AnimatePresence mode="wait">
-                  {!isSpawned && (
-                    <motion.div
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
-                      className="flex items-center px-3 pr-4 overflow-hidden border-l border-white/5"
-                    >
-                      <span className="skew-x-12 text-lg font-mono font-black text-white italic tracking-tighter tabular-nums">
-                        {timeDisplay}
-                      </span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+              {/* TIME CONTAINER: Có Opacity và hiệu ứng Blur */}
+              <AnimatePresence mode="wait">
+                {!isSpawned && (
+                  <motion.div
+                    key="timer-container"
+                    initial={{ x: -10, opacity: 0, width: 0 }}
+                    animate={{ x: 0, opacity: 1, width: "auto" }}
+                    exit={{ x: -10, opacity: 0, width: 0 }}
+                    className="relative flex items-center px-4 min-w-[70px] justify-center bg-black/40 backdrop-blur-md border border-l-0 border-white/10"
+                  >
+                    <span className="text-xl font-black font-mono tracking-tighter text-white tabular-nums drop-shadow-md">
+                      {timeDisplay}
+                    </span>
+                    
+                    {/* Progress Bar mảnh chạy dưới phần Time */}
+                    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5">
+                      <motion.div 
+                        className="h-full"
+                        style={{ backgroundColor: obj.accent }}
+                        initial={{ width: "100%" }}
+                        animate={{ width: "0%" }}
+                        transition={{ duration: obj.timeLeft, ease: "linear" }}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Hiệu ứng viền nhấp nháy tổng thể khi Spawned */}
+              {isSpawned && (
+                <motion.div 
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="absolute inset-0 border-2 z-30 pointer-events-none rounded-sm"
+                  style={{ borderColor: obj.accent }}
+                />
+              )}
             </motion.div>
           );
         })}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 };
 
