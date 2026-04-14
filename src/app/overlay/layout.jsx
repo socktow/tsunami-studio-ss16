@@ -27,6 +27,7 @@ export default function OverlayLayout({ children }) {
     });
     client.onIngameStateUpdate((data) => {
       setGameData(data);
+      console.log("Dữ liệu game", data)
     });
 
     // Cleanup khi component unmount

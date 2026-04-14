@@ -1,132 +1,184 @@
 import React from 'react';
+import { useLeagueData } from "@/app/overlay/layout";
 
-const PlayerRow = ({ side, index }) => {
+const IMAGE_BASE_URL = "http://localhost:58869/";
+
+const PlayerRow = ({ side, playerTab, playerBoard, index }) => {
+  if (!playerTab || !playerBoard) return null;
+
   const isLeft = side === "left";
+  const isDead = playerTab.timeToRespawn > 0;
   const rowBg = index % 2 === 0 ? 'bg-zinc-900/40' : 'bg-transparent';
+  const deadOverlay = isDead ? 'grayscale opacity-70' : '';
+
+  const {
+    playerName, championAssets, level, health, resource, experience, perks, abilities, timeToRespawn
+  } = playerTab;
+
+  const {
+    kills, deaths, assists, creepScore, items
+  } = playerBoard;
+
+  // Logic lấy Spells từ abilities slot 4 (D) và 5 (F)
+  const spellD = abilities?.[4];
+  const spellF = abilities?.[5];
+
+  const hpPercent = health ? Math.max(0, Math.min(100, (health.current / health.max) * 100)) : 0;
+  const manaPercent = resource ? Math.max(0, Math.min(100, (resource.current / resource.max) * 100)) : 0;
+  const xpPercent = experience ? Math.max(0, Math.min(100, (experience.current / experience.nextLevel) * 100)) : 0;
 
   return (
     <div className={`flex items-center ${rowBg} h-[54px] border-b border-zinc-800/60 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
-      
-      {/* 1. ITEMS & RUNES - Cố định width để không đè phần khác */}
-      <div className={`w-[200px] flex items-center gap-1.5 px-3 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+
+      {/* 1. ITEMS & RUNES */}
+      <div className={`w-[195px] flex items-center gap-1.5 px-3 ${isLeft ? 'flex-row' : 'flex-row-reverse'} ${deadOverlay}`}>
+        {/* Items Grid */}
         <div className="flex gap-[1px]">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="w-[22px] h-[22px] bg-zinc-950 border border-zinc-800 rounded-sm" />
+            <div key={i} className="w-[22px] h-[22px] bg-zinc-950 border border-zinc-800 rounded-sm overflow-hidden shadow-inner">
+              {items?.[i]?.squareImg && (
+                <img src={`${IMAGE_BASE_URL}${items[i].squareImg}`} className="w-full h-full object-cover" />
+              )}
+            </div>
           ))}
         </div>
-        <div className="w-[22px] h-[22px] bg-zinc-900 border border-zinc-700/50 rounded-sm flex-shrink-0" />
         
-        <div className="flex flex-col gap-[1px] justify-center items-center px-1">
-          <div className="w-[18px] h-[18px] bg-gradient-to-br from-zinc-600 to-zinc-900 rounded-full border border-yellow-500/30" />
-          <div className="w-[14px] h-[14px] bg-zinc-800 rounded-full border border-zinc-700" />
+        {/* Trinket */}
+        <div className="w-[22px] h-[22px] bg-zinc-900 border border-zinc-700/50 rounded-sm flex-shrink-0 overflow-hidden shadow-sm">
+          {items?.[6]?.squareImg && <img src={`${IMAGE_BASE_URL}${items[6].squareImg}`} className="w-full h-full object-cover" />}
+        </div>
+
+        {/* RUNES (PERKS) - Lấy từ iconPath */}
+        <div className="flex flex-col gap-[2px] justify-center items-center px-1">
+          <div className="w-[18px] h-[18px] bg-zinc-900 rounded-full border border-yellow-500/20 overflow-hidden">
+            {perks?.[0]?.iconPath && <img src={`${IMAGE_BASE_URL}${perks[0].iconPath}`} className="w-full h-full scale-110 object-contain" />}
+          </div>
+          <div className="w-[14px] h-[14px] bg-zinc-950 rounded-full border border-zinc-700 overflow-hidden">
+            {perks?.[1]?.iconPath && <img src={`${IMAGE_BASE_URL}${perks[1].iconPath}`} className="w-full h-full p-[1px] object-contain" />}
+          </div>
         </div>
       </div>
 
-      {/* SEPARATOR | */}
-      <div className="relative w-[1px] h-9 bg-zinc-700/50 flex-shrink-0" />
+      {/* SEPARATOR */}
+      <div className="w-[1px] h-8 bg-zinc-700/30 flex-shrink-0" />
 
-      {/* 2. CỤM TRUNG TÂM (Spells + Avatar + Name/Bars) - Cố định width trung tâm */}
-      <div className={`w-[210px] flex items-center gap-2 px-3 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
-        {/* Spells */}
-        <div className="flex flex-col gap-[1.5px] flex-shrink-0">
-          <div className="w-[17px] h-[17px] bg-yellow-500 rounded-sm shadow-sm" />
-          <div className="w-[17px] h-[17px] bg-blue-600 rounded-sm shadow-sm" />
+      {/* 2. CỤM TRUNG TÂM & INFO */}
+      <div className={`flex-1 flex items-center gap-3 px-3 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+        
+        {/* SUMMONER SPELLS - Có hỗ trợ Cooldown */}
+        <div className={`flex flex-col gap-[1.5px] flex-shrink-0 ${deadOverlay}`}>
+          {[spellD, spellF].map((spell, i) => {
+            const hasCooldown = spell?.cooldown > 0;
+            return (
+              <div key={i} className="relative w-[18px] h-[18px] bg-zinc-900 rounded-sm border border-zinc-700 overflow-hidden shadow-sm">
+                {spell?.iconPath && <img src={`${IMAGE_BASE_URL}${spell.iconPath}`} className="w-full h-full object-cover" />}
+                {hasCooldown && (
+                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                    <span className="text-[9px] font-black text-white leading-none">{Math.ceil(spell.cooldown)}</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Avatar */}
-        <div className="relative w-10 h-10 border border-zinc-700 bg-zinc-900 flex-shrink-0 shadow-lg">
-          <div className={`absolute -bottom-1 ${isLeft ? '-left-1' : '-right-1'} bg-black text-[9px] px-1 border border-zinc-600 z-10 font-black text-white`}>12</div>
-          <div className={`absolute -top-0.5 ${isLeft ? '-right-0.5' : '-left-0.5'} w-2.5 h-2.5 bg-green-500 border border-black z-20`} />
-          <div className="w-full h-full bg-zinc-800" />
+        {/* Avatar Champion */}
+        <div className="relative w-10 h-10 border border-zinc-700 bg-zinc-900 flex-shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+          <img src={`${IMAGE_BASE_URL}${championAssets?.squareImg}`} className={`w-full h-full object-cover ${isDead ? 'grayscale' : ''}`} />
+          <div className={`absolute -bottom-1 ${isLeft ? '-left-1' : '-right-1'} bg-zinc-950 text-[9px] px-1 border border-zinc-700 z-10 font-black text-white`}>{level}</div>
+          {isDead && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-20">
+              <span className="text-rose-500 text-[13px] font-black">{Math.ceil(timeToRespawn)}</span>
+            </div>
+          )}
         </div>
 
-        {/* Name & Bars sát Avatar */}
-        <div className={`flex flex-col justify-center flex-1 ${isLeft ? 'items-start text-left' : 'items-end text-right'}`}>
-          <span className="text-[9px] font-black text-zinc-100 uppercase tracking-tighter mb-1 leading-none truncate w-full">Player Name</span>
-          <div className="flex flex-col gap-[2px] w-full">
-            <div className="h-1.5 w-full bg-zinc-950 rounded-[1px] border border-white/5 overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-green-700 via-green-500 to-green-400 w-full" />
+        {/* Name & Status Bars */}
+        <div className={`flex flex-col justify-center min-w-0 ${isLeft ? 'items-start' : 'items-end'}`}>
+          <span className={`text-[10px] font-black uppercase tracking-tighter mb-1 leading-none truncate w-24 ${isDead ? 'text-zinc-600' : 'text-zinc-100'}`}>
+            {playerName}
+          </span>
+          
+          <div className="flex flex-col gap-[2px] w-20">
+            {/* HP Bar */}
+            <div className="h-1.5 w-full bg-zinc-950 rounded-[1px] border border-white/5 overflow-hidden flex">
+              <div className={`h-full bg-gradient-to-r from-green-600 to-green-400 ${!isLeft ? 'ml-auto' : ''}`} style={{ width: `${hpPercent}%` }} />
             </div>
-            <div className="h-1 w-full bg-zinc-950 rounded-[1px] border border-white/5 overflow-hidden">
-              <div className="h-full bg-blue-500 w-full" />
+            {/* Resource Bar (Mana/Energy) */}
+            <div className="h-1 w-full bg-zinc-950 rounded-[1px] border border-white/5 overflow-hidden flex">
+              <div className={`h-full ${resource?.type === 'energy' ? 'bg-yellow-400' : 'bg-blue-500'} ${!isLeft ? 'ml-auto' : ''}`} style={{ width: `${manaPercent}%` }} />
             </div>
-            {/* XP Bar Fixed Logic */}
-            <div className={`h-[2px] w-[80%] bg-zinc-950 rounded-full border border-white/5 overflow-hidden flex ${isLeft ? 'justify-start' : 'justify-end'}`}>
-              <div className="h-full bg-purple-500 w-full" />
+            {/* XP Bar */}
+            <div className={`h-[2px] w-[80%] bg-zinc-950/50 rounded-full overflow-hidden flex ${isLeft ? 'justify-start' : 'justify-end'}`}>
+              <div className="h-full bg-purple-500 shadow-[0_0_4px_rgba(168,85,247,0.4)]" style={{ width: `${xpPercent}%` }} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3. ECONOMY & COMBAT - Cố định width phần cuối */}
-      <div className={`w-[100px] flex flex-col justify-center px-4 ${isLeft ? 'items-end' : 'items-start'}`}>
-        <div className="text-[13px] font-bold text-yellow-500 font-mono leading-none tracking-tight">185</div>
-        <div className={`flex items-center gap-1 whitespace-nowrap text-[12px] font-black tracking-tighter mt-1`}>
-          <span className="text-zinc-100">2</span>
-          <span className="text-zinc-600 opacity-50">/</span>
-          <span className="text-zinc-100">0</span>
-          <span className="text-zinc-600 opacity-50">/</span>
-          <span className="text-zinc-100">4</span>
+      {/* 3. ECONOMY & COMBAT */}
+      <div className={`w-[90px] flex flex-col justify-center px-3 ${isLeft ? 'items-end' : 'items-start'} ${deadOverlay}`}>
+        <div className="text-[13px] font-black text-yellow-500 font-mono leading-none tracking-tight">{creepScore}</div>
+        <div className={`flex items-center gap-1 whitespace-nowrap text-[11px] font-black tracking-tighter mt-1`}>
+          <span className="text-zinc-100">{kills}</span>
+          <span className="text-zinc-600 opacity-40">/</span>
+          <span className="text-rose-500/90">{deaths}</span>
+          <span className="text-zinc-600 opacity-40">/</span>
+          <span className="text-zinc-100">{assists}</span>
         </div>
       </div>
     </div>
   );
 };
 
-const GoldIndicator = ({ diff }) => {
+const GoldIndicator = ({ bluePlayer, redPlayer }) => {
+  const diff = (bluePlayer?.totalGold || 0) - (redPlayer?.totalGold || 0);
+  const absDiff = Math.abs(diff);
   const isBlueLeading = diff > 0;
   const isRedLeading = diff < 0;
-  const absDiff = Math.abs(diff);
 
   return (
-    <div className="h-[54px] w-20 flex items-center justify-center relative bg-zinc-950 border-b border-zinc-800/50">
-      <div className={`absolute inset-0 ${isBlueLeading ? 'bg-cyan-500/5' : isRedLeading ? 'bg-rose-500/5' : ''}`} />
-      
-      {isBlueLeading && (
-        <div className="absolute left-1.5 animate-pulse text-cyan-400">
-          <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 10 2 6 6 2" /></svg>
-        </div>
-      )}
-
-      <div className={`text-[11px] font-black italic tracking-tighter z-10 ${isBlueLeading ? 'text-cyan-400' : isRedLeading ? 'text-rose-500' : 'text-zinc-500'}`}>
-        {absDiff !== 0 ? absDiff : "-"}
+    <div className="h-[54px] w-16 flex items-center justify-center relative bg-zinc-950 border-b border-zinc-800/40 shadow-inner">
+      <div className={`absolute inset-y-0 w-1 ${isBlueLeading ? 'left-0 bg-cyan-500/40' : isRedLeading ? 'right-0 bg-rose-500/40' : ''}`} />
+      <div className={`text-[10px] font-black tracking-tighter z-10 font-mono ${isBlueLeading ? 'text-cyan-400' : isRedLeading ? 'text-rose-500' : 'text-zinc-600'}`}>
+        {absDiff !== 0 ? (absDiff >= 1000 ? `${(absDiff/1000).toFixed(1)}k` : absDiff) : "—"}
       </div>
-
-      {isRedLeading && (
-        <div className="absolute right-1.5 animate-pulse text-rose-500">
-          <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="2 2 6 6 2 10" /></svg>
-        </div>
-      )}
     </div>
   );
 };
 
 export default function ScoreboardOverlayFinal() {
-  const positions = [
-    { id: 0, diff: 450 },
-    { id: 1, diff: 120 },
-    { id: 2, diff: -300 },
-    { id: 3, diff: 0 },
-    { id: 4, diff: -15}
-  ];
+  const { gameData } = useLeagueData();
+  if (!gameData || !gameData.tabs || !gameData.scoreboardBottom) return null;
+
+  const blueTeamTabs = gameData.tabs.Order.players;
+  const redTeamTabs = gameData.tabs.Chaos.players;
+  const blueTeamBoard = gameData.scoreboardBottom.teams[0].players;
+  const redTeamBoard = gameData.scoreboardBottom.teams[1].players;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-center select-none font-sans scale-[0.95] origin-bottom pb-2">
-      <div className="flex items-stretch bg-black/95 border-t border-x border-zinc-800 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] overflow-hidden rounded-t-xl">
+    <div className="fixed bottom-0 left-0 w-full flex justify-center select-none font-sans scale-[0.95] origin-bottom pb-4">
+      <div className="flex items-stretch bg-[#0a0a0c]/98 border border-zinc-800/80 shadow-[0_0_60px_rgba(0,0,0,1)] rounded-t-2xl overflow-hidden">
         
-        {/* TEAM LEFT - Tổng 510px */}
-        <div className="flex flex-col w-[510px]">
-          {positions.map((pos, idx) => <PlayerRow key={`blue-${pos.id}`} side="left" index={idx} />)}
+        {/* TEAM LEFT */}
+        <div className="flex flex-col w-[480px]">
+          {blueTeamTabs.map((p, idx) => (
+            <PlayerRow key={`blue-${idx}`} side="left" playerTab={p} playerBoard={blueTeamBoard[idx]} index={idx} />
+          ))}
         </div>
 
-        {/* GOLD CENTER - 80px */}
-        <div className="flex flex-col border-x border-zinc-800 bg-zinc-950">
-          {positions.map((pos) => <GoldIndicator key={`gold-${pos.id}`} diff={pos.diff} />)}
+        {/* GOLD INDICATOR CENTER */}
+        <div className="flex flex-col border-x border-zinc-800/60">
+          {blueTeamBoard.map((p, idx) => (
+            <GoldIndicator key={`gold-${idx}`} bluePlayer={p} redPlayer={redTeamBoard[idx]} />
+          ))}
         </div>
 
-        {/* TEAM RIGHT - Tổng 510px */}
-        <div className="flex flex-col w-[510px]">
-          {positions.map((pos, idx) => <PlayerRow key={`red-${pos.id}`} side="right" index={idx} />)}
+        {/* TEAM RIGHT */}
+        <div className="flex flex-col w-[480px]">
+          {redTeamTabs.map((p, idx) => (
+            <PlayerRow key={`red-${idx}`} side="right" playerTab={p} playerBoard={redTeamBoard[idx]} index={idx} />
+          ))}
         </div>
 
       </div>
