@@ -44,3 +44,11 @@ export const OBJECTIVE_STYLES = {
     glow: "shadow-[0_0_15px_rgba(239,68,68,0.3)]"
   }
 };
+
+export const ITEM_SLOTS = {
+  MAIN: [0, 1, 2, 3, 4, 5],
+  TRINKET: 6,
+  QUEST: 8
+};
+
+export const IMAGE_BASE_URL = "http://localhost:58869/";
