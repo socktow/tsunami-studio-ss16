@@ -40,3 +40,43 @@ export const getTeamData = (gameData) => {
     },
   };
 };
+
+export const mapTabsToL2 = (tabs) => {
+  if (!tabs?.Order?.players || !tabs?.Chaos?.players) return null;
+
+  const mapPlayer = (p) => ({
+    // ===== HALF 1 =====
+    name: p.playerName,
+    level: p.level,
+    champ: p.championAssets?.squareImg,
+
+    spell1: p.abilities?.[4]?.assets?.iconAsset,
+    spell2: p.abilities?.[5]?.assets?.iconAsset,
+    ulti: p.abilities?.[3]?.assets?.iconAsset,
+
+    // ===== HALF 2 DATA =====
+
+    hp: {
+      current: p.health?.current ?? 0,
+      max: p.health?.max ?? 1,
+      pct: (p.health?.current / p.health?.max) * 100 || 0,
+    },
+
+    mp: {
+      current: p.resource?.current ?? 0,
+      max: p.resource?.max ?? 1,
+      pct: (p.resource?.current / p.resource?.max) * 100 || 0,
+    },
+
+    xp: {
+      current: p.experience?.current ?? 0,
+      max: p.experience?.nextLevel ?? 1,
+      pct: (p.experience?.current / p.experience?.nextLevel) * 100 || 0,
+    },
+  });
+
+  return {
+    order: tabs.Order.players.map(mapPlayer),
+    chaos: tabs.Chaos.players.map(mapPlayer),
+  };
+};

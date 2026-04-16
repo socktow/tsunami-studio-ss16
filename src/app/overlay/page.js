@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useOverlayStore } from "@/store/overlayStore";
 import TopScoreboard from "@/components/topscoreboard/page";
-import BottomScoreboard from "@/components/bottomScoreboard";
+import BottomScoreboard from "@/components/scbottom";
 import TopLeftPanel from "@/components/topleftpanel/page"; 
 import Centerleftpanel from "@/components/centerpanel/centerleftpanel/page"
 import SkinShowPanel from "@/components/centerpanel/centerpanel/skinshowpanel/page";
