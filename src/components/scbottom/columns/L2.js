@@ -5,114 +5,140 @@ import { StatsSection } from "@/components/bottomScoreboard/StatsSection";
 import { IMAGE_BASE_URL } from "@/lib/league-utils";
 
 const L2 = ({ tabs, boards }) => {
-    return (
-        <div className="flex-1 flex ">
+  const TEST_NAMES = [
+    "Pun",
+    "Hizto",
+    "Dire",
+    "Eddie",
+    "Bie",
+  ];
 
-            <Column
-                renderCell={(i) => {
-                    const p = tabs?.[i];
-                    if (!p) return null;
+  return (
+    <div className="flex-1 flex border border-gray-800">
 
-                    return (
-                        <div className="relative w-full h-full  overflow-hidden">
+      {/* ===================== */}
+      {/* PLAYER COLUMN */}
+      {/* ===================== */}
+      <Column
+        renderCell={(i) => {
+          const p = tabs?.[i];
+          if (!p) return null;
 
-                            {/* ===================== */}
-                            {/* LAYER 1: BARS */}
-                            {/* ===================== */}
-                            <div className="absolute inset-0 flex flex-col justify-end z-0 ml-19 py-1">
+          return (
+            <div className="relative w-full h-full">
 
-                                {/* XP (tạm giữ) */}
-                                <div className="h-[4px] w-full bg-purple-500/20 relative overflow-hidden">
-                                    <div
-                                        className="h-full bg-purple-500"
-                                        style={{ width: `${p?.xp?.pct || 0}%` }}
-                                    />
-                                </div>
+              {/* ===================== */}
+              {/* CONTENT LAYER */}
+              {/* ===================== */}
+              <div className="absolute inset-0 overflow-hidden">
 
-                                {/* HP */}
-                                <div className="h-[7px] w-full bg-green-500/20 relative overflow-hidden">
-                                    <div
-                                        className="h-full bg-green-500"
-                                        style={{ width: `${p?.hp?.pct || 0}%` }}
-                                    />
-                                </div>
+                {/* BARS */}
+                <div className="absolute inset-0 flex flex-col justify-end z-0 ml-[76px] py-1">
 
-                                {/* MP */}
-                                <div className="h-[4px] w-full bg-blue-500/20 relative overflow-hidden">
-                                    <div
-                                        className="h-full bg-blue-500"
-                                        style={{ width: `${p?.mp?.pct || 0}%` }}
-                                    />
-                                </div>
+                  {/* XP */}
+                  <div className="h-[4px] w-full bg-purple-500/20 relative">
+                    <div
+                      className="h-full bg-purple-500"
+                      style={{ width: `${p?.xp?.pct || 0}%` }}
+                    />
+                  </div>
 
-                            </div>
+                  {/* HP */}
+                  <div className="h-[7px] w-full bg-green-500/20 relative">
+                    <div
+                      className="h-full bg-green-500"
+                      style={{ width: `${p?.hp?.pct || 0}%` }}
+                    />
+                  </div>
 
-                            {/* ===================== */}
-                            {/* LAYER 2: ICONS */}
-                            {/* ===================== */}
-                            <div className="relative z-10 flex items-center gap-[4px] h-full px-[2px]">
+                  {/* MP */}
+                  <div className="h-[4px] w-full bg-blue-500/20 relative">
+                    <div
+                      className="h-full bg-blue-500"
+                      style={{ width: `${p?.mp?.pct || 0}%` }}
+                    />
+                  </div>
 
-                                {/* spells */}
-                                <div className="flex flex-col gap-[2px]">
-                                    {p?.spell1 && (
-                                        <img
-                                            className="w-[22px] h-[22px]"
-                                            src={`${IMAGE_BASE_URL}${p.spell1}`}
-                                        />
-                                    )}
-                                    {p?.spell2 && (
-                                        <img
-                                            className="w-[22px] h-[22px]"
-                                            src={`${IMAGE_BASE_URL}${p.spell2}`}
-                                        />
-                                    )}
-                                </div>
+                </div>
 
-                                {/* champ */}
-                                <img
-                                    className="w-[45px] h-[45px] rounded "
-                                    src={`${IMAGE_BASE_URL}${p?.champ}`}
-                                />
+                {/* ICONS */}
+                <div className="relative z-10 flex items-center gap-[4px] h-full px-[2px]">
 
-                            </div>
+                  {/* spells */}
+                  <div className="flex flex-col gap-[2px]">
+                    {p?.spell1 && (
+                      <img
+                        className="w-[22px] h-[22px]"
+                        src={`${IMAGE_BASE_URL}${p.spell1}`}
+                      />
+                    )}
+                    {p?.spell2 && (
+                      <img
+                        className="w-[22px] h-[22px]"
+                        src={`${IMAGE_BASE_URL}${p.spell2}`}
+                      />
+                    )}
+                  </div>
 
-                            {/* ===================== */}
-                            {/* LAYER 3: NAME OVERLAY */}
-                            {/* ===================== */}
-                            <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none mb-4 ml-12">
-                                <span className="text-[13px] font-bold text-white drop-shadow">
-                                    {p?.name}
-                                </span>
-                            </div>
+                  {/* champ + ULT INDICATOR */}
+                  <div className="relative w-[45px] h-[45px]">
 
-                        </div>
-                    );
-                }}
-            />
+                    <img
+                      className="w-full h-full rounded"
+                      src={`${IMAGE_BASE_URL}${p?.champ}`}
+                    />
 
-            {/* STATS */}
-            <FixedInnerColumn
-                renderCell={(i) => {
-                    const row = boards?.[i];
+                    {/* ULT ICON (FROM DATA) */}
+                    {p?.ulti && (
+                      <img
+                        src={`${IMAGE_BASE_URL}${p.ulti}`}
+                        className="absolute top-0.5 -right-4.5 w-[25px] h-[25px] rounded-full border border-black shadow-[0_0_8px_rgba(34,197,94,0.9)] bg-black"
+                      />
+                    )}
 
-                    if (!row) return null;
+                  </div>
 
-                    return (
-                        <div className="h-full w-full min-h-0 flex items-center justify-center bg-black">
-                            <StatsSection
-                                kills={row?.kills}
-                                deaths={row?.deaths}
-                                assists={row?.assists}
-                                creepScore={row?.creepScore}
-                                isLeft={true}
-                            />
-                        </div>
-                    );
-                }}
-            />
+                </div>
+              </div>
 
-        </div>
-    );
+              {/* ===================== */}
+              {/* NAME LAYER */}
+              {/* ===================== */}
+              <div className="absolute inset-0 flex items-center justify-start z-30 pointer-events-none">
+                <span className="ml-[92px] text-[12px] font-bold text-white drop-shadow whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] text-right mb-4">
+                  {TEST_NAMES[i] || p?.name}
+                </span>
+              </div>
+
+            </div>
+          );
+        }}
+      />
+
+      {/* ===================== */}
+      {/* STATS */}
+      {/* ===================== */}
+      <FixedInnerColumn
+        renderCell={(i) => {
+          const row = boards?.[i];
+          if (!row) return null;
+
+          return (
+            <div className="h-full w-full flex items-center justify-center bg-black">
+              <StatsSection
+                kills={row?.kills}
+                deaths={row?.deaths}
+                assists={row?.assists}
+                creepScore={row?.creepScore}
+                isLeft={true}
+              />
+            </div>
+          );
+        }}
+      />
+
+    </div>
+  );
 };
 
 export default L2;

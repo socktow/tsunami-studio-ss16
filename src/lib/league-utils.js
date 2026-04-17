@@ -10,9 +10,15 @@ export const ITEM_SLOTS = {
 // Hàm xử lý định dạng vàng (1500 -> 1.5k)
 export const formatGold = (value) => {
   const absValue = Math.abs(value);
+
   if (absValue === 0) return "•";
-  const formatted = absValue >= 1000 ? `${(absValue / 1000).toFixed(1)}k` : absValue;
-  return formatted;
+
+  if (absValue >= 1000) {
+    const rounded = Math.round(absValue / 100) / 10; 
+    return `${rounded}k`;
+  }
+
+  return Math.round(absValue);
 };
 
 // Hàm tính phần trăm (HP/MP)

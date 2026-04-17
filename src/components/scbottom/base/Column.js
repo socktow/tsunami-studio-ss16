@@ -5,7 +5,7 @@ const Column = ({ data, renderCell, label }) => {
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
-          className="flex-1  flex items-center px-1 overflow-hidden"
+          className="flex-1 flex items-center px-1 overflow-hidden border-b border-gray-800"
         >
           {renderCell
             ? renderCell(i)
