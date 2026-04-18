@@ -59,7 +59,7 @@ export const mapTabsToL2 = (tabs) => {
     spell1: p.abilities?.[4]?.assets?.iconAsset,
     spell2: p.abilities?.[5]?.assets?.iconAsset,
     ulti: p.abilities?.[3]?.assets?.iconAsset,
-
+    perks: p.perks,
     // ===== HALF 2 DATA =====
 
     hp: {
