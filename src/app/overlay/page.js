@@ -8,6 +8,7 @@ import BottomScoreboard from "@/components/scbottom";
 import TopLeftPanel from "@/components/topleftpanel/page"; 
 import Centerleftpanel from "@/components/centerpanel/centerleftpanel/page"
 import SkinShowPanel from "@/components/centerpanel/centerpanel/skinshowpanel/page";
+import Killfeed from "@/components/toprightpanel"
 const socket = io("http://localhost:3001");
 
 export default function Overlay() {
@@ -28,6 +29,7 @@ export default function Overlay() {
   return (
 <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
       {showTop && <TopScoreboard />}
+      <Killfeed />
       <TopLeftPanel />
       <Centerleftpanel />
       {showSkin && <SkinShowPanel allPlayers={allPlayerData?.allPlayers || []} />}
