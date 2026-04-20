@@ -17,11 +17,11 @@ const containerVariants = {
 // Variants cho từng ô item
 const itemVariants = {
   hidden: { y: 5, opacity: 0, scale: 0.8 },
-  visible: { 
-    y: 0, 
-    opacity: 1, 
+  visible: {
+    y: 0,
+    opacity: 1,
     scale: 1,
-    transition: { type: "spring", stiffness: 300, damping: 20 } 
+    transition: { type: "spring", stiffness: 300, damping: 20 }
   },
 };
 
@@ -57,7 +57,7 @@ const L1 = ({ tabs, boards }) => {
         return (
           <div className="flex items-center w-full h-full px-1 justify-between">
             {/* GRID ITEMS CÓ ANIMATION */}
-            <motion.div 
+            <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -69,7 +69,7 @@ const L1 = ({ tabs, boards }) => {
                   <motion.div
                     key={index}
                     variants={itemVariants}
-                    className="relative w-[21px] h-[21px] bg-zinc-900 border border-zinc-700 flex items-center justify-center rounded-[2px] overflow-hidden"
+                    className="relative w-[21px] h-[21px] bg-zinc-900 border border-zinc-700 flex items-center justify-center rounded-[2px] overflow-visible"
                   >
                     {item ? (
                       <>
@@ -79,8 +79,9 @@ const L1 = ({ tabs, boards }) => {
                           alt={item.displayName}
                         />
                         {slot.isTrinket && (
-                          <div className="absolute inset-0 flex justify-center items-start pt-[0.25px]">
-                            <span className="text-[10px] font-black leading-none bg-black/80 text-white px-[2px] py-[0.5px] shadow-sm">
+                          <div className="absolute inset-x-0 top-0 flex justify-center">
+                            <span className="text-[12px] text-base font-medium
+                                            bg-black/50  text-white -translate-y-1/2 tracking-wide drop-shadow-lg">
                               {Math.round(visionScore)}
                             </span>
                           </div>
@@ -97,7 +98,7 @@ const L1 = ({ tabs, boards }) => {
             </motion.div>
 
             {/* Cột 9 - 10 (Ngọc và Phụ trợ) */}
-            <motion.div 
+            <motion.div
               initial={{ x: 10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}

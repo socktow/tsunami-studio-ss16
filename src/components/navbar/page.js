@@ -9,6 +9,7 @@ export default function Navbar() {
 
   // Ẩn hoàn toàn Sidebar nếu đường dẫn bắt đầu bằng /overlay
   if (pathname?.startsWith("/overlay")) return null;
+  if (pathname?.startsWith("/hud/ingame")) return null;
 
   const navLinks = [
     { name: "Dashboard", href: "/dashboard", icon: "📊" },
