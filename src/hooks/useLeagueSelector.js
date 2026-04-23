@@ -85,3 +85,49 @@ export const useRankingSelector = (view = 'gold') => {
     // Dependency cụ thể giúp tránh tính toán lại nếu các phần khác của gameData thay đổi
   }, [gameData?.scoreboardBottom, gameData?.tabs, view]);
 };
+
+export const useScoreboardBottomSelector = () => {
+  const { gameData } = useLeagueData();
+  const scoreboardBottom = gameData?.scoreboardBottom;
+
+  return useMemo(() => {
+    if (!scoreboardBottom?.teams) return null;
+
+    const teams = scoreboardBottom.teams.map((team) => {
+      return {
+        id: team.id,
+        name: team.name,
+        tag: team.tag,
+        players: (team.players || []).map((p) => ({
+          // CORE DATA
+          name: p.name,
+          champion: p.champion,
+
+          // KDA
+          kills: p.kills ?? 0,
+          deaths: p.deaths ?? 0,
+          assists: p.assists ?? 0,
+
+          // EXTRA STATS
+          creepScore: p.creepScore ?? 0,
+          totalGold: p.totalGold ?? 0,
+          visionScore: p.visionScore ?? 0,
+          level: p.level ?? 1,
+
+          // ITEMS
+          items: p.items ?? [],
+
+          // CALCULATED (UI READY)
+          kda: p.deaths === 0
+            ? (p.kills + p.assists)
+            : ((p.kills + p.assists) / p.deaths).toFixed(2),
+        })),
+      };
+    });
+
+    return {
+      gameTime: scoreboardBottom.gameTime || 0,
+      teams,
+    };
+  }, [scoreboardBottom]);
+};

@@ -1,7 +1,7 @@
 import React from "react";
 import Column from "../base/Column";
 import FixedInnerColumn from "../base/FixedInnerColumn";
-import { StatsSection } from "@/components/scbottom/columns/StatsSection";
+import { StatsSection } from "./StatsSection";
 import { IMAGE_BASE_URL } from "@/lib/league-utils";
 import EventRight from "./EventRight";
 import { motion } from "framer-motion";
