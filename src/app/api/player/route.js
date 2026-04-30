@@ -2,30 +2,29 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// GET all teams
+// GET all players
 export async function GET() {
-  const data = await prisma.team.findMany({
+  const data = await prisma.player.findMany({
     include: {
-      players: true
+      team: true
     }
   });
 
   return Response.json(data);
 }
 
-// POST create team
+// POST create player
 export async function POST(req) {
   const body = await req.json();
 
-  const { name, tagName, coach, logo, color } = body;
+  const { nickname, avatar, role, teamId } = body;
 
-  const data = await prisma.team.create({
+  const data = await prisma.player.create({
     data: {
-      name,
-      tagName,
-      coach,
-      logo,
-      color
+      nickname,
+      avatar,
+      role,
+      teamId
     }
   });
 

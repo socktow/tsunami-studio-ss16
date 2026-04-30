@@ -26,3 +26,13 @@ html, body {
 #__next {
   background: transparent !important;
 }
+
+.custom-sidebar-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: #18181b;
+}

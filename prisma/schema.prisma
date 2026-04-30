@@ -7,23 +7,64 @@ generator client {
   provider = "prisma-client-js"
 }
 
+//////////////////////////////////////////////////
+// MODELS
+//////////////////////////////////////////////////
+
+model Tournament {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  logo        String
+  teamCount   Int
+  startDate   DateTime
+  status      String   // 👈 đổi từ enum
+
+  teams       TournamentTeam[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Team {
   id        Int      @id @default(autoincrement())
   name      String
-  tagName   String
-  logo      String   // URL hoặc path ảnh
-  color     String   // ví dụ: "#FF0000"
+  tagName   String   @unique
+  coach     String
+  logo      String
+  color     String   @default("#FFFFFF")
 
-  players   Player[] // relation 1-n
+  players   Player[]
+  tournaments TournamentTeam[]
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Player {
-  id      Int    @id @default(autoincrement())
-  name    String
-  role    String
+  id        Int      @id @default(autoincrement())
+  nickname  String
+  avatar    String
+  role      String   // 👈 đổi từ enum
 
-  teamId  Int
-  team    Team   @relation(fields: [teamId], references: [id])
+  teamId    Int
+  team      Team     @relation(fields: [teamId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//////////////////////////////////////////////////
+// MANY TO MANY
+//////////////////////////////////////////////////
+
+model TournamentTeam {
+  id            Int        @id @default(autoincrement())
+
+  tournamentId  Int
+  teamId        Int
+
+  tournament    Tournament @relation(fields: [tournamentId], references: [id])
+  team          Team       @relation(fields: [teamId], references: [id])
+
+  @@unique([tournamentId, teamId])
 }
