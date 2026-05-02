@@ -7,7 +7,7 @@ export async function GET() {
     const agent = new https.Agent({ rejectUnauthorized: false });
     const response = await axios.get('https://127.0.0.1:2999/liveclientdata/allgamedata', {
       httpsAgent: agent,
-      timeout: 2000 // Tránh treo request nếu game chưa mở
+      timeout: 2000 
     });
 
     return NextResponse.json(response.data);

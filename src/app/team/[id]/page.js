@@ -90,12 +90,12 @@ export default function TeamDetail() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl">
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500 p-4">
-                    <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Commanding_Officer</span>
+                    <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Coach</span>
                     <span className="text-lg font-black text-white uppercase italic">{team?.coach || "CLASSIFIED"}</span>
                   </div>
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500/20 p-4">
-                    <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Operative_Count</span>
-                    <span className="text-lg font-black text-white uppercase italic">{team?.players?.length || 0} Nodes</span>
+                    <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Player_Active</span>
+                    <span className="text-lg font-black text-white uppercase italic">{team?.players?.length || 0} Player </span>
                   </div>
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500/20 p-4">
                     <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Division_Color</span>
