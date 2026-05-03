@@ -1,54 +1,37 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 
-const router = express.Router();
 const prisma = new PrismaClient();
 
 // GET all tournaments
-router.get("/", async (req, res) => {
+export async function GET() {
   const data = await prisma.tournament.findMany({
     include: {
       teams: {
         include: {
-          team: true
-        }
-      }
-    }
-  });
-  res.json(data);
-});
-
-// GET tournament by id
-router.get("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-
-  const data = await prisma.tournament.findUnique({
-    where: { id },
-    include: {
-      teams: {
-        include: { team: true }
-      }
-    }
+          team: true,
+        },
+      },
+    },
   });
 
-  res.json(data);
-});
+  return Response.json(data);
+}
 
 // POST create tournament
-router.post("/", async (req, res) => {
-  const { name, logo, teamCount, startDate, status } = req.body;
+export async function POST(req) {
+  const body = await req.json();
+
+  const { name, logo, startDate, status } = body;
 
   const data = await prisma.tournament.create({
     data: {
       name,
       logo,
-      teamCount,
       startDate: new Date(startDate),
-      status
-    }
+      status,
+      teamCount: 0, 
+    },
   });
 
-  res.json(data);
-});
-
-export default router;
+  return Response.json(data);
+}

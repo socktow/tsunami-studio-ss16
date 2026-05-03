@@ -31,7 +31,7 @@ export default function Navbar() {
       href: "/tournament", 
       icon: "🏆",
       subLinks: [
-        { name: "Live Brackets", href: "/tournament/brackets" },
+        { name: "Controller", href: "/tournament/controller" },
         { name: "Match History", href: "/tournament/history" },
       ]
     },
