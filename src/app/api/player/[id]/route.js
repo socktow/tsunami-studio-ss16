@@ -17,16 +17,27 @@ export async function GET(req, { params }) {
 }
 
 // UPDATE
+// UPDATE
 export async function PUT(req, { params }) {
-  const id = parseInt(params.id);
+  const { id: rawId } = await params; 
+  const id = parseInt(rawId);
+  if (isNaN(id)) {
+    return Response.json({ error: "Invalid ID" }, { status: 400 });
+  }
+
   const body = await req.json();
+  const { id: _, team, createdAt, updatedAt, ...updateData } = body;
 
-  const data = await prisma.player.update({
-    where: { id },
-    data: body
-  });
+  try {
+    const data = await prisma.player.update({
+      where: { id },
+      data: updateData,
+    });
 
-  return Response.json(data);
+    return Response.json(data);
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
 }
 
 // DELETE
