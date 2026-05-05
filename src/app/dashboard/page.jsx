@@ -2,10 +2,21 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useOverlayStore } from "@/store/overlayStore";
+import { 
+  Zap, 
+  Target, 
+  Skull, 
+  ShieldAlert, 
+  Layers, 
+  BarChart3, 
+  Power,
+  Cpu,
+  Monitor
+} from "lucide-react";
 
 const socket = io("http://localhost:3001");
 
-export default function Dashboard() {
+export default function CyberpunkDashboard() {
   const [activeTab, setActiveTab] = useState("ingame");
   const { 
     showOverlay, showTop, showBottom, showLeft, showSkin, 
@@ -37,37 +48,43 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 p-8 font-sans">
-      
-      {/* HEADER & TAB NAVIGATION */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-200/60 mb-8 overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
-          <div>
-            <h1 className="text-2xl font-black tracking-tight text-slate-800">
-              VCS <span className="text-indigo-600">STUDIO</span>
-            </h1>
-            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-1">Live Broadcast Workflow</p>
-          </div>
-          
-          <div className="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
-            <div className={`h-2.5 w-2.5 rounded-full ${showOverlay ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-600">
-              {showOverlay ? 'System Live' : 'System Standby'}
-            </span>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#050505] text-emerald-500 p-6 font-mono selection:bg-emerald-500 selection:text-black">
+      {/* SCANLINE EFFECT */}
+      <div className="fixed inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-50 bg-[length:100%_2px,3px_100%]" />
 
-        {/* TABS MENU */}
-        <div className="flex px-6 bg-slate-50/50">
-          <TabButton label="Pre-game (Ban/Pick)" isActive={activeTab === "pregame"} onClick={() => setActiveTab("pregame")} />
-          <TabButton label="Ingame Control" isActive={activeTab === "ingame"} onClick={() => setActiveTab("ingame")} />
-          <TabButton label="End-of-Game" isActive={activeTab === "endgame"} onClick={() => setActiveTab("endgame")} />
+      {/* HEADER SECTION */}
+      <div className="relative mb-10 border border-emerald-500/20 bg-emerald-500/[0.02] p-6 clip-path-polygon">
+        <div className="absolute top-0 left-0 w-2 h-2 bg-emerald-500" />
+        <div className="absolute top-0 right-0 w-2 h-2 bg-emerald-500" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 bg-emerald-500" />
+        
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-emerald-500/10 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+              <Cpu size={32} className="text-emerald-500" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black italic tracking-tighter text-white uppercase leading-none">
+                Tsunami<span className="text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]">.OS</span>
+              </h1>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] font-bold text-emerald-500/40 uppercase tracking-[0.3em]">Core_Protocol_v3.2</span>
+                <div className="h-px w-12 bg-emerald-500/20" />
+              </div>
+            </div>
+          </div>
+
+          <nav className="flex gap-2">
+            <TabButton label="Ban/Pick" isActive={activeTab === "pregame"} onClick={() => setActiveTab("pregame")} />
+            <TabButton label="Ingame" isActive={activeTab === "ingame"} onClick={() => setActiveTab("ingame")} />
+            <TabButton label="Post-Game" isActive={activeTab === "endgame"} onClick={() => setActiveTab("endgame")} />
+          </nav>
         </div>
       </div>
 
-      {/* RENDER CONTENT BASED ON TAB */}
-      <div className="transition-all duration-300">
-        {activeTab === "ingame" && (
+      {/* MAIN CONTENT */}
+      <main className="relative grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {activeTab === "ingame" ? (
           <IngameView 
             showOverlay={showOverlay} 
             showTop={showTop} 
@@ -79,210 +96,174 @@ export default function Dashboard() {
             update={update} 
             toggleCombatHideAll={toggleCombatHideAll} 
           />
+        ) : (
+          <div className="lg:col-span-12 py-20 flex flex-col items-center justify-center border border-dashed border-emerald-500/20 bg-emerald-500/[0.01]">
+            <Monitor size={48} className="text-emerald-500/20 mb-4 animate-pulse" />
+            <p className="text-emerald-500/40 text-sm tracking-widest uppercase italic">Wait for connection...</p>
+          </div>
         )}
-        
-        {activeTab === "pregame" && <DevelopmentPlaceholder title="Ban/Pick Phase" description="Hệ thống điều khiển cấm chọn, hiển thị tướng và tỷ lệ thắng của tuyển thủ." icon="🎮" color="indigo" />}
-        
-        {activeTab === "endgame" && <DevelopmentPlaceholder title="Post-Game Analysis" description="Bảng tổng kết thông số trận đấu, biểu đồ sát thương và vinh danh MVP." icon="🏆" color="emerald" />}
-      </div>
+      </main>
     </div>
   );
 }
 
-// --- TRANG MẪU ĐANG PHÁT TRIỂN ---
-function DevelopmentPlaceholder({ title, description, icon, color }) {
-  const colors = {
-    indigo: "bg-indigo-600 shadow-indigo-200",
-    emerald: "bg-emerald-600 shadow-emerald-200"
-  };
-
-  return (
-    <div className="bg-white rounded-[3rem] p-12 shadow-sm border border-slate-200/60 min-h-[500px] flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
-      <div className={`w-24 h-24 ${colors[color]} rounded-[2rem] flex items-center justify-center text-4xl shadow-2xl mb-8 animate-bounce`}>
-        {icon}
-      </div>
-      <h2 className="text-3xl font-black text-slate-800 mb-4">{title}</h2>
-      <p className="text-slate-500 max-w-md mx-auto leading-relaxed mb-10">
-        {description}
-      </p>
-      
-      <div className="w-full max-w-4xl grid grid-cols-2 gap-4 opacity-20 select-none pointer-events-none">
-        <div className="h-32 bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 flex items-center justify-center font-bold">WIDGET_L</div>
-        <div className="h-32 bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 flex items-center justify-center font-bold">WIDGET_R</div>
-        <div className="h-20 bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 col-span-2 flex items-center justify-center font-bold">BOTTOM_DOCK</div>
-      </div>
-      
-      <div className="mt-12 px-6 py-2 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em]">
-        Feature under construction
-      </div>
-    </div>
-  );
-}
-
-// --- INGAME VIEW COMPONENT ---
 function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, activeRankView, lastState, update, toggleCombatHideAll }) {
-  
-  // Logic kiểm tra xem có đang ở chế độ "Chỉ hiện Top" hay không
   const isNormalCombatActive = showTop && !showBottom && !showLeft && !showSkin;
 
-  const handleNormalCombatToggle = () => {
-    if (isNormalCombatActive) {
-      // Nếu đang bật -> Tắt đi và MỞ LẠI Bottom KDA
-      update({ 
-        showTop: true, 
-        showBottom: true, 
-        showLeft: false, 
-        showSkin: false 
-      });
-    } else {
-      // Nếu chưa bật -> Bật chế độ chỉ hiện Top
-      update({ 
-        showTop: true, 
-        showBottom: false, 
-        showLeft: false, 
-        showSkin: false 
-      });
-    }
-  };
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <>
+      {/* SIDEBAR CONTROL */}
       <div className="lg:col-span-4 space-y-6">
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/50">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">Master Control</h2>
+        {/* MASTER SWITCH */}
+        <div className="group relative overflow-hidden">
           <button
             onClick={() => update({ showOverlay: !showOverlay })}
-            className={`w-full py-5 rounded-2xl font-black transition-all duration-300 flex items-center justify-center gap-3 mb-6 shadow-sm ${
+            className={`w-full py-8 border-2 transition-all duration-500 relative ${
               showOverlay 
-                ? "bg-rose-50 text-rose-600 border border-rose-100 hover:bg-rose-600 hover:text-white" 
-                : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200 shadow-lg"
+                ? "bg-emerald-500 border-emerald-400 text-black shadow-[0_0_30px_rgba(16,185,129,0.4)]" 
+                : "bg-black border-zinc-800 text-zinc-500 hover:border-emerald-500/50"
             }`}
           >
-            {showOverlay ? "STOP BROADCAST" : "START BROADCAST"}
+            <div className="absolute top-2 right-2">
+              <Power size={16} className={showOverlay ? "animate-pulse" : ""} />
+            </div>
+            <span className="text-xl font-black italic tracking-widest uppercase">
+              {showOverlay ? "SYSTEM_ONLINE" : "INITIATE_LINK"}
+            </span>
+            <div className="text-[10px] mt-1 font-bold opacity-60">GATEWAY_VCS_MAIN</div>
           </button>
-          <div className="space-y-3">
-            <ControlButton label="Top Scoreboard" active={showTop} onClick={() => update({ showTop: !showTop })} color="indigo" />
-            <ControlButton label="Left Ranking" active={showLeft} onClick={() => update({ showLeft: !showLeft })} color="indigo" />
-            <ControlButton label="Bottom KDA" active={showBottom} onClick={() => update({ showBottom: !showBottom })} color="indigo" />
-            <ControlButton label="Skin Preview" active={showSkin} onClick={() => update({ showSkin: !showSkin })} color="pink" />
+        </div>
+
+        {/* COMPONENT MODULES */}
+        <div className="border border-emerald-500/10 bg-black/40 p-5">
+          <h2 className="text-[10px] font-black text-emerald-500/40 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+            <Layers size={12} /> Modules_Configuration
+          </h2>
+          <div className="grid grid-cols-1 gap-3">
+            <CyberButton label="Scoreboard_Top" active={showTop} onClick={() => update({ showTop: !showTop })} icon={<Target size={14}/>} />
+            <CyberButton label="Rank_Explorer" active={showLeft} onClick={() => update({ showLeft: !showLeft })} icon={<BarChart3 size={14}/>} />
+            <CyberButton label="KDA_Analytics" active={showBottom} onClick={() => update({ showBottom: !showBottom })} icon={<Skull size={14}/>} />
+            <CyberButton label="Skin_Augment" active={showSkin} onClick={() => update({ showSkin: !showSkin })} icon={<Zap size={14}/>} color="amber" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-white p-6 rounded-3xl shadow-sm border border-orange-100">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400 mb-6">Combat Mode</h2>
-          <div className="space-y-3">
-            <button 
-              onClick={handleNormalCombatToggle}
-              className={`w-full py-4 rounded-2xl text-sm font-bold transition-all border-2 shadow-sm ${
-                isNormalCombatActive
-                  ? "bg-orange-500 border-orange-500 text-white" 
-                  : "bg-white border-orange-200 text-orange-600 hover:bg-orange-50"
-              }`}
-            >
-              {isNormalCombatActive ? "Normal Combat (Active)" : "Normal Combat (Top Only)"}
-            </button>
-            <button 
-              onClick={toggleCombatHideAll}
-              className={`w-full py-4 rounded-2xl text-sm font-bold transition-all border-2 ${
-                (!showTop && !showBottom && !showLeft && !showSkin && lastState)
-                ? "bg-orange-500 border-orange-500 text-white shadow-lg"
-                : "bg-white border-dashed border-orange-200 text-orange-400 hover:border-orange-400"
-              }`}
-            >
-              {(!showTop && !showBottom && !showLeft && !showSkin && lastState) ? "RESTORE PANELS" : "COMBAT VIEW (HIDE ALL)"}
-            </button>
-          </div>
+        {/* COMBAT OVERRIDE */}
+        <div className="border border-orange-500/20 bg-orange-500/[0.02] p-5">
+           <h2 className="text-[10px] font-black text-orange-500/40 uppercase tracking-[0.3em] mb-4">Tactical_Override</h2>
+           <div className="space-y-3">
+              <button 
+                onClick={() => update({ showTop: true, showBottom: !isNormalCombatActive, showLeft: false, showSkin: false })}
+                className={`w-full py-4 text-xs font-black transition-all border ${
+                  isNormalCombatActive ? "bg-orange-500 text-black shadow-[0_0_20px_rgba(249,115,22,0.3)]" : "border-orange-500/30 text-orange-500/60 hover:bg-orange-500/10"
+                }`}
+              >
+                {isNormalCombatActive ? "[ENGAGED] TOP_FOCUS" : "TOP_FOCUS_MODE"}
+              </button>
+              <button 
+                onClick={toggleCombatHideAll}
+                className={`w-full py-4 text-xs font-black transition-all border border-dashed ${
+                  (!showTop && !showBottom && !showLeft && !showSkin && lastState) 
+                  ? "bg-white text-black border-white" 
+                  : "border-orange-500/20 text-orange-500/40 hover:border-orange-500"
+                }`}
+              >
+                {(!showTop && !showBottom && !showLeft && !showSkin && lastState) ? "RESTORE_INTERFACE" : "STRIKE_MODE (HIDE_UI)"}
+              </button>
+           </div>
         </div>
       </div>
 
-      <div className="lg:col-span-8 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/50">
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">Data Visualization</h2>
-            <div className="space-y-4">
-              <button
-                onClick={() => update({ activeRankView: 'gold', showLeft: true })}
-                className={`w-full p-4 rounded-2xl font-bold transition-all flex items-center justify-between border-2 ${
-                  activeRankView === 'gold' && showLeft
-                    ? "bg-amber-50 border-amber-200 text-amber-700" 
-                    : "bg-white border-slate-50 text-slate-400 hover:border-slate-100"
-                }`}
-              >
-                <span>Gold Comparison</span>
-                <span className="text-[10px] font-mono opacity-60 px-2 py-1 bg-slate-100 rounded">LIVE</span>
-              </button>
-              <button
-                onClick={() => update({ activeRankView: 'xp', showLeft: true })}
-                className={`w-full p-4 rounded-2xl font-bold transition-all flex items-center justify-between border-2 ${
-                  activeRankView === 'xp' && showLeft
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-700" 
-                    : "bg-white border-slate-50 text-slate-400 hover:border-slate-100"
-                }`}
-              >
-                <span>Experience (XP)</span>
-                <span className="text-[10px] font-mono opacity-60 px-2 py-1 bg-slate-100 rounded">LIVE</span>
-              </button>
+      {/* DATA VISUALIZATION AREA */}
+      <div className="lg:col-span-8 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border border-emerald-500/10 bg-black/40 p-6 relative">
+            <div className="absolute top-0 right-0 p-2 text-[8px] text-emerald-500/20 tracking-tighter uppercase font-black">Data_Stream_01</div>
+            <h2 className="text-[11px] font-black text-white uppercase tracking-widest mb-6 flex items-center gap-2">
+               <BarChart3 size={16} className="text-emerald-500" /> Comparison_Engine
+            </h2>
+            <div className="space-y-3">
+               <RankOption label="Gold_Difference" active={activeRankView === 'gold'} onClick={() => update({ activeRankView: 'gold', showLeft: true })} />
+               <RankOption label="XP_Performance" active={activeRankView === 'xp'} onClick={() => update({ activeRankView: 'xp', showLeft: true })} />
             </div>
           </div>
 
-          <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 border-dashed relative overflow-hidden">
-            <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center">
-              <span className="bg-white px-3 py-1 rounded-full shadow-sm border text-[10px] font-bold text-slate-400 uppercase">Coming Soon</span>
-            </div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6 opacity-50">Advanced Graphs</h2>
-            <div className="space-y-3 opacity-30">
-              <div className="w-full p-4 bg-white rounded-2xl border border-slate-200 flex items-center justify-between">
-                <span className="text-sm font-bold">Gold Graph</span>
-                <div className="w-4 h-4 bg-slate-200 rounded-full" />
-              </div>
-            </div>
+          <div className="border border-emerald-500/5 bg-emerald-500/[0.01] p-6 opacity-40 grayscale flex flex-col justify-center items-center text-center">
+            <ShieldAlert size={24} className="mb-2" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Advanced_Neural_Graphs</span>
+            <span className="text-[8px] opacity-50 mt-1">Status: Encrypted_Link_Required</span>
           </div>
         </div>
 
-        <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-xl shadow-slate-200 flex items-center justify-between">
-          <div className="max-w-md">
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-400 mb-2">Emergency Reset</h2>
-            <p className="text-slate-400 text-sm">Xóa toàn bộ các panel đang hiển thị ngay lập tức.</p>
+        {/* DANGER ZONE */}
+        <div className="mt-12 bg-rose-500/5 border border-rose-500/20 p-8 flex items-center justify-between group hover:border-rose-500 transition-all">
+          <div>
+            <h3 className="text-rose-500 font-black italic tracking-widest uppercase">Emergency_Purge</h3>
+            <p className="text-[10px] text-rose-500/40 mt-1 uppercase">Terminate all active UI layers and reset state</p>
           </div>
           <button 
             onClick={() => update({ showTop: false, showBottom: false, showLeft: false, showSkin: false, lastState: null })}
-            className="px-8 py-4 bg-white/10 border border-white/10 rounded-2xl text-white text-sm font-black hover:bg-rose-500 hover:border-rose-500 transition-all shadow-lg"
+            className="px-6 py-3 bg-rose-500/20 border border-rose-500 text-rose-500 text-xs font-black hover:bg-rose-500 hover:text-black transition-all"
           >
-            CLEAR ALL PANELS
+            EXECUTE_RESET
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-// --- HELPER COMPONENTS ---
+// --- SUB COMPONENTS ---
+
 function TabButton({ label, isActive, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`relative px-8 py-4 text-xs font-black uppercase tracking-[0.15em] transition-all border-b-2 ${
+      className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all skew-x-[-12deg] border ${
         isActive 
-          ? "text-indigo-600 border-indigo-600 bg-white" 
-          : "text-slate-400 border-transparent hover:text-slate-600 hover:bg-slate-100/50"
+          ? "bg-emerald-500 text-black border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]" 
+          : "bg-transparent text-emerald-500/40 border-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-500"
       }`}
     >
-      {label}
+      <span className="inline-block skew-x-[12deg]">{label}</span>
     </button>
   );
 }
 
-function ControlButton({ label, active, onClick, color }) {
-  const activeStyles = {
-    indigo: "border-indigo-600 bg-indigo-50 text-indigo-700 shadow-sm",
-    pink: "border-pink-500 bg-pink-50 text-pink-700 shadow-sm",
+function CyberButton({ label, active, onClick, icon, color = "emerald" }) {
+  const themes = {
+    emerald: active ? "border-emerald-500 bg-emerald-500 text-black" : "border-emerald-500/20 text-emerald-500/40",
+    amber: active ? "border-amber-500 bg-amber-500 text-black" : "border-amber-500/20 text-amber-500/40"
   };
-  const dotColors = { indigo: "bg-indigo-600", pink: "bg-pink-500" };
 
   return (
-    <button onClick={onClick} className={`flex items-center justify-between px-5 py-4 rounded-2xl transition-all border-2 active:scale-[0.98] w-full ${active ? activeStyles[color] || activeStyles.indigo : "bg-white border-slate-50 text-slate-400 hover:border-slate-200"}`}>
-      <span className="text-sm font-bold tracking-tight">{label}</span>
-      <div className={`h-4 w-4 rounded-full border-4 border-white shadow-sm transition-all ${active ? dotColors[color] || dotColors.indigo : "bg-slate-200"}`} />
+    <button 
+      onClick={onClick}
+      className={`flex items-center justify-between px-4 py-3 border transition-all ${themes[color] || themes.emerald} hover:border-white/50 active:scale-95`}
+    >
+      <div className="flex items-center gap-3">
+        {icon}
+        <span className="text-[11px] font-black uppercase tracking-tighter italic">{label}</span>
+      </div>
+      <div className={`h-2 w-2 ${active ? "bg-black animate-pulse" : "bg-current opacity-20"}`} />
+    </button>
+  );
+}
+
+function RankOption({ label, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full group flex items-center justify-between p-4 border transition-all ${
+        active ? "border-emerald-500 bg-emerald-500/10" : "border-zinc-800 bg-black/20"
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <div className={`w-1 h-4 ${active ? "bg-emerald-500" : "bg-zinc-800"}`} />
+        <span className={`text-xs font-bold uppercase tracking-widest ${active ? "text-white" : "text-zinc-600"}`}>
+          {label}
+        </span>
+      </div>
+      {active && <span className="text-[9px] font-black text-emerald-500 animate-pulse tracking-tighter">DATA_FETCHING...</span>}
     </button>
   );
 }

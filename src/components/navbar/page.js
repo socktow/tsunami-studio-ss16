@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, 
@@ -12,18 +12,17 @@ import {
   Activity, 
   History,
   Settings2,
-  ShieldCheck
+  ShieldCheck,
+  UserCircle,
+  Code2
 } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [openMenus, setOpenMenus] = useState({});
 
   if (pathname?.startsWith("/overlay") || pathname?.startsWith("/hud/ingame")) return null;
-
-  const toggleMenu = (name) => {
-    setOpenMenus((prev) => ({ ...prev, [name] : !prev[name] }));
-  };
 
   const navLinks = [
     { 
@@ -31,8 +30,7 @@ export default function Navbar() {
       href: "/dashboard", 
       icon: <LayoutDashboard size={18} />,
       subLinks: [
-        { name: "Analytics", href: "/dashboard/analytics", icon: <Activity size={12} /> },
-        { name: "System Logs", href: "/dashboard/logs", icon: <Terminal size={12} /> },
+        { name: "Controller", href: "/dashboard", icon: <Activity size={12} /> },
       ]
     },
     { 
@@ -45,12 +43,23 @@ export default function Navbar() {
       ]
     },
     { name: "Teams", href: "/team", icon: <Users size={18} /> },
+    { name: "Players", href: "/player", icon: <UserCircle size={18} /> },
+    { name: "API List", href: "/api-list", icon: <Code2 size={18} /> },
   ];
+
+  const handleNavClick = (link) => {
+    const hasSubLinks = link.subLinks && link.subLinks.length > 0;
+    if (hasSubLinks) {
+      setOpenMenus((prev) => ({ ...prev, [link.name]: !prev[link.name] }));
+    } else {
+      router.push(link.href);
+    }
+  };
 
   return (
     <nav className="fixed left-0 top-0 z-50 h-screen w-64 bg-[#050505] border-r border-emerald-500/10 flex flex-col font-mono selection:bg-emerald-500 selection:text-black">
       
-      {/* 🔮 LOGO SECTION: HEXAGON THEME */}
+      {/* 🔮 LOGO SECTION */}
       <div className="p-8 relative">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
         <Link href="/" className="group block">
@@ -67,24 +76,24 @@ export default function Navbar() {
       </div>
 
       {/* 🧭 NAVIGATION MODULES */}
-      <div className="flex flex-col px-4 gap-2 flex-1 overflow-y-auto pt-4">
+      <div className="flex flex-col px-4 gap-2 flex-1 overflow-y-auto pt-4 custom-scrollbar">
         {navLinks.map((link) => {
           const hasSubLinks = link.subLinks && link.subLinks.length > 0;
-          const isParentActive = pathname.startsWith(link.href);
-          const isOpen = openMenus[link.name] || isParentActive;
+          const isParentActive = pathname === link.href || pathname.startsWith(link.href + "/");
+          const isOpen = openMenus[link.name] || (hasSubLinks && isParentActive);
 
           return (
             <div key={link.name} className="flex flex-col">
               <div
-                onClick={() => hasSubLinks && toggleMenu(link.name)}
+                onClick={() => handleNavClick(link)}
                 className={`group relative flex items-center gap-3 px-4 py-3 cursor-pointer transition-all border ${
-                  isParentActive && !hasSubLinks
+                  isParentActive
                     ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-400" 
                     : "border-transparent text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50 hover:border-zinc-800"
                 }`}
               >
-                {/* Active Accent */}
-                {isParentActive && !hasSubLinks && (
+                {/* Active Accent Glow */}
+                {isParentActive && (
                   <motion.div layoutId="nav-accent" className="absolute right-0 w-1 h-4 bg-emerald-500 shadow-[0_0_10px_#10b981]" />
                 )}
                 
@@ -93,7 +102,7 @@ export default function Navbar() {
                 </span>
                 
                 <span className="uppercase text-[11px] font-black tracking-widest flex-1">
-                  {hasSubLinks ? link.name : <Link href={link.href}>{link.name}</Link>}
+                  {link.name}
                 </span>
 
                 {hasSubLinks && (
@@ -106,12 +115,13 @@ export default function Navbar() {
               </div>
 
               {/* SUB-NAV: BRANCHING DESIGN */}
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {hasSubLinks && isOpen && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                     className="overflow-hidden flex flex-col ml-8 border-l border-emerald-500/10"
                   >
                     {link.subLinks.map((sub) => (
@@ -143,15 +153,13 @@ export default function Navbar() {
 
       {/* 👤 ARCHITECT STATUS (FOOTER) */}
       <div className="p-6 mt-auto bg-emerald-500/[0.02] border-t border-emerald-500/10 relative overflow-hidden">
-        {/* Decorative scanline */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:100%_4px]"></div>
-        
         <div className="relative z-10 flex items-center gap-4">
             <div className="w-10 h-10 border border-emerald-500/20 flex items-center justify-center bg-black">
                <ShieldCheck size={20} className="text-emerald-500/50" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[12px] font-black text-white uppercase tracking-tighter italic">
+              <span className="text-[12px] font-black text-white uppercase tracking-tighter italic leading-tight">
                 ChuChu.Admin
               </span>
               <div className="flex items-center gap-2">

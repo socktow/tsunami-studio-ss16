@@ -19,13 +19,13 @@ const MOCK_MATCHES = [
     tournament: "VCS Spring 2026",
     teamA: { 
       name: "GAM", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/gam.png", 
+      logo: "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/8/8a/GAM_Esportslogo_square.png", 
       score: 1, 
       result: "WIN" 
     },
     teamB: { 
       name: "VKE", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/vke.png", 
+      logo: "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/6/69/MVK_Esportslogo_profile.png/", 
       score: 0, 
       result: "LOSS" 
     },
@@ -39,13 +39,13 @@ const MOCK_MATCHES = [
     tournament: "VCS Spring 2026",
     teamA: { 
       name: "TS", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/ts.png", 
+      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTXYz3bWaPWhzrJYK9pmMWmjBdOfpQMaD_fA&s", 
       score: 0, 
       result: "LOSS" 
     },
     teamB: { 
       name: "TW", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/tw.png", 
+      logo: "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/1/19/Team_Whales_2022logo_square.png", 
       score: 1, 
       result: "WIN" 
     },
@@ -59,13 +59,13 @@ const MOCK_MATCHES = [
     tournament: "Tsunami Masters",
     teamA: { 
       name: "T1", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/t1.png", 
+      logo: "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/7/7b/T1logo_without_Partner.png", 
       score: 1, 
       result: "WIN" 
     },
     teamB: { 
       name: "GEN", 
-      logo: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/v3/non_champion_icons/pro_team_logos/geng.png", 
+      logo: "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/e/e3/Gen.Glogo_square.png", 
       score: 0, 
       result: "LOSS" 
     },

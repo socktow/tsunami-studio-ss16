@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 
 const STATUS_CONFIG = {
-  UPCOMING: { color: "#fbbf24", icon: <Clock className="w-3 h-3" />, label: "Sắp diễn ra" },
-  ONGOING: { color: "#10b981", icon: <Activity className="w-3 h-3" />, label: "Đang đấu" },
-  FINISHED: { color: "#ef4444", icon: <CheckCircle2 className="w-3 h-3" />, label: "Kết thúc" },
+  UPCOMING: { color: "#fbbf24", icon: <Clock className="w-3 h-3" />, label: "UPCOMING" },
+  ONGOING: { color: "#10b981", icon: <Activity className="w-3 h-3" />, label: "ONGOING" },
+  FINISHED: { color: "#ef4444", icon: <CheckCircle2 className="w-3 h-3" />, label: "FINISHED" },
 };
 
 export default function TournamentPage() {
