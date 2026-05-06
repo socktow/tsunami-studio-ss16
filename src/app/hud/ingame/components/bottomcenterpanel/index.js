@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
 import L1 from "./columns/L1";
 import L2 from "./columns/L2";
 import CT from "./columns/CT";
@@ -7,6 +7,16 @@ import R1 from "./columns/R1";
 import R2 from "./columns/R2";
 
 const ScBottom = () => {
+    const data = useScoreboardBottomSelector();
+
+    // Nếu chưa có dữ liệu, có thể return null hoặc loading
+    if (!data) return null;
+
+    // Tính tổng Kills của mỗi đội để truyền vào CT
+    const teamKills = data.teams.map(team =>
+        team.players.reduce((sum, player) => sum + player.kills, 0)
+    );
+
     return (
         <div className="min-h-screen flex items-end justify-center">
             <div className="relative w-[990px] h-[260px] flex border border-white/10 overflow-hidden shadow-2xl rounded-sm">
@@ -34,7 +44,11 @@ const ScBottom = () => {
                 <div className="relative z-10 flex w-full h-full">
                     <L1 />
                     <L2 />
-                    <CT />
+                    <CT
+                        blueKills={teamKills[0]}
+                        redKills={teamKills[1]}
+                        gameTime={data.gameTime}
+                    />
                     <R1 />
                     <R2 />
                 </div>

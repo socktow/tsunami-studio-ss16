@@ -9,7 +9,7 @@ import { IMAGE_BASE_URL } from "@/lib/constants";
 const CenterLeftPanel = () => {
     // Bạn có thể đổi 'gold' thành 'level' để test. 
     // Sau này có thể dùng useEffect lắng nghe phím bấm hoặc socket để setView.
-    const [activeView, setActiveView] = useState('gold');
+    const [activeView, setActiveView] = useState('level');
     const rankedPlayers = useRankingSelector(activeView);
 
     if (rankedPlayers.length === 0) return null;

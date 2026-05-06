@@ -29,7 +29,7 @@ export default function Overlay() {
   return (
 <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
       {showTop && <TopScoreboard />}
-      {/* <Killfeed /> */}
+      <Killfeed />
       <TopLeftPanel />
       <Centerleftpanel />
       {showSkin && <SkinShowPanel allPlayers={allPlayerData?.allPlayers || []} />}

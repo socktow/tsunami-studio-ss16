@@ -28,8 +28,8 @@ const ChampionAvatarLeft = ({ champ, level, ulti, IMAGE_BASE_URL }) => {
 
         {/* BADGE LEVEL BÌNH THƯỜNG */}
         {!isLevelingUp && level && (
-          <div className="absolute -bottom-1 -left-1 w-[16px] h-[16px] bg-black border border-zinc-500 rounded-full flex items-center justify-center z-10">
-            <span className="text-[10px] font-bold text-white leading-none">
+          <div className="absolute -bottom-1 w-[16px] h-[16px] bg-black flex items-center justify-center z-10">
+            <span className="text-[13px] font-bold text-white leading-none">
               {level}
             </span>
           </div>

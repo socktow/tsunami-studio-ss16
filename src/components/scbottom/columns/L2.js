@@ -89,7 +89,7 @@ const L2 = ({ tabs, boards }) => {
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="ml-[92px] text-[13px] font-semibold text-white drop-shadow whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] mb-4 tracking-tighter"
+                  className="ml-[95px] text-[13px] font-semibold text-white drop-shadow whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] mb-4 tracking-tighter"
                 >
                   {TEST_NAMES[i] || p?.name}
                 </motion.span>

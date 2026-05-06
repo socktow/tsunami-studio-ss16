@@ -85,43 +85,64 @@ export const useRankingSelector = (view = 'gold') => {
     // Dependency cụ thể giúp tránh tính toán lại nếu các phần khác của gameData thay đổi
   }, [gameData?.scoreboardBottom, gameData?.tabs, view]);
 };
-
 export const useScoreboardBottomSelector = () => {
   const { gameData } = useLeagueData();
+  
+  // Lấy 2 nguồn dữ liệu cần thiết
   const scoreboardBottom = gameData?.scoreboardBottom;
+  const tabs = gameData?.tabs;
 
   return useMemo(() => {
-    if (!scoreboardBottom?.teams) return null;
+    if (!scoreboardBottom?.teams || !tabs) return null;
 
-    const teams = scoreboardBottom.teams.map((team) => {
+    const teams = scoreboardBottom.teams.map((team, teamIndex) => {
+      // Xác định mảng players tương ứng trong tabs (0: Order/Blue, 1: Chaos/Red)
+      const tabPlayers = teamIndex === 0 ? tabs.Order?.players : tabs.Chaos?.players;
+
       return {
         id: team.id,
         name: team.name,
         tag: team.tag,
-        players: (team.players || []).map((p) => ({
-          // CORE DATA
-          name: p.name,
-          champion: p.champion,
+        players: (team.players || []).map((p, pIndex) => {
+          // Lấy dữ liệu chi tiết của player này từ tabs dựa trên index
+          const t = tabPlayers?.[pIndex];
 
-          // KDA
-          kills: p.kills ?? 0,
-          deaths: p.deaths ?? 0,
-          assists: p.assists ?? 0,
+          return {
+            // --- DỮ LIỆU TỪ SCOREBOARD BOTTOM (Stats) ---
+            name: p.name || t?.playerName,
+            champion: p.champion || t?.championAssets?.squareImg, // Fallback nếu 1 trong 2 mất
+            kills: p.kills ?? 0,
+            deaths: p.deaths ?? 0,
+            assists: p.assists ?? 0,
+            creepScore: p.creepScore ?? 0,
+            totalGold: p.totalGold ?? 0,
+            level: p.level || t?.level || 1,
+            items: p.items ?? [],
 
-          // EXTRA STATS
-          creepScore: p.creepScore ?? 0,
-          totalGold: p.totalGold ?? 0,
-          visionScore: p.visionScore ?? 0,
-          level: p.level ?? 1,
+            // --- DỮ LIỆU TỪ TABS (Assets & Status) ---
+            // Hình ảnh tướng và kỹ năng
+            champ: t?.championAssets?.squareImg, 
+            spell1: t?.abilities?.[4]?.assets?.iconAsset,
+            spell2: t?.abilities?.[5]?.assets?.iconAsset,
+            ulti: t?.abilities?.[3]?.assets?.iconAsset,
 
-          // ITEMS
-          items: p.items ?? [],
+            // Thanh trạng thái (%)
+            hp: {
+              pct: (t?.health?.current / t?.health?.max) * 100 || 0,
+            },
+            mp: {
+              pct: (t?.resource?.current / t?.resource?.max) * 100 || 0,
+            },
+            xp: {
+              pct: (t?.experience?.current / t?.experience?.nextLevel) * 100 || 0,
+            },
 
-          // CALCULATED (UI READY)
-          kda: p.deaths === 0
-            ? (p.kills + p.assists)
-            : ((p.kills + p.assists) / p.deaths).toFixed(2),
-        })),
+            // Logic tính toán thêm
+            kda: p.deaths === 0
+              ? (p.kills + p.assists)
+              : ((p.kills + p.assists) / p.deaths).toFixed(2),
+          };
+        }),
       };
     });
 
@@ -129,5 +150,5 @@ export const useScoreboardBottomSelector = () => {
       gameTime: scoreboardBottom.gameTime || 0,
       teams,
     };
-  }, [scoreboardBottom]);
+  }, [scoreboardBottom, tabs]); 
 };
