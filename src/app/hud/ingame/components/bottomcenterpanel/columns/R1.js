@@ -4,27 +4,29 @@ import FixedInnerColumn from "../base/FixedInnerColumn";
 import { StatsSection } from "./StatsSection";
 import { IMAGE_BASE_URL } from "@/lib/league-utils";
 import { motion } from "framer-motion";
-import ChampionAvatar from "./EventRight"; // Bạn có thể dùng chung component này
+import ChampionAvatar from "./EventRight"; 
 import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
 
 const R1 = () => {
-  // 1. Lấy dữ liệu từ Hook selector
   const data = useScoreboardBottomSelector();
-
-  // 2. Xác định đội Đỏ (thường là index 1)
   const redTeam = data?.teams?.[1];
 
   return (
     <div className="flex-1 flex border border-gray-800 bg-zinc-950/50 flex-row-reverse">
       
-      {/* RIGHT MAIN COLUMN: Hiển thị Avatar, Bars và Tên (Đảo ngược hướng) */}
+      {/* RIGHT MAIN COLUMN: Hiển thị Avatar, Bars và Tên */}
       <Column
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
 
+          // 1. KIỂM TRA TRẠNG THÁI HỒI SINH
+          const isDead = p?.respawnAt > 0;
+          const hasBaron = p?.hasBaron || p?.baronBuff; 
+          const hasElder = p?.hasElder || p?.elderBuff;
+
           return (
-            <div className="relative w-full h-full flex items-center flex-row-reverse">
+            <div className={`relative w-full h-full flex items-center flex-row-reverse transition-all duration-500 ${isDead ? "opacity-60" : "opacity-100"}`}>
 
               {/* THANH TRẠNG THÁI (HP/MP/XP) - Đảo lề phải */}
               <div className="absolute inset-0 flex flex-col justify-end z-0 mr-[76px] py-1 gap-[1px]">
@@ -33,7 +35,7 @@ const R1 = () => {
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${p?.xp?.pct || 0}%` }}
-                    style={{ originX: 1 }} // Chạy từ phải sang trái
+                    style={{ originX: 1 }} 
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="h-full bg-gradient-to-l from-purple-700 via-purple-500 to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.4)] ml-auto"
                   />
@@ -43,7 +45,7 @@ const R1 = () => {
                 <div className="h-[7px] w-full bg-green-900/20 relative overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${p?.hp?.pct || 100}%` }}
+                    animate={{ width: isDead ? "0%" : `${p?.hp?.pct || 100}%` }}
                     style={{ originX: 1 }}
                     transition={{ duration: 0.8, ease: "circOut" }}
                     className="h-full bg-gradient-to-l from-green-700 via-green-500 to-green-300 shadow-[0_0_10px_rgba(34,197,94,0.3)] ml-auto"
@@ -62,8 +64,8 @@ const R1 = () => {
                 </div>
               </div>
 
-              {/* AVATAR & SPELLS - Đảo ngược thứ tự flex */}
-              <div className="relative z-10 flex items-center flex-row-reverse gap-[4px] h-full px-[2px] mr-1">
+              {/* AVATAR & SPELLS */}
+              <div className={`relative z-10 flex items-center flex-row-reverse gap-[4px] h-full px-[2px] mr-1 transition-all duration-700 ${isDead ? "grayscale" : "grayscale-0"}`}>
                 {/* Spells */}
                 <div className="flex flex-col gap-[2px]">
                   {p?.spell1 && (
@@ -74,7 +76,7 @@ const R1 = () => {
                   )}
                 </div>
 
-                {/* Champion Image */}
+                {/* Champion Avatar với hiệu ứng bùa lợi */}
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -85,15 +87,18 @@ const R1 = () => {
                     level={p?.level}
                     ulti={p?.ulti}
                     IMAGE_BASE_URL={IMAGE_BASE_URL}
+                    respawnAt={p?.respawnAt}
+                    hasBaron={hasBaron} 
+                    hasElder={hasElder} 
                   />
                 </motion.div>
               </div>
 
-              {/* TÊN NGƯỜI CHƠI - Đảo sang bên phải */}
+              {/* TÊN NGƯỜI CHƠI */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="absolute mr-[100px] text-white text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter text-right"
+                className={`absolute mr-[100px] text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter text-right transition-colors ${isDead ? "text-zinc-500" : "text-white"}`}
               >
                 {p?.name || "Player"}
               </motion.div>
@@ -103,24 +108,25 @@ const R1 = () => {
         }}
       />
 
-      {/* STATS COLUMN: KDA (Căn phải) */}
+      {/* STATS COLUMN: KDA */}
       <FixedInnerColumn
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
+          const isDead = p?.respawnAt > 0;
 
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="h-full w-full flex items-center justify-center"
+              className={`h-full w-full flex items-center justify-center transition-all ${isDead ? "grayscale opacity-50" : ""}`}
             >
               <StatsSection
                 kills={p?.kills}
                 deaths={p?.deaths}
                 assists={p?.assists}
                 creepScore={p?.creepScore}
-                isLeft={false} // Căn lề cho đội bên phải
+                isLeft={false}
               />
             </motion.div>
           );

@@ -26,10 +26,12 @@ const R2 = () => {
   const data = useScoreboardBottomSelector();
   const redTeam = data?.teams?.[1];
 
-  // Tách logic render ra hàm riêng để tránh lỗi "Expression expected" khi lồng callback quá sâu
   const renderPlayerContent = (i) => {
     const player = redTeam?.players?.[i];
     if (!player) return null;
+
+    // XÁC ĐỊNH TRẠNG THÁI TỬ TRẬN
+    const isDead = player?.respawnAt > 0;
 
     const items = player.items || [];
     const visionScore = player.visionScore || 0;
@@ -52,10 +54,11 @@ const R2 = () => {
     ];
 
     return (
-      <div className="flex items-center w-full h-full px-1 justify-between">
-        {/* PERK & VISION */}
+      <div className={`flex items-center w-full h-full px-1 justify-between transition-all duration-500 ${isDead ? "grayscale opacity-60" : "opacity-100"}`}>
+        
+        {/* PERK & VISION (Nằm bên trái cho R2) */}
         <div className="flex flex-col gap-[3px]">
-          <div className="w-[16px] h-[16px] bg-zinc-800 rounded-[2px] overflow-hidden flex items-center justify-center border border-white/5">
+          <div className={`w-[16px] h-[16px] rounded-[2px] overflow-hidden flex items-center justify-center border transition-colors ${isDead ? "bg-zinc-900 border-white/5" : "bg-zinc-800 border-white/5"}`}>
             {player.perkIcon ? (
               <img 
                 src={`${IMAGE_BASE_URL}${player.perkIcon}`} 
@@ -66,14 +69,14 @@ const R2 = () => {
               <div className="w-full h-full bg-zinc-800" />
             )}
           </div>
-          <div className="w-[16px] h-[16px] bg-zinc-700 rounded-[2px] flex items-center justify-center border border-zinc-600">
-            <span className="text-[8px] font-bold text-zinc-300">
+          <div className={`w-[16px] h-[16px] rounded-[2px] flex items-center justify-center border transition-colors ${isDead ? "bg-zinc-800 border-zinc-700" : "bg-zinc-700 border-zinc-600"}`}>
+            <span className={`text-[8px] font-bold transition-colors ${isDead ? "text-zinc-500" : "text-zinc-300"}`}>
               {Math.round(visionScore)}
             </span>
           </div>
         </div>
 
-        {/* ITEMS GRID */}
+        {/* ITEMS GRID (Nằm bên phải cho R2) */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -84,7 +87,7 @@ const R2 = () => {
             <motion.div
               key={`${i}-item-${index}`}
               variants={itemVariants}
-              className="relative w-[21px] h-[21px] bg-zinc-900 border border-zinc-700 rounded-[2px] flex items-center justify-center overflow-hidden"
+              className={`relative w-[21px] h-[21px] bg-zinc-900 border rounded-[2px] flex items-center justify-center overflow-hidden transition-colors ${isDead ? "border-zinc-800" : "border-zinc-700"}`}
             >
               {slot.item ? (
                 <React.Fragment>
@@ -94,11 +97,11 @@ const R2 = () => {
                     alt="item"
                   />
                   {slot.isTrinket && (
-                    <div className="absolute inset-0 bg-black/10 border border-yellow-500/20 pointer-events-none" />
+                    <div className={`absolute inset-0 bg-black/10 border pointer-events-none ${isDead ? "border-zinc-500/10" : "border-yellow-500/20"}`} />
                   )}
                 </React.Fragment>
               ) : (
-                <span className="text-[7px] text-zinc-500 font-bold">
+                <span className={`text-[7px] font-bold transition-colors ${isDead ? "text-zinc-700" : "text-zinc-500"}`}>
                   {slot.num}
                 </span>
               )}

@@ -85,10 +85,10 @@ export const useRankingSelector = (view = 'gold') => {
     // Dependency cụ thể giúp tránh tính toán lại nếu các phần khác của gameData thay đổi
   }, [gameData?.scoreboardBottom, gameData?.tabs, view]);
 };
+
 export const useScoreboardBottomSelector = () => {
   const { gameData } = useLeagueData();
   
-  // Lấy 2 nguồn dữ liệu cần thiết
   const scoreboardBottom = gameData?.scoreboardBottom;
   const tabs = gameData?.tabs;
 
@@ -96,7 +96,7 @@ export const useScoreboardBottomSelector = () => {
     if (!scoreboardBottom?.teams || !tabs) return null;
 
     const teams = scoreboardBottom.teams.map((team, teamIndex) => {
-      // Xác định mảng players tương ứng trong tabs (0: Order/Blue, 1: Chaos/Red)
+      // 0: Order/Blue, 1: Chaos/Red
       const tabPlayers = teamIndex === 0 ? tabs.Order?.players : tabs.Chaos?.players;
 
       return {
@@ -104,13 +104,12 @@ export const useScoreboardBottomSelector = () => {
         name: team.name,
         tag: team.tag,
         players: (team.players || []).map((p, pIndex) => {
-          // Lấy dữ liệu chi tiết của player này từ tabs dựa trên index
           const t = tabPlayers?.[pIndex];
 
           return {
             // --- DỮ LIỆU TỪ SCOREBOARD BOTTOM (Stats) ---
             name: p.name || t?.playerName,
-            champion: p.champion || t?.championAssets?.squareImg, // Fallback nếu 1 trong 2 mất
+            champion: p.champion || t?.championAssets?.squareImg,
             kills: p.kills ?? 0,
             deaths: p.deaths ?? 0,
             assists: p.assists ?? 0,
@@ -120,12 +119,23 @@ export const useScoreboardBottomSelector = () => {
             items: p.items ?? [],
 
             // --- DỮ LIỆU TỪ TABS (Assets & Status) ---
-            // Hình ảnh tướng và kỹ năng
             champ: t?.championAssets?.squareImg, 
             spell1: t?.abilities?.[4]?.assets?.iconAsset,
             spell2: t?.abilities?.[5]?.assets?.iconAsset,
             ulti: t?.abilities?.[3]?.assets?.iconAsset,
+            perkIcon: t?.perks?.primary?.iconAsset, // Thêm để dùng cho L1/R2
 
+            // Trạng thái hồi sinh và cộng dồn
+            respawnAt: t?.respawnAt ?? 0,
+            stacksData: t?.stacksData ?? null,
+
+            // --- THUỘC TÍNH BUFF (MỚI THÊM) ---
+            hasBaron: t?.hasBaron ?? false, 
+            hasElder: t?.hasElder ?? false,
+            
+            // Chỉ số tầm nhìn (Cần thiết cho component L1/R2)
+            visionScore: t?.scores?.visionScore ?? 0,
+            
             // Thanh trạng thái (%)
             hp: {
               pct: (t?.health?.current / t?.health?.max) * 100 || 0,

@@ -24,17 +24,17 @@ const itemVariants = {
 
 const L1 = () => {
   const data = useScoreboardBottomSelector();
-  // Đội Xanh (Order/Blue) thường nằm ở index 0 trong teams
   const blueTeam = data?.teams?.[0];
 
   const renderPlayerContent = (i) => {
     const player = blueTeam?.players?.[i];
     if (!player) return null;
 
+    // KIỂM TRA TRẠNG THÁI HỒI SINH
+    const isDead = player?.respawnAt > 0;
     const items = player.items || [];
     const visionScore = player.visionScore || 0;
 
-    // Lọc và sắp xếp item theo giá tiền (đồ đắt tiền đứng trước)
     const mainItemsSorted = items
       .filter((it) => ITEM_SLOTS.MAIN.includes(it.slot))
       .sort((a, b) => (b.cost || 0) - (a.cost || 0));
@@ -42,7 +42,6 @@ const L1 = () => {
     const trinketItem = items.find((it) => it.slot === ITEM_SLOTS.TRINKET);
     const questItem = items.find((it) => it.slot === ITEM_SLOTS.QUEST);
 
-    // Mảng hiển thị cho phía bên trái (L1): Items trước, Trinket/Quest sau
     const finalDisplay = [
       ...Array.from({ length: 6 }).map((_, idx) => ({
         item: mainItemsSorted[idx] || null,
@@ -54,9 +53,9 @@ const L1 = () => {
     ];
 
     return (
-      <div className="flex items-center w-full h-full px-1 justify-between flex-row">
+      <div className={`flex items-center w-full h-full px-1 justify-between flex-row transition-all duration-500 ${isDead ? "grayscale opacity-60" : "opacity-100"}`}>
 
-        {/* ITEMS GRID (Đã đảo ngược thứ tự hiển thị bằng flex-row-reverse) */}
+        {/* ITEMS GRID */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -67,7 +66,7 @@ const L1 = () => {
             <motion.div
               key={`blue-${i}-item-${index}`}
               variants={itemVariants}
-              className="relative w-[21px] h-[21px] bg-zinc-900 border border-zinc-700 rounded-[2px] flex items-center justify-center overflow-hidden"
+              className={`relative w-[21px] h-[21px] bg-zinc-900 border rounded-[2px] flex items-center justify-center overflow-hidden transition-colors ${isDead ? "border-zinc-800" : "border-zinc-700"}`}
             >
               {slot.item ? (
                 <React.Fragment>
@@ -77,11 +76,11 @@ const L1 = () => {
                     alt="item"
                   />
                   {slot.isTrinket && (
-                    <div className="absolute inset-0 bg-black/10 border border-yellow-500/20 pointer-events-none" />
+                    <div className={`absolute inset-0 bg-black/10 border pointer-events-none ${isDead ? "border-zinc-500/20" : "border-yellow-500/20"}`} />
                   )}
                 </React.Fragment>
               ) : (
-                <span className="text-[7px] text-zinc-500 font-bold">
+                <span className={`text-[7px] font-bold transition-colors ${isDead ? "text-zinc-700" : "text-zinc-500"}`}>
                   {slot.num}
                 </span>
               )}
@@ -89,9 +88,9 @@ const L1 = () => {
           ))}
         </motion.div>
 
-        {/* PERK & VISION (Nằm bên phải cho L1) */}
+        {/* PERK & VISION */}
         <div className="flex flex-col gap-[3px]">
-          <div className="w-[16px] h-[16px] bg-zinc-800 rounded-[2px] overflow-hidden flex items-center justify-center border border-white/5 shadow-sm">
+          <div className={`w-[16px] h-[16px] rounded-[2px] overflow-hidden flex items-center justify-center border shadow-sm transition-all ${isDead ? "bg-zinc-900 border-white/5" : "bg-zinc-800 border-white/5"}`}>
             {player.perkIcon ? (
               <img
                 src={`${IMAGE_BASE_URL}${player.perkIcon}`}
@@ -102,8 +101,8 @@ const L1 = () => {
               <div className="w-full h-full bg-zinc-800" />
             )}
           </div>
-          <div className="w-[16px] h-[16px] bg-zinc-700 rounded-[2px] flex items-center justify-center border border-zinc-600">
-            <span className="text-[8px] font-bold text-zinc-300">
+          <div className={`w-[16px] h-[16px] rounded-[2px] flex items-center justify-center border transition-colors ${isDead ? "bg-zinc-800 border-zinc-700" : "bg-zinc-700 border-zinc-600"}`}>
+            <span className={`text-[8px] font-bold transition-colors ${isDead ? "text-zinc-500" : "text-zinc-300"}`}>
               {Math.round(visionScore)}
             </span>
           </div>
