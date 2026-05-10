@@ -10,7 +10,7 @@ import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
 const R1 = () => {
   const data = useScoreboardBottomSelector();
   const redTeam = data?.teams?.[1];
-
+  const TEST_NAMES = ["Pun", "Hizto", "Dire", "Eddie", "Bie"];
   return (
     <div className="flex-1 flex border border-gray-800 bg-zinc-950/50 flex-row-reverse">
       
@@ -19,8 +19,7 @@ const R1 = () => {
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
-
-          // 1. KIỂM TRA TRẠNG THÁI HỒI SINH
+          const gameTime = data?.gameTime || 0;
           const isDead = p?.respawnAt > 0;
           const hasBaron = p?.hasBaron || p?.baronBuff; 
           const hasElder = p?.hasElder || p?.elderBuff;
@@ -88,6 +87,7 @@ const R1 = () => {
                     ulti={p?.ulti}
                     IMAGE_BASE_URL={IMAGE_BASE_URL}
                     respawnAt={p?.respawnAt}
+                    gameTime={gameTime}
                     hasBaron={hasBaron} 
                     hasElder={hasElder} 
                   />
@@ -100,7 +100,7 @@ const R1 = () => {
                 animate={{ opacity: 1, x: 0 }}
                 className={`absolute mr-[100px] text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter text-right transition-colors ${isDead ? "text-zinc-500" : "text-white"}`}
               >
-                {p?.name || "Player"}
+                {TEST_NAMES[i] || p?.name}
               </motion.div>
 
             </div>
