@@ -70,13 +70,13 @@ const L1 = () => {
 
       {
         item: trinketItem,
-        isTrinket: true,
+        isTrinket: false,
         num: 7,
       },
 
       {
         item: questItem,
-        isTrinket: false,
+        isTrinket: true,
         num: 8,
       },
     ];
@@ -154,11 +154,8 @@ const L1 = () => {
                           min-w-[12px] h-[9px]
                           px-[2px]
                           flex items-center justify-center
-                          rounded-full
-                          bg-black/95
-                          border
-                          text-[6px] leading-none font-black
-                          shadow-[0_0_4px_rgba(0,0,0,0.9)]
+                          text-[13px] leading-none font-bold text-white
+                          shadow-[0_0_4px_rgba(0,0,0,1)]
                           z-50
                           ${
                             isDead

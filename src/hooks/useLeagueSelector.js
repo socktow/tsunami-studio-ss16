@@ -116,6 +116,7 @@ export const useScoreboardBottomSelector = () => {
             // --- DỮ LIỆU TỪ SCOREBOARD BOTTOM (Stats) ---
             name: p.name || t?.playerName,
             champion: p.champion || t?.championAssets?.squareImg,
+            splash: t?.championAssets?.splashCenteredImg,
             kills: p.kills ?? 0,
             deaths: p.deaths ?? 0,
             assists: p.assists ?? 0,
@@ -124,6 +125,7 @@ export const useScoreboardBottomSelector = () => {
             level: p.level || t?.level || 1,
             items: p.items ?? [],
             perks: t?.perks ?? [],
+            visionScore : p?.visionScore ?? [],
 
             // --- DỮ LIỆU TỪ TABS (Assets & Status) ---
             champ: t?.championAssets?.squareImg,
@@ -139,8 +141,6 @@ export const useScoreboardBottomSelector = () => {
             hasBaron: t?.hasBaron ?? false,
             hasElder: t?.hasElder ?? false,
 
-            // Chỉ số tầm nhìn (Cần thiết cho component L1/R2)
-            visionScore: t?.scores?.visionScore ?? 0,
 
             // Thanh trạng thái (%)
             hp: {

@@ -6,6 +6,7 @@ import TopCenterPanel from './components/topcenterpanel';
 import TopRightPanel from './components/toprightpanel';
 import CenterLeftPanel from './components/centerleftpanel';
 import BottomcenterPanel from './components/bottomcenterpanel'
+import BottomRightLeftPanel from './components/bottomrightleftpanel';
 const Ingame = () => {
   return (
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
@@ -14,6 +15,7 @@ const Ingame = () => {
       {/* <TopRightPanel /> */}
       {/* <CenterLeftPanel /> */}
       <BottomcenterPanel />
+      <BottomRightLeftPanel />
     </div>
   );
 };
