@@ -10,6 +10,7 @@ const EventRight = ({
   hasElder,
   respawnAt,
   gameTime,
+  shutdown
 }) => {
   const [isLevelingUp, setIsLevelingUp] = useState(false);
   const prevLevelRef = useRef(level);
@@ -66,15 +67,27 @@ const EventRight = ({
           className={`
             relative z-0 w-full h-full object-cover
             transition-all duration-500
-            ${
-              isDead
-                ? "grayscale opacity-30 scale-110"
-                : "grayscale-0 opacity-100 scale-100"
+            ${isDead
+              ? "grayscale opacity-30 scale-110"
+              : "grayscale-0 opacity-100 scale-100"
             }
           `}
           src={`${IMAGE_BASE_URL}${champ}`}
           alt="champion"
         />
+        {/* SHUTDOWN BOUNTY - Hiển thị số tiền phía trên */}
+        {!isDead && shutdown > 0 && (
+          <div className="absolute -top-1 left-0 w-full z-20 flex justify-center pointer-events-none">
+            <span
+              className="text-[11px] font-semibold text-[#E5C384]"
+              style={{
+                textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`
+              }}
+            >
+              {shutdown}G
+            </span>
+          </div>
+        )}
 
         {/* RESPAWN TIMER */}
         <AnimatePresence>
@@ -233,11 +246,10 @@ const EventRight = ({
     bg-black
     z-50
     transition-all duration-500
-    ${
-      isDead
-        ? "grayscale opacity-40 scale-75 border-zinc-700"
-        : "grayscale-0 opacity-100 scale-100 border-white/15"
-    }
+    ${isDead
+            ? "grayscale opacity-40 scale-75 border-zinc-700"
+            : "grayscale-0 opacity-100 scale-100 border-white/15"
+          }
   `}
       >
         {/* COOLDOWN OVERLAY */}

@@ -100,10 +100,9 @@ const R2 = () => {
             className={`
               w-[17px] h-[17px]
               flex items-center justify-center
-              ${
-                isDead
-                  ? "bg-zinc-900 border-white/5"
-                  : "bg-zinc-800 border-white/5"
+              ${isDead
+                ? "bg-zinc-900 border-white/5"
+                : "bg-zinc-800 border-white/5"
               }
             `}
           >
@@ -123,10 +122,9 @@ const R2 = () => {
             className={`
               w-[17px] h-[17px]
               flex items-center justify-center
-              ${
-                isDead
-                  ? "bg-zinc-900 border-zinc-800"
-                  : "bg-zinc-800 border-white/5"
+              ${isDead
+                ? "bg-zinc-900 border-zinc-800"
+                : "bg-zinc-800 border-white/5"
               }
             `}
           >
@@ -158,10 +156,9 @@ const R2 = () => {
                 bg-zinc-900 border rounded-[2px]
                 flex items-center justify-center
                 overflow-visible transition-colors
-                ${
-                  isDead
-                    ? "border-zinc-800"
-                    : "border-zinc-700"
+                ${isDead
+                  ? "border-zinc-800"
+                  : "border-zinc-700"
                 }
               `}
             >
@@ -177,8 +174,8 @@ const R2 = () => {
                   {/* STACK / CHARGES */}
                   {(slot.item.stacks > 0 ||
                     slot.item.charges > 0) && (
-                    <div
-                      className={`
+                      <div
+                        className={`
                         absolute bottom-0 left-0
                         min-w-[10px] h-[10px]
                         px-[1px]
@@ -189,17 +186,16 @@ const R2 = () => {
                         text-[7px] leading-none font-black
                         shadow-[0_0_4px_rgba(0,0,0,0.9)]
                         z-40
-                        ${
-                          isDead
+                        ${isDead
                             ? "text-zinc-400 border-zinc-700"
                             : "text-white border-white/10"
-                        }
+                          }
                       `}
-                    >
-                      {slot.item.stacks ||
-                        slot.item.charges}
-                    </div>
-                  )}
+                      >
+                        {slot.item.stacks ||
+                          slot.item.charges}
+                      </div>
+                    )}
 
                   {/* TRINKET OVERLAY + VISION SCORE */}
                   {slot.isTrinket && (
@@ -212,15 +208,16 @@ const R2 = () => {
                           min-w-[12px] h-[9px]
                           px-[2px]
                           flex items-center justify-center
-                          text-[13px] leading-none font-bold text-white
-                          shadow-[0_0_4px_rgba(0,0,0,0.9)]
+                          text-[11px] leading-none font-bold text-white
                           z-50
-                          ${
-                            isDead
-                              ? "text-zinc-400 border-zinc-700"
-                              : "text-cyan-200 border-cyan-500/20"
+                          ${isDead
+                            ? "text-zinc-400 border-zinc-700"
+                            : "text-cyan-200 border-cyan-500/20"
                           }
                         `}
+                        style={{
+                          textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`
+                        }}
                       >
                         {Math.round(visionScore)}
                       </div>
@@ -231,10 +228,9 @@ const R2 = () => {
                           absolute inset-0
                           bg-black/10 border
                           pointer-events-none
-                          ${
-                            isDead
-                              ? "border-zinc-500/10"
-                              : "border-yellow-500/20"
+                          ${isDead
+                            ? "border-zinc-500/10"
+                            : "border-yellow-500/20"
                           }
                         `}
                       />
@@ -245,10 +241,9 @@ const R2 = () => {
                 <span
                   className={`
                     text-[7px] font-bold transition-colors
-                    ${
-                      isDead
-                        ? "text-zinc-700"
-                        : "text-zinc-500"
+                    ${isDead
+                      ? "text-zinc-700"
+                      : "text-zinc-500"
                     }
                   `}
                 >

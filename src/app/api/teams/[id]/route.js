@@ -3,9 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // GET by id
-export async function GET(req, context) {
-  const { params } = context;
-  const { id } = await params;
+export async function GET(req, { params }) {
+  const { id } = await params; // Phải await params
 
   const data = await prisma.team.findUnique({
     where: { id: parseInt(id) },
@@ -19,11 +18,12 @@ export async function GET(req, context) {
 
 // PUT update
 export async function PUT(req, { params }) {
-  const id = parseInt(params.id);
+  const { id } = await params; // Sửa lỗi: Thêm await ở đây
   const body = await req.json();
 
+  // Đảm bảo id là số nguyên trước khi đưa vào Prisma
   const data = await prisma.team.update({
-    where: { id },
+    where: { id: parseInt(id) },
     data: body
   });
 
@@ -32,10 +32,10 @@ export async function PUT(req, { params }) {
 
 // DELETE
 export async function DELETE(req, { params }) {
-  const id = parseInt(params.id);
+  const { id } = await params; // Sửa lỗi: Thêm await ở đây
 
   await prisma.team.delete({
-    where: { id }
+    where: { id: parseInt(id) }
   });
 
   return Response.json({ message: "Deleted" });

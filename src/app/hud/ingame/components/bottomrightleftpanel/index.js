@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IMAGE_BASE_URL } from "@/lib/constants";
@@ -56,7 +57,7 @@ const BottomRightLeftPanel = () => {
                 </div>
                 <AnimatePresence mode="popLayout">
                     <motion.div
-                        key={`${player.id}-${name}`}
+                        key={`${player?.id || "unknown"}-${name}`}
                         className="absolute inset-0 z-10"
                         initial={{ x: isLeft ? "-100%" : "100%", skewX: isLeft ? -10 : 10, opacity: 0 }}
                         animate={{ x: 0, skewX: 0, opacity: 1 }}
@@ -118,12 +119,18 @@ const BottomRightLeftPanel = () => {
                     <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500/40" />
                     <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500/40" />
                 </div>
-                <PlayerCard player={allPlayers[leftIndex]} side="left" />
+                <PlayerCard
+                    player={allPlayers[leftIndex] || null}
+                    side="right"
+                />
             </div>
 
             {/* CỤM PHẢI: Minimap Terminal (OBS Overlay Ready) */}
             <div className="flex items-end pointer-events-auto">
-                <PlayerCard player={allPlayers[rightIndex]} side="right" />
+                <PlayerCard
+                    player={allPlayers[rightIndex] || null}
+                    side="left"
+                />
 
 
                 <div
@@ -216,17 +223,6 @@ const BottomRightLeftPanel = () => {
                 </div>
             </div>
 
-            {/* --- TẤT CẢ CSS GỘP TẠI ĐÂY --- */}
-            <style jsx global>{`
-                @keyframes spin-slow {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-                .animate-spin-slow {
-                    animation: spin-slow 10s linear infinite;
-                }
-
-            `}</style>
         </div>
     );
 };

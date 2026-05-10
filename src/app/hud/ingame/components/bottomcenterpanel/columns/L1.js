@@ -132,10 +132,9 @@ const L1 = () => {
                         text-[7px] leading-none font-black
                         shadow-[0_0_4px_rgba(0,0,0,0.9)]
                         z-40
-                        ${
-                          isDead
-                            ? "text-zinc-400 border-zinc-700"
-                            : "text-white border-white/10"
+                        ${isDead
+                          ? "text-zinc-400 border-zinc-700"
+                          : "text-white border-white/10"
                         }
                       `}
                     >
@@ -154,16 +153,18 @@ const L1 = () => {
                           min-w-[12px] h-[9px]
                           px-[2px]
                           flex items-center justify-center
-                          text-[13px] leading-none font-bold text-white
-                          shadow-[0_0_4px_rgba(0,0,0,1)]
+                          text-[11px] leading-none font-bold text-white
                           z-50
-                          ${
-                            isDead
-                              ? "text-zinc-400 border-zinc-700"
-                              : "text-cyan-200 border-cyan-500/20"
+                          ${isDead
+                            ? "text-zinc-400 border-zinc-700"
+                            : "text-cyan-200 border-cyan-500/20"
                           }
                         `}
+                        style={{
+                          textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`
+                        }}
                       >
+
                         {Math.round(visionScore)}
                       </div>
 
@@ -173,10 +174,9 @@ const L1 = () => {
                           absolute inset-0
                           bg-black/10 border
                           pointer-events-none
-                          ${
-                            isDead
-                              ? "border-zinc-500/20"
-                              : "border-yellow-500/20"
+                          ${isDead
+                            ? "border-zinc-500/20"
+                            : "border-yellow-500/20"
                           }
                         `}
                       />

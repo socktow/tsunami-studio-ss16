@@ -125,6 +125,7 @@ export const useScoreboardBottomSelector = () => {
             level: p.level || t?.level || 1,
             items: p.items ?? [],
             perks: t?.perks ?? [],
+            shutdown: p?.shutdown ?? 0,
             visionScore : p?.visionScore ?? [],
 
             // --- DỮ LIỆU TỪ TABS (Assets & Status) ---

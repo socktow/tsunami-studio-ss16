@@ -82,6 +82,7 @@ const L2 = () => {
                     IMAGE_BASE_URL={IMAGE_BASE_URL}
                     gameTime={gameTime}
                     respawnAt={p?.respawnAt}
+                    shutdown={p?.shutdown}
                     hasBaron={hasBaron}
                     hasElder={hasElder}
                   />

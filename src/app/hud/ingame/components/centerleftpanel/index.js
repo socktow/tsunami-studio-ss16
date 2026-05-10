@@ -7,8 +7,6 @@ import { formatGold } from "@/lib/utils";
 import { IMAGE_BASE_URL } from "@/lib/constants";
 
 const CenterLeftPanel = () => {
-    // Bạn có thể đổi 'gold' thành 'level' để test. 
-    // Sau này có thể dùng useEffect lắng nghe phím bấm hoặc socket để setView.
     const [activeView, setActiveView] = useState('level');
     const rankedPlayers = useRankingSelector(activeView);
 
@@ -20,7 +18,7 @@ const CenterLeftPanel = () => {
     };
 
     return (
-        <div className="absolute top-1/2 -translate-y-1/2 left-8 flex flex-col pointer-events-none select-none z-40 w-[260px]">
+        <div className="absolute top-1/2 -translate-y-1/2 left-3 top-[42%] flex flex-col pointer-events-none select-none z-40 w-[250px]">
             <motion.div
                 layout
                 className="relative bg-zinc-900/90 backdrop-blur-2xl rounded-2xl border border-white/20 overflow-hidden shadow-2xl"
@@ -58,7 +56,7 @@ const CenterLeftPanel = () => {
                                 layout
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="relative h-12 overflow-hidden rounded-lg border border-white/5 bg-zinc-800/40"
+                                className="relative h-10 overflow-hidden rounded-lg border border-white/5 bg-zinc-800/40"
                             >
                                 {/* Background Splash */}
                                 <div className="absolute inset-0 z-0">

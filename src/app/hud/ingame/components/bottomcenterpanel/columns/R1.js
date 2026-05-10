@@ -87,6 +87,7 @@ const R1 = () => {
                     ulti={p?.ulti}
                     IMAGE_BASE_URL={IMAGE_BASE_URL}
                     respawnAt={p?.respawnAt}
+                    shutdown={p?.shutdown}
                     gameTime={gameTime}
                     hasBaron={hasBaron} 
                     hasElder={hasElder} 
