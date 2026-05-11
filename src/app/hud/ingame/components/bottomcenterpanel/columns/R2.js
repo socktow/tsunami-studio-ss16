@@ -74,13 +74,13 @@ const R2 = () => {
 
       {
         item: trinketItem,
-        isTrinket: false,
+        isTrinket: true,
         num: 7,
       },
 
       {
         item: questItem,
-        isTrinket: true,
+        isTrinket: false,
         num: 8,
       },
     ];
@@ -180,17 +180,16 @@ const R2 = () => {
                         min-w-[10px] h-[10px]
                         px-[1px]
                         flex items-center justify-center
-                        bg-black/90
-                        rounded-tr-[3px]
-                        border-r border-t
-                        text-[7px] leading-none font-black
-                        shadow-[0_0_4px_rgba(0,0,0,0.9)]
+                        text-[9px] leading-none font-black
                         z-40
                         ${isDead
                             ? "text-zinc-400 border-zinc-700"
                             : "text-white border-white/10"
                           }
                       `}
+                      style={{
+                textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`
+              }}
                       >
                         {slot.item.stacks ||
                           slot.item.charges}

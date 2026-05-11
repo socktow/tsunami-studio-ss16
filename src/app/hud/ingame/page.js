@@ -13,8 +13,8 @@ const Ingame = () => {
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
       <TopLeftPanel />
       <TopCenterPanel />
-      <TopRightPanel />
-      <CenterLeftPanel />
+      {/* <TopRightPanel /> */}
+      {/* <CenterLeftPanel /> */}
       {/* <TeamScoreboard /> */}
       <BottomcenterPanel />
       <BottomRightLeftPanel />

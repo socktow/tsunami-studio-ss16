@@ -4,37 +4,40 @@ import FixedInnerColumn from "../base/FixedInnerColumn";
 import { StatsSection } from "./StatsSection";
 import { IMAGE_BASE_URL } from "@/lib/league-utils";
 import { motion } from "framer-motion";
-import ChampionAvatar from "./EventRight"; 
+import ChampionAvatar from "./EventRight";
 import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
 
 const R1 = () => {
   const data = useScoreboardBottomSelector();
   const redTeam = data?.teams?.[1];
+  const gameTime = data?.gameTime || 0;
   const TEST_NAMES = ["Pun", "Hizto", "Dire", "Eddie", "Bie"];
+
   return (
     <div className="flex-1 flex border border-gray-800 bg-zinc-950/50 flex-row-reverse">
-      
       {/* RIGHT MAIN COLUMN: Hiển thị Avatar, Bars và Tên */}
       <Column
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
-          const gameTime = data?.gameTime || 0;
-          const isDead = p?.respawnAt > 0;
-          const hasBaron = p?.hasBaron || p?.baronBuff; 
+
+          const isDead = (p?.respawnAt || 0) > 0;
+          const hasBaron = p?.hasBaron || p?.baronBuff;
           const hasElder = p?.hasElder || p?.elderBuff;
+          const roundedShutdown = Math.round(p?.shutdown || 0);
 
           return (
-            <div className={`relative w-full h-full flex items-center flex-row-reverse transition-all duration-500 ${isDead ? "opacity-60" : "opacity-100"}`}>
-
-              {/* THANH TRẠNG THÁI (HP/MP/XP) - Đảo lề phải */}
+            <div
+              className={`relative w-full h-full flex items-center flex-row-reverse transition-all duration-500 ${isDead ? "opacity-60" : "opacity-100"}`}
+            >
+              {/* THANH TRẠNG THÁI (HP/MP/XP) - Căn lề phải */}
               <div className="absolute inset-0 flex flex-col justify-end z-0 mr-[76px] py-1 gap-[1px]">
                 {/* XP Bar */}
                 <div className="h-[4px] w-full bg-purple-900/20 relative overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${p?.xp?.pct || 0}%` }}
-                    style={{ originX: 1 }} 
+                    style={{ originX: 1 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="h-full bg-gradient-to-l from-purple-700 via-purple-500 to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.4)] ml-auto"
                   />
@@ -64,18 +67,71 @@ const R1 = () => {
               </div>
 
               {/* AVATAR & SPELLS */}
-              <div className={`relative z-10 flex items-center flex-row-reverse gap-[4px] h-full px-[2px] mr-1 transition-all duration-700 ${isDead ? "grayscale" : "grayscale-0"}`}>
-                {/* Spells */}
+              <div
+                className={`relative z-10 flex items-center flex-row-reverse gap-[4px] h-full px-[2px] mr-1 transition-all duration-700 ${isDead ? "grayscale" : "grayscale-0"}`}
+              >
+                {/* Spells Column */}
                 <div className="flex flex-col gap-[2px]">
-                  {p?.spell1 && (
-                    <img className="w-[22px] h-[22px] rounded-sm border border-white/10" src={`${IMAGE_BASE_URL}${p.spell1}`} alt="s1" />
-                  )}
-                  {p?.spell2 && (
-                    <img className="w-[22px] h-[22px] rounded-sm border border-white/10" src={`${IMAGE_BASE_URL}${p.spell2}`} alt="s2" />
-                  )}
+                  {[p?.spell1, p?.spell2].map((spell, idx) => {
+                    const icon = spell?.assets?.iconAsset;
+                    const totalCD = spell?.totalCooldown || 1;
+                    const cdLeft = Math.max(
+                      0,
+                      (spell?.readyAt || 0) - gameTime,
+                    );
+                    const isOnCooldown = cdLeft > 0;
+
+                    // cdPercent: % thời gian còn lại (100 là vừa dùng, về 0 là hồi xong)
+                    const cdPercent = Math.min(100, (cdLeft / totalCD) * 100);
+
+                    if (!icon)
+                      return (
+                        <div
+                          key={idx}
+                          className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm"
+                        />
+                      );
+
+                    return (
+                      <div
+                        key={idx}
+                        className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black"
+                      >
+                        <img
+                          className="w-full h-full object-cover"
+                          src={`${IMAGE_BASE_URL}${icon}`}
+                          alt="spell"
+                        />
+
+                        {/* Cooldown Sweep: Quét sáng dần theo chiều kim đồng hồ */}
+                        {isOnCooldown && (
+                          <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                              background: `conic-gradient(transparent ${100 - cdPercent}%, rgba(0,0,0,0.7) 0%)`,
+                            }}
+                          />
+                        )}
+
+                        {/* Chỉ hiện số khi <= 10s */}
+                        {isOnCooldown && cdLeft <= 10 && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span
+                              className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
+                              style={{
+                                textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`,
+                              }}
+                            >
+                              {Math.ceil(cdLeft)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
-                {/* Champion Avatar với hiệu ứng bùa lợi */}
+                {/* Champion Avatar */}
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -87,10 +143,10 @@ const R1 = () => {
                     ulti={p?.ulti}
                     IMAGE_BASE_URL={IMAGE_BASE_URL}
                     respawnAt={p?.respawnAt}
-                    shutdown={p?.shutdown}
+                    shutdown={roundedShutdown}
                     gameTime={gameTime}
-                    hasBaron={hasBaron} 
-                    hasElder={hasElder} 
+                    hasBaron={hasBaron}
+                    hasElder={hasElder}
                   />
                 </motion.div>
               </div>
@@ -103,18 +159,17 @@ const R1 = () => {
               >
                 {TEST_NAMES[i] || p?.name}
               </motion.div>
-
             </div>
           );
         }}
       />
 
-      {/* STATS COLUMN: KDA */}
+      {/* STATS COLUMN: KDA & CS */}
       <FixedInnerColumn
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
-          const isDead = p?.respawnAt > 0;
+          const isDead = (p?.respawnAt || 0) > 0;
 
           return (
             <motion.div

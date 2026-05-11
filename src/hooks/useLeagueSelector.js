@@ -126,12 +126,12 @@ export const useScoreboardBottomSelector = () => {
             items: p.items ?? [],
             perks: t?.perks ?? [],
             shutdown: p?.shutdown ?? 0,
-            visionScore : p?.visionScore ?? [],
+            visionScore: p?.visionScore ?? [],
 
             // --- DỮ LIỆU TỪ TABS (Assets & Status) ---
             champ: t?.championAssets?.squareImg,
-            spell1: t?.abilities?.[4]?.assets?.iconAsset,
-            spell2: t?.abilities?.[5]?.assets?.iconAsset,
+            spell1: t?.abilities?.[4] || {},
+            spell2: t?.abilities?.[5] || {},
             ulti: t?.abilities?.[3],
 
             // Trạng thái hồi sinh và cộng dồn
@@ -141,7 +141,6 @@ export const useScoreboardBottomSelector = () => {
             // --- THUỘC TÍNH BUFF (MỚI THÊM) ---
             hasBaron: t?.hasBaron ?? false,
             hasElder: t?.hasElder ?? false,
-
 
             // Thanh trạng thái (%)
             hp: {

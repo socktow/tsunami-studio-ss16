@@ -5,13 +5,13 @@ export const ICONS = {
   BLUE_PLATES: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/tower_blue_bounty.png",
   RED_PLATES: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/tower_red_bounty.png",
   DRAGONS: {
-    air: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_clouddrake.png",
-    earth: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_mountaindrake.png",
-    fire: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_infernaldrake.png",
-    water: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_oceandrake.png",
-    hextech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_hextechdrake.png",
-    chemtech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_chemtechdrake.png",
-    elder: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_elderdrake.png"
+    air: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_cloud.png",
+    earth: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_mountain.png",
+    fire: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_infernal.png",
+    water: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_ocean.png",
+    hextech: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_hextech.png",
+    chemtech: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_chemtech.png",
+    elder: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_elder.png"
   },
   LOGOS: {
     T1: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/T1_esports_logo.svg/1280px-T1_esports_logo.svg.png",
@@ -21,16 +21,16 @@ export const ICONS = {
 };
 
 export const OBJECTIVE_ICONS = {
-  BARON: "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/rewards-modal/epic-monster-icon.png",
+  BARON: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/baron.png",
   GRUB: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/grub.png",
   DRAGONS: {
-    air: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_clouddrake.png",
-    earth: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_mountaindrake.png",
-    fire: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_infernaldrake.png",
-    water: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_oceandrake.png",
-    hextech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_hextechdrake.png",
-    chemtech: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_chemtechdrake.png",
-    elder: "https://raw.communitydragon.org/latest/game/assets/ux/scoreboard/_elderdrake.png"
+    air: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_cloud.png",
+    earth: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_mountain.png",
+    fire: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_infernal.png",
+    water: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_ocean.png",
+    hextech: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_hextech.png",
+    chemtech: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_chemtech.png",
+    elder: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_elder.png"
   },
 };
 

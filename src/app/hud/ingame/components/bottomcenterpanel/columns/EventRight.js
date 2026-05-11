@@ -18,7 +18,7 @@ const EventRight = ({
     0,
     Math.ceil((respawnAt || 0) - (gameTime || 0)),
   );
-
+  const roundedShutdown = Math.round(shutdown || 0);
   const isDead = respawnLeft > 0;
   const displayTimer = respawnLeft;
   const ultiCooldownLeft = Math.max(
@@ -84,7 +84,7 @@ const EventRight = ({
                 textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`
               }}
             >
-              {shutdown}G
+              {roundedShutdown}G
             </span>
           </div>
         )}
