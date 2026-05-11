@@ -1,0 +1,18 @@
+[
+  {
+    "side": "blue",
+    "name": "GAM Esports",
+    "tag": "GAM",
+    "color": "#FFD700",
+    "score": 1,
+    "players": [...]
+  },
+  {
+    "side": "red",
+    "name": "Team Whales",
+    "tag": "TW",
+    "color": "#00BFFF",
+    "score": 0,
+    "players": [...]
+  }
+]

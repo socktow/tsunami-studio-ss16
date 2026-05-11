@@ -68,3 +68,12 @@ model TournamentTeam {
 
   @@unique([tournamentId, teamId])
 }
+
+model Match {
+  id              Int      @id @default(autoincrement())
+  tournamentName  String
+  matchType       String  
+  teamsData       String   
+  isActive        Boolean  @default(false)
+  updatedAt       DateTime @updatedAt
+}
