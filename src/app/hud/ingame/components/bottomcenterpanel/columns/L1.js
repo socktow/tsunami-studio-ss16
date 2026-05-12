@@ -191,7 +191,7 @@ const L1 = () => {
                     ${isDead ? "text-zinc-700" : "text-zinc-500"}
                   `}
                 >
-                  {slot.num}
+                  {/* {slot.num} */}
                 </span>
               )}
             </motion.div>

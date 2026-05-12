@@ -6,12 +6,15 @@ import { IMAGE_BASE_URL } from "@/lib/league-utils";
 import { motion } from "framer-motion";
 import ChampionAvatar from "./EventLeft";
 import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
+import { useScoreboardData } from "@/hooks/useApiTeamData"; 
 
 const L2 = () => {
   const data = useScoreboardBottomSelector();
+  // Lấy dữ liệu tên chi tiết từ API
+  const { allPlayerNames } = useScoreboardData();
+  
   const blueTeam = data?.teams?.[0];
   const gameTime = data?.gameTime || 0;
-  const TEST_NAMES = ["Pun", "Hizto", "Dire", "Eddie", "Bie"];
 
   return (
     <div className="flex-1 flex border border-gray-800 bg-zinc-950/50">
@@ -19,6 +22,11 @@ const L2 = () => {
         renderCell={(i) => {
           const p = blueTeam?.players?.[i];
           if (!p) return null;
+
+          // Lấy dữ liệu player từ hook API dựa trên index i (0-4)
+          const apiPlayer = allPlayerNames?.[i];
+          // Ưu tiên nickname từ API, nếu không có dùng name từ gameData
+          const displayName = apiPlayer?.nickname || p?.name;
 
           const isDead = (p?.respawnAt || 0) > 0;
           const hasBaron = p?.hasBaron || p?.baronBuff;
@@ -29,7 +37,7 @@ const L2 = () => {
             <div
               className={`relative w-full h-full flex items-center transition-all duration-500 ${isDead ? "opacity-60" : "opacity-100"}`}
             >
-              {/* THANH TRẠNG THÁI (HP/MP/XP) */}
+              {/* THANH TRẠNG THÁI (HP/MP/XP) - Giữ nguyên */}
               <div className="absolute inset-0 flex flex-col justify-end z-0 ml-[76px] py-1 gap-[1px]">
                 <div className="h-[4px] w-full bg-purple-900/20 relative overflow-hidden">
                   <motion.div
@@ -62,66 +70,33 @@ const L2 = () => {
                 </div>
               </div>
 
-              {/* AVATAR & SPELLS */}
+              {/* AVATAR & SPELLS - Giữ nguyên */}
               <div
                 className={`relative z-10 flex items-center gap-[4px] h-full px-[2px] ml-1 transition-all duration-700 ${isDead ? "grayscale" : "grayscale-0"}`}
               >
-                {/* Spells Column */}
                 <div className="flex flex-col gap-[2px]">
                   {[p?.spell1, p?.spell2].map((spell, idx) => {
                     const icon = spell?.assets?.iconAsset;
-                    const totalCD = spell?.totalCooldown || 1; // Tránh chia cho 0
-                    const cdLeft = Math.max(
-                      0,
-                      (spell?.readyAt || 0) - gameTime,
-                    );
+                    const totalCD = spell?.totalCooldown || 1;
+                    const cdLeft = Math.max(0, (spell?.readyAt || 0) - gameTime);
                     const isOnCooldown = cdLeft > 0;
-
-                    // Tính phần trăm cooldown còn lại (từ 0 đến 100)
                     const cdPercent = Math.min(100, (cdLeft / totalCD) * 100);
 
-                    if (!icon)
-                      return (
-                        <div
-                          key={idx}
-                          className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm"
-                        />
-                      );
+                    if (!icon) return <div key={idx} className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm" />;
 
                     return (
-                      <div
-                        key={idx}
-                        className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black"
-                      >
-                        {/* Icon chính */}
-                        <img
-                          className="w-full h-full object-cover"
-                          src={`${IMAGE_BASE_URL}${icon}`}
-                          alt="spell"
-                        />
-
-                        {/* Hiệu ứng Cooldown Sweep */}
+                      <div key={idx} className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black">
+                        <img className="w-full h-full object-cover" src={`${IMAGE_BASE_URL}${icon}`} alt="spell" />
                         {isOnCooldown && (
                           <div
                             className="absolute inset-0 pointer-events-none"
-                            style={{
-                              // ĐẢO NGƯỢC:
-                              // Từ 0% đến cdPercent% là TRONG SUỐT (lộ icon sáng)
-                              // Từ cdPercent% đến 100% là MÀU TỐI (phần chưa hồi)
-                              background: `conic-gradient(transparent ${100 - cdPercent}%, rgba(0,0,0,0.7) 0%)`,
-                            }}
+                            style={{ background: `conic-gradient(transparent ${100 - cdPercent}%, rgba(0,0,0,0.7) 0%)` }}
                           />
                         )}
-
-                        {/* Text đếm ngược: Chỉ hiện khi <= 10s */}
                         {isOnCooldown && cdLeft <= 10 && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <span
-                              className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
-                              style={{
-                                textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`,
-                              }}
-                            >
+                            <span className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
+                                  style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)` }}>
                               {Math.ceil(cdLeft)}
                             </span>
                           </div>
@@ -131,11 +106,7 @@ const L2 = () => {
                   })}
                 </div>
 
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="no-level-border"
-                >
+                <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="no-level-border">
                   <ChampionAvatar
                     champ={p?.champ || p?.champion}
                     level={p?.level}
@@ -150,19 +121,20 @@ const L2 = () => {
                 </motion.div>
               </div>
 
-              {/* TÊN NGƯỜI CHƠI */}
+              {/* TÊN NGƯỜI CHƠI - ĐÃ CẬP NHẬT */}
               <motion.div
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className={`absolute ml-[100px] text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter transition-colors ${isDead ? "text-zinc-500" : "text-white"}`}
+                className={`absolute ml-[100px] text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter transition-colors ${isDead ? "text-zinc-400" : "text-white"}`}
               >
-                {TEST_NAMES[i] || p?.name}
+                {displayName}
               </motion.div>
             </div>
           );
         }}
       />
 
+      {/* STATS SECTION - Giữ nguyên */}
       <FixedInnerColumn
         renderCell={(i) => {
           const p = blueTeam?.players?.[i];

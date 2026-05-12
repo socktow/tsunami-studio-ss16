@@ -16,35 +16,36 @@ export async function GET() {
 
     if (!currentMatch) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Current match not found",
-        },
+        { success: false, message: "Current match not found" },
         { status: 404 }
       );
     }
 
+    // Parse dữ liệu từ String JSON sang Object
+    const rawTeamsData = JSON.parse(currentMatch.teamsData || "[]");
+
+    // Tiến hành lọc bỏ các field dư thừa trong players
+    const cleanedTeamsData = rawTeamsData.map((team) => ({
+      ...team,
+      players: team.players?.map(({ id, teamId, createdAt, updatedAt, ...playerInfo }) => ({
+        ...playerInfo, // Chỉ giữ lại các field như nickname, avatar, role
+      })),
+    }));
+
     return NextResponse.json(
       {
         success: true,
-
         data: {
           ...currentMatch,
-          teamsData: JSON.parse(
-            currentMatch.teamsData || "[]"
-          ),
+          teamsData: cleanedTeamsData,
         },
       },
       { status: 200 }
     );
   } catch (error) {
     console.error("GET ERROR:", error);
-
     return NextResponse.json(
-      {
-        success: false,
-        error: "GET failed",
-      },
+      { success: false, error: "GET failed" },
       { status: 500 }
     );
   }

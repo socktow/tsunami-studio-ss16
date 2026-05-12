@@ -31,20 +31,54 @@ export const useObjectivesData = () => {
 
 // 3. Top Center - Bảng điểm (Tối ưu re-render)
 export const useScoreboardSelector = () => {
-  const { gameData } = useLeagueData();
-  const scoreboard = gameData?.scoreboard;
-
+  const { gameData } = useLeagueData(); // Giả định gameData chính là object "state" bạn đã gửi
+  
   return useMemo(() => {
-    if (!scoreboard || !scoreboard.teams || scoreboard.teams.length < 2)
+    // Kiểm tra kỹ cấu trúc: gameData -> scoreboard -> teams
+    const scoreboard = gameData?.scoreboard;
+    
+    if (!gameData || !scoreboard || !scoreboard.teams || scoreboard.teams.length < 2) {
       return null;
+    }
+
+    const blueTeamData = scoreboard.teams[0];
+    const redTeamData = scoreboard.teams[1];
 
     return {
-      gameTime: gameData.gameTime || scoreboard.gameTime || 0,
+      // Ưu tiên lấy gameTime ở cấp cao nhất của gameData
+      gameTime: gameData.gameTime || 0,
       bestOf: scoreboard.bestOf || 3,
-      blueTeam: scoreboard.teams[0],
-      redTeam: scoreboard.teams[1],
+      
+      // Bọc dữ liệu đội xanh
+      blueTeam: {
+        kills: blueTeamData.kills || 0,
+        gold: blueTeamData.gold || 0,
+        towers: blueTeamData.towers || 0,
+        grubs: blueTeamData.grubs || 0,
+        dragons: blueTeamData.dragons || [],
+        // Thêm PowerPlay vào đây để UI bóc tách dễ hơn
+        baronPowerPlay: blueTeamData.baronPowerPlay,
+        dragonPowerPlay: blueTeamData.dragonPowerPlay,
+        teamTag: blueTeamData.teamTag,
+        teamName: blueTeamData.teamName
+      },
+      
+      // Bọc dữ liệu đội đỏ
+      redTeam: {
+        kills: redTeamData.kills || 0,
+        gold: redTeamData.gold || 0,
+        towers: redTeamData.towers || 0,
+        grubs: redTeamData.grubs || 0,
+        dragons: redTeamData.dragons || [],
+        baronPowerPlay: redTeamData.baronPowerPlay,
+        dragonPowerPlay: redTeamData.dragonPowerPlay,
+        teamTag: redTeamData.teamTag,
+        teamName: redTeamData.teamName
+      },
+      // Giữ lại scoreboard gốc nếu cần dùng thêm field khác
+      rawScoreboard: scoreboard 
     };
-  }, [gameData?.gameTime, scoreboard]);
+  }, [gameData]); // Dependency là gameData để cập nhật mỗi khi có dữ liệu mới từ API
 };
 
 // 4. Left Panel - Dynamic Ranking Gold / EXP

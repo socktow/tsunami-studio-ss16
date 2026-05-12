@@ -58,18 +58,67 @@ const Page = () => {
     }
   };
 
-  const updateScore = async (teamIndex, newScore) => {
-    const updatedTeams = [...currentMatch.teamsData];
-    updatedTeams[teamIndex].score = newScore;
+const updateScore = async (teamIndex, newScore) => {
+  // Tạo một bản sao mới hoàn toàn của mảng teamsData
+  const updatedTeams = currentMatch.teamsData.map((team, index) => {
+    if (index === teamIndex) {
+      return { ...team, score: newScore }; // Chỉ update score cho team được chọn
+    }
+    return team; // Giữ nguyên team kia
+  });
 
+  try {
     const res = await fetch("/api/current-game", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teamsData: updatedTeams }),
+      body: JSON.stringify({ teamsData: updatedTeams }), // Gửi mảng mới lên
     });
-    if (res.ok) fetchData();
-  };
 
+    if (res.ok) {
+      fetchData(); // Load lại data từ server sau khi update thành công
+    } else {
+      const errorData = await res.json();
+      console.error("Update failed:", errorData.error);
+    }
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+};
+const handleSwap = async () => {
+  // 1. Kiểm tra điều kiện an toàn
+  if (!currentMatch || !currentMatch.teamsData || currentMatch.teamsData.length < 2) {
+    console.error("Không đủ dữ liệu team để swap");
+    return;
+  }
+
+  // 2. Đảo ngược mảng teamsData (Immutably)
+  // [TeamA, TeamB] -> [TeamB, TeamA]
+  const swappedTeams = [
+    { ...currentMatch.teamsData[1] }, 
+    { ...currentMatch.teamsData[0] }
+  ];
+
+  try {
+    // 3. Gửi lên API PUT
+    const res = await fetch("/api/current-game", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        teamsData: swappedTeams // API của bạn sẽ JSON.stringify cái này lại
+      }),
+    });
+
+    if (res.ok) {
+      // 4. Load lại dữ liệu mới từ Database để cập nhật UI
+      await fetchData(); 
+    } else {
+      const err = await res.json();
+      console.error("Swap failed:", err.error);
+    }
+  } catch (error) {
+    console.error("Lỗi khi swap:", error);
+  }
+};
   return (
     <div className="min-h-screen bg-slate-900 text-white p-8">
       <div className="max-w-5xl mx-auto">
@@ -109,6 +158,7 @@ const Page = () => {
               currentMatch={currentMatch}
               updateScore={updateScore}
               fetchData={fetchData}
+              handleSwap={handleSwap}
             />
           )}
 

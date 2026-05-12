@@ -31,6 +31,7 @@ export default function Navbar() {
       icon: <LayoutDashboard size={18} />,
       subLinks: [
         { name: "Controller", href: "/dashboard", icon: <Activity size={12} /> },
+        { name: "Current Match", href: "/dashboard/current-match", icon: <Terminal size={12} /> },
       ]
     },
     { 

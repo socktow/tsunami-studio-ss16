@@ -6,12 +6,15 @@ import { IMAGE_BASE_URL } from "@/lib/league-utils";
 import { motion } from "framer-motion";
 import ChampionAvatar from "./EventRight";
 import { useScoreboardBottomSelector } from "@/hooks/useLeagueSelector";
+import { useScoreboardData } from "@/hooks/useApiTeamData"; // Import hook API
 
 const R1 = () => {
   const data = useScoreboardBottomSelector();
+  // Lấy dữ liệu tên chi tiết từ API
+  const { allPlayerNames } = useScoreboardData();
+  
   const redTeam = data?.teams?.[1];
   const gameTime = data?.gameTime || 0;
-  const TEST_NAMES = ["Pun", "Hizto", "Dire", "Eddie", "Bie"];
 
   return (
     <div className="flex-1 flex border border-gray-800 bg-zinc-950/50 flex-row-reverse">
@@ -20,6 +23,11 @@ const R1 = () => {
         renderCell={(i) => {
           const p = redTeam?.players?.[i];
           if (!p) return null;
+
+          // Red Team bắt đầu từ index 5 trong mảng allPlayerNames (5-9)
+          const apiPlayer = allPlayerNames?.[i + 5];
+          // Ưu tiên nickname từ API, nếu không có dùng name từ gameData
+          const displayName = apiPlayer?.nickname || p?.name;
 
           const isDead = (p?.respawnAt || 0) > 0;
           const hasBaron = p?.hasBaron || p?.baronBuff;
@@ -30,9 +38,8 @@ const R1 = () => {
             <div
               className={`relative w-full h-full flex items-center flex-row-reverse transition-all duration-500 ${isDead ? "opacity-60" : "opacity-100"}`}
             >
-              {/* THANH TRẠNG THÁI (HP/MP/XP) - Căn lề phải */}
+              {/* THANH TRẠNG THÁI (HP/MP/XP) - Giữ nguyên logic cũ */}
               <div className="absolute inset-0 flex flex-col justify-end z-0 mr-[76px] py-1 gap-[1px]">
-                {/* XP Bar */}
                 <div className="h-[4px] w-full bg-purple-900/20 relative overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
@@ -43,7 +50,6 @@ const R1 = () => {
                   />
                 </div>
 
-                {/* HP Bar */}
                 <div className="h-[7px] w-full bg-green-900/20 relative overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
@@ -54,7 +60,6 @@ const R1 = () => {
                   />
                 </div>
 
-                {/* MP Bar */}
                 <div className="h-[4px] w-full bg-blue-900/20 relative overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
@@ -70,58 +75,29 @@ const R1 = () => {
               <div
                 className={`relative z-10 flex items-center flex-row-reverse gap-[4px] h-full px-[2px] mr-1 transition-all duration-700 ${isDead ? "grayscale" : "grayscale-0"}`}
               >
-                {/* Spells Column */}
                 <div className="flex flex-col gap-[2px]">
                   {[p?.spell1, p?.spell2].map((spell, idx) => {
                     const icon = spell?.assets?.iconAsset;
                     const totalCD = spell?.totalCooldown || 1;
-                    const cdLeft = Math.max(
-                      0,
-                      (spell?.readyAt || 0) - gameTime,
-                    );
+                    const cdLeft = Math.max(0, (spell?.readyAt || 0) - gameTime);
                     const isOnCooldown = cdLeft > 0;
-
-                    // cdPercent: % thời gian còn lại (100 là vừa dùng, về 0 là hồi xong)
                     const cdPercent = Math.min(100, (cdLeft / totalCD) * 100);
 
-                    if (!icon)
-                      return (
-                        <div
-                          key={idx}
-                          className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm"
-                        />
-                      );
+                    if (!icon) return <div key={idx} className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm" />;
 
                     return (
-                      <div
-                        key={idx}
-                        className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black"
-                      >
-                        <img
-                          className="w-full h-full object-cover"
-                          src={`${IMAGE_BASE_URL}${icon}`}
-                          alt="spell"
-                        />
-
-                        {/* Cooldown Sweep: Quét sáng dần theo chiều kim đồng hồ */}
+                      <div key={idx} className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black">
+                        <img className="w-full h-full object-cover" src={`${IMAGE_BASE_URL}${icon}`} alt="spell" />
                         {isOnCooldown && (
                           <div
                             className="absolute inset-0 pointer-events-none"
-                            style={{
-                              background: `conic-gradient(transparent ${100 - cdPercent}%, rgba(0,0,0,0.7) 0%)`,
-                            }}
+                            style={{ background: `conic-gradient(transparent ${100 - cdPercent}%, rgba(0,0,0,0.7) 0%)` }}
                           />
                         )}
-
-                        {/* Chỉ hiện số khi <= 10s */}
                         {isOnCooldown && cdLeft <= 10 && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <span
-                              className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
-                              style={{
-                                textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)`,
-                              }}
-                            >
+                            <span className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
+                                  style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)` }}>
                               {Math.ceil(cdLeft)}
                             </span>
                           </div>
@@ -131,12 +107,7 @@ const R1 = () => {
                   })}
                 </div>
 
-                {/* Champion Avatar */}
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="no-level-border"
-                >
+                <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="no-level-border">
                   <ChampionAvatar
                     champ={p?.champ || p?.champion}
                     level={p?.level}
@@ -151,13 +122,13 @@ const R1 = () => {
                 </motion.div>
               </div>
 
-              {/* TÊN NGƯỜI CHƠI */}
+              {/* TÊN NGƯỜI CHƠI - ĐÃ CẬP NHẬT */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className={`absolute mr-[100px] text-[13px] font-semibold drop-shadow-md z-30 mb-4 tracking-tighter text-right transition-colors ${isDead ? "text-zinc-500" : "text-white"}`}
               >
-                {TEST_NAMES[i] || p?.name}
+                {displayName}
               </motion.div>
             </div>
           );

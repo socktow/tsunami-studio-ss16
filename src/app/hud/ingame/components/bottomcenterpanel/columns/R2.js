@@ -246,7 +246,7 @@ const R2 = () => {
                     }
                   `}
                 >
-                  {slot.num}
+                  {/* {slot.num} */}
                 </span>
               )}
             </motion.div>
