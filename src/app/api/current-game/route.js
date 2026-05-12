@@ -1,106 +1,282 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/db";
 
+const CURRENT_MATCH_ID = 5;
+
+//
+// GET CURRENT GAME
+//
 export async function GET() {
   try {
-    const activeMatch = await prisma.match.findFirst({
-      where: { isActive: true },
-      orderBy: { updatedAt: 'desc' }
+    const currentMatch = await prisma.match.findUnique({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
     });
 
-    if (!activeMatch) {
-      return NextResponse.json({ message: "No active match" }, { status: 200 });
+    if (!currentMatch) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Current match not found",
+        },
+        { status: 404 }
+      );
     }
 
-    // Parse dữ liệu từ chuỗi JSON trong DB
-    const rawTeamsData = JSON.parse(activeMatch.teamsData);
+    return NextResponse.json(
+      {
+        success: true,
 
-    // Lọc bỏ các trường không cần thiết trong players
-    const cleanedTeamsData = rawTeamsData.map(team => ({
-      ...team,
-      players: team.players?.map(({ id, teamId, createdAt, updatedAt, ...rest }) => rest) || []
-    }));
-
-    return NextResponse.json({
-      ...activeMatch,
-      teamsData: cleanedTeamsData
-    });
+        data: {
+          ...currentMatch,
+          teamsData: JSON.parse(
+            currentMatch.teamsData || "[]"
+          ),
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("GET Error:", error);
-    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+    console.error("GET ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "GET failed",
+      },
+      { status: 500 }
+    );
   }
 }
 
+//
+// CREATE / UPSERT CURRENT GAME
+//
 export async function POST(req) {
   try {
     const body = await req.json();
-    
-    // Đảm bảo body có dữ liệu
-    if (!body.tournamentName || !body.teamsData) {
-        return NextResponse.json({ error: "Missing data" }, { status: 400 });
+
+    if (!body) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing body",
+        },
+        { status: 400 }
+      );
     }
 
-    await prisma.match.updateMany({
-      data: { isActive: false }
+    const existed = await prisma.match.findUnique({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
     });
 
-    const newMatch = await prisma.match.create({
+    // UPDATE nếu đã tồn tại
+    if (existed) {
+      const updated = await prisma.match.update({
+        where: {
+          id: CURRENT_MATCH_ID,
+        },
+
+        data: {
+          tournamentName:
+            body.tournamentName ??
+            existed.tournamentName,
+
+          matchType:
+            body.matchType ??
+            existed.matchType,
+
+          teamsData: JSON.stringify(
+            body.teamsData ??
+              JSON.parse(existed.teamsData || "[]")
+          ),
+
+          isActive: true,
+        },
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Current match updated",
+
+          data: {
+            ...updated,
+            teamsData: JSON.parse(
+              updated.teamsData || "[]"
+            ),
+          },
+        },
+        { status: 200 }
+      );
+    }
+
+    // CREATE nếu chưa tồn tại
+    const created = await prisma.match.create({
       data: {
-        tournamentName: body.tournamentName,
-        matchType: body.matchType,
-        teamsData: JSON.stringify(body.teamsData),
-        isActive: true
-      }
+        id: CURRENT_MATCH_ID,
+
+        tournamentName:
+          body.tournamentName || "",
+
+        matchType:
+          body.matchType || "BO1",
+
+        teamsData: JSON.stringify(
+          body.teamsData || []
+        ),
+
+        isActive: true,
+      },
     });
 
-    return NextResponse.json({ ...newMatch, teamsData: body.teamsData });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Current match created",
+
+        data: {
+          ...created,
+          teamsData: JSON.parse(
+            created.teamsData || "[]"
+          ),
+        },
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error("POST Error:", error); // Log ra để debug
-    return NextResponse.json({ error: "Create failed" }, { status: 500 });
+    console.error("POST ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "POST failed",
+      },
+      { status: 500 }
+    );
   }
 }
 
-// 3. PUT: Cập nhật dữ liệu cho trận đang Live (thường dùng để update tỉ số)
+//
+// UPDATE CURRENT GAME
+//
 export async function PUT(req) {
   try {
     const body = await req.json();
 
-    // Tìm trận đang active để update
-    const activeMatch = await prisma.match.findFirst({
-      where: { isActive: true }
+    const existed = await prisma.match.findUnique({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
     });
 
-    if (!activeMatch) {
-      return NextResponse.json({ error: "No active match to update" }, { status: 404 });
+    if (!existed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Current match not found",
+        },
+        { status: 404 }
+      );
     }
 
-    const updatedMatch = await prisma.match.update({
-      where: { id: activeMatch.id },
+    const updated = await prisma.match.update({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
+
       data: {
-        tournamentName: body.tournamentName || activeMatch.tournamentName,
-        matchType: body.matchType || activeMatch.matchType,
-        teamsData: body.teamsData ? JSON.stringify(body.teamsData) : activeMatch.teamsData,
-      }
+        tournamentName:
+          body.tournamentName ??
+          existed.tournamentName,
+
+        matchType:
+          body.matchType ??
+          existed.matchType,
+
+        teamsData: body.teamsData
+          ? JSON.stringify(body.teamsData)
+          : existed.teamsData,
+
+        isActive:
+          body.isActive ??
+          existed.isActive,
+      },
     });
 
-    return NextResponse.json({ 
-      ...updatedMatch, 
-      teamsData: body.teamsData || JSON.parse(updatedMatch.teamsData) 
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Current match updated",
+
+        data: {
+          ...updated,
+          teamsData: JSON.parse(
+            updated.teamsData || "[]"
+          ),
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+    console.error("PUT ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "PUT failed",
+      },
+      { status: 500 }
+    );
   }
 }
 
-// 4. DELETE: Kết thúc trận đấu (Tắt Active)
+//
+// DELETE CURRENT GAME
+//
 export async function DELETE() {
   try {
-    await prisma.match.updateMany({
-      where: { isActive: true },
-      data: { isActive: false }
+    const existed = await prisma.match.findUnique({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
     });
-    return NextResponse.json({ message: "All matches deactivated" });
+
+    if (!existed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Current match not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    await prisma.match.delete({
+      where: {
+        id: CURRENT_MATCH_ID,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Current match deleted",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: "Deactivate failed" }, { status: 500 });
+    console.error("DELETE ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "DELETE failed",
+      },
+      { status: 500 }
+    );
   }
 }
