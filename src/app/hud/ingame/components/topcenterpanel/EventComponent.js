@@ -4,9 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
 
 const formatGoldDisplay = (gold) => {
-  if (!gold) return "+0";
+  if (!gold || isNaN(gold)) return "+0";
   const num = Number(gold);
-  return `+${Math.floor(num)}`;
+  if (num > 0) {
+    return `+${Math.floor(num)}`;
+  }
+  if (num < 0) {
+    return `-${Math.floor(Math.abs(num))}`;
+  }
+  return "0";
 };
 
 const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
