@@ -22,7 +22,7 @@ export default function Navbar() {
   const router = useRouter();
   const [openMenus, setOpenMenus] = useState({});
 
-  if (pathname?.startsWith("/overlay") || pathname?.startsWith("/hud/ingame")) return null;
+  if (pathname?.startsWith("/hud/testui") || pathname?.startsWith("/hud/ingame" ))  return null;
 
   const navLinks = [
     { 

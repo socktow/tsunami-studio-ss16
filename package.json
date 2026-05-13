@@ -11,8 +11,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.2.3",
     "@bluebottle_gg/league-broadcast-client": "^1.0.0",
     "@prisma/client": "^5.22.0",
+    "antd": "^6.3.7",
     "axios": "^1.15.0",
     "child_process": "^1.0.2",
     "express": "^5.2.1",

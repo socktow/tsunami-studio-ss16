@@ -1,608 +1,202 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Save,
-  Trophy,
-  Users,
-  Shield,
-  Loader2,
-} from "lucide-react";
+import { 
+  Form, 
+  Input, 
+  Select, 
+  Button, 
+  Card, 
+  Row, 
+  Col, 
+  ColorPicker, 
+  Avatar, 
+  Divider, 
+  Typography, 
+  message, 
+  Spin,
+  ConfigProvider,
+  theme
+} from "antd";
+import { 
+  SaveOutlined, 
+  TeamOutlined, 
+  ThunderboltOutlined,
+  LoadingOutlined
+} from "@ant-design/icons";
 
-const defaultTeams = [
-  {
-    name: "",
-    tag: "",
-    color: "#3b82f6",
-    logo: "",
-    players: [],
-  },
-  {
-    name: "",
-    tag: "",
-    color: "#ef4444",
-    logo: "",
-    players: [],
-  },
-];
+const { Title, Text } = Typography;
 
 const SettingMatch = () => {
-  const [formData, setFormData] = useState({
-    tournamentName: "",
-    matchType: "BO1",
-    teamsData: defaultTeams,
-  });
-
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(true);
   const [tournaments, setTournaments] = useState([]);
-  const [selectedTournament, setSelectedTournament] =
-    useState(null);
+  const [selectedTournamentData, setSelectedTournamentData] = useState(null);
+  const [teamsData, setTeamsData] = useState([
+    { name: "", tag: "", color: "#3b82f6", players: [] },
+    { name: "", tag: "", color: "#ef4444", players: [] },
+  ]);
 
-  const [loadingTeams, setLoadingTeams] =
-    useState(false);
-
-  const [loadingCurrent, setLoadingCurrent] =
-    useState(true);
-
-  const [isSubmitting, setIsSubmitting] =
-    useState(false);
-
-  //
-  // LOAD CURRENT MATCH
-  //
   useEffect(() => {
-    const loadCurrentMatch = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(
-          "/api/current-game"
-        );
+        const [matchRes, tourRes] = await Promise.all([
+          fetch("/api/current-game"),
+          fetch("/api/tournaments")
+        ]);
+        const matchData = await matchRes.json();
+        const tourData = await tourRes.json();
+        
+        setTournaments(tourData);
 
-        const result = await res.json();
-
-        if (result.success && result.data) {
-          setFormData({
-            tournamentName:
-              result.data.tournamentName || "",
-
-            matchType:
-              result.data.matchType || "BO1",
-
-            teamsData:
-              result.data.teamsData ||
-              defaultTeams,
+        if (matchData.success && matchData.data) {
+          setTeamsData(matchData.data.teamsData);
+          // Đảm bảo Form đã mount trước khi set dữ liệu
+          form.setFieldsValue({
+            tournamentName: matchData.data.tournamentName,
+            matchType: matchData.data.matchType,
           });
         }
       } catch (error) {
-        console.error(
-          "LOAD CURRENT MATCH ERROR:",
-          error
-        );
+        message.error("Lỗi tải dữ liệu");
       } finally {
-        setLoadingCurrent(false);
+        setLoading(false);
       }
     };
+    fetchData();
+  }, [form]);
 
-    loadCurrentMatch();
-  }, []);
-
-  //
-  // LOAD TOURNAMENTS
-  //
-  useEffect(() => {
-    fetch("/api/tournaments")
-      .then((res) => res.json())
-      .then((data) => setTournaments(data))
-      .catch((err) =>
-        console.error(
-          "LOAD TOURNAMENT ERROR:",
-          err
-        )
-      );
-  }, []);
-
-  //
-  // SUBMIT
-  //
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    setIsSubmitting(true);
-
+  const onFinish = async (values) => {
+    const payload = { ...values, teamsData };
     try {
-      const response = await fetch(
-        "/api/current-game",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert(
-          "Broadcast synchronized!"
-        );
-
-        console.log(
-          "CURRENT MATCH:",
-          result
-        );
-      } else {
-        alert(
-          result.error ||
-            "Something went wrong"
-        );
-      }
-    } catch (error) {
-      console.error(
-        "SUBMIT ERROR:",
-        error
-      );
-
-      alert(
-        "Cannot connect to server"
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  //
-  // SELECT TOURNAMENT
-  //
-  const handleTournamentChange = async (
-    e
-  ) => {
-    const tournamentId = e.target.value;
-
-    if (!tournamentId) {
-      setSelectedTournament(null);
-      return;
-    }
-
-    setLoadingTeams(true);
-
-    try {
-      const res = await fetch(
-        `/api/tournaments/${tournamentId}`
-      );
-
-      const data = await res.json();
-
-      setSelectedTournament(data);
-
-      setFormData((prev) => ({
-        ...prev,
-        tournamentName: data.name,
-      }));
-    } catch (err) {
-      console.error(
-        "LOAD TOURNAMENT DETAIL ERROR:",
-        err
-      );
-    } finally {
-      setLoadingTeams(false);
-    }
-  };
-
-  //
-  // SELECT TEAM
-  //
-  const handleSelectTeam = async (
-    teamIndex,
-    teamBasicData
-  ) => {
-    try {
-      const res = await fetch(
-        `/api/teams/${teamBasicData.id}`
-      );
-
-      const fullTeamData =
-        await res.json();
-
-      const newTeams = [
-        ...formData.teamsData,
-      ];
-
-      newTeams[teamIndex] = {
-        ...newTeams[teamIndex],
-
-        name: fullTeamData.name,
-
-        tag:
-          fullTeamData.tagName,
-
-        color:
-          fullTeamData.color ||
-          "#ffffff",
-
-        logo:
-          fullTeamData.logo,
-
-        players:
-          fullTeamData.players ||
-          [],
-      };
-
-      setFormData({
-        ...formData,
-        teamsData: newTeams,
+      const res = await fetch("/api/current-game", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
+      if (res.ok) message.success("Cập nhật thành công!");
     } catch (err) {
-      console.error(
-        "LOAD TEAM DETAIL ERROR:",
-        err
-      );
+      message.error("Lỗi kết nối");
     }
   };
 
-  //
-  // UPDATE TEAM FIELD
-  //
-  const updateTeamField = (
-    idx,
-    field,
-    value
-  ) => {
-    const newTeams = [
-      ...formData.teamsData,
-    ];
-
-    newTeams[idx][field] = value;
-
-    setFormData({
-      ...formData,
-      teamsData: newTeams,
-    });
-  };
-
-  //
-  // LOADING SCREEN
-  //
-  if (loadingCurrent) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
-        <div className="flex items-center gap-3 text-slate-400">
-          <Loader2 className="animate-spin" />
-
-          Loading Current Broadcast...
-        </div>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="h-screen flex items-center justify-center bg-black">
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 40, color: '#fff' }} spin />} />
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* HEADER */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight">
-              Current Match Control
-            </h1>
-
-            <p className="text-slate-400 mt-2">
-              Configure live broadcast data
-            </p>
+    // ConfigProvider để ép toàn bộ antd sang Dark Mode
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: "#ffffff",
+          colorBgBase: "#000000",
+          colorTextBase: "#ffffff",
+          borderRadius: 4,
+        },
+      }}
+    >
+      <div className="min-h-screen bg-black p-6 text-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 border-l-4 border-white pl-4">
+            <Title level={2} className="!text-white !m-0 uppercase tracking-widest">
+              <ThunderboltOutlined className="mr-2" /> Match Control
+            </Title>
+            <Text className="text-gray-500">Thiết lập thông số trận đấu trực tiếp</Text>
           </div>
 
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-5 py-3">
-            <div className="text-xs uppercase text-emerald-400 font-bold">
-              Broadcast Slot
-            </div>
+          <Form form={form} layout="vertical" onFinish={onFinish}>
+            <Row gutter={[24, 24]}>
+              {/* Box Thông tin chung */}
+              <Col span={24}>
+                <Card className="bg-zinc-900 border-zinc-800">
+                  <Row gutter={16}>
+                    <Col xs={24} md={12}>
+                      <Form.Item label="Giải đấu" name="tournamentName">
+                        <Input size="large" className="bg-black border-zinc-700" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label="Thể thức" name="matchType">
+                        <Select size="large" options={[{value:'BO1'}, {value:'BO3'}, {value:'BO5'}]} />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
 
-            <div className="text-lg font-bold mt-1">
-              Match ID: 5
-            </div>
-          </div>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-8"
-        >
-          {/* TOURNAMENT */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <Trophy
-                size={18}
-                className="text-blue-400"
-              />
-
-              <h2 className="font-bold text-lg">
-                Tournament Setup
-              </h2>
-            </div>
-
-            <select
-              onChange={
-                handleTournamentChange
-              }
-              className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 outline-none focus:border-blue-500"
-            >
-              <option value="">
-                -- Select Tournament --
-              </option>
-
-              {tournaments.map((t) => (
-                <option
-                  key={t.id}
-                  value={t.id}
-                >
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* MATCH INFO */}
-          <div className="grid grid-cols-2 gap-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-              <label className="block text-sm text-slate-400 mb-3">
-                Tournament Name
-              </label>
-
-              <input
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 outline-none focus:border-blue-500"
-                value={
-                  formData.tournamentName
-                }
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-
-                    tournamentName:
-                      e.target.value,
-                  })
-                }
-              />
-            </div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-              <label className="block text-sm text-slate-400 mb-3">
-                Match Type
-              </label>
-
-              <select
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 outline-none focus:border-blue-500"
-                value={
-                  formData.matchType
-                }
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-
-                    matchType:
-                      e.target.value,
-                  })
-                }
-              >
-                <option>BO1</option>
-                <option>BO3</option>
-                <option>BO5</option>
-              </select>
-            </div>
-          </div>
-
-          {/* TEAMS */}
-          <div className="grid grid-cols-2 gap-8">
-            {[0, 1].map((idx) => (
-              <div
-                key={idx}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5"
-              >
-                <div className="flex items-center gap-2">
-                  <Shield
-                    size={16}
-                    className="text-blue-400"
-                  />
-
-                  <h2 className="font-bold">
-                    TEAM {idx + 1}
-                  </h2>
-                </div>
-
-                {/* TEAM SELECT */}
-                <select
-                  disabled={
-                    !selectedTournament ||
-                    loadingTeams
-                  }
-                  onChange={(e) => {
-                    const teamEntry =
-                      selectedTournament.teams.find(
-                        (t) =>
-                          t.team.id ===
-                          parseInt(
-                            e.target.value
-                          )
-                      );
-
-                    if (teamEntry) {
-                      handleSelectTeam(
-                        idx,
-                        teamEntry.team
-                      );
-                    }
-                  }}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 disabled:opacity-50"
-                >
-                  <option value="">
-                    -- Select Team --
-                  </option>
-
-                  {selectedTournament?.teams.map(
-                    (t) => (
-                      <option
-                        key={t.team.id}
-                        value={t.team.id}
-                      >
-                        {t.team.name}
-                      </option>
-                    )
-                  )}
-                </select>
-
-                {/* TEAM INFO */}
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    placeholder="Team Name"
-                    className="bg-slate-950 border border-slate-700 rounded-xl p-3"
-                    value={
-                      formData.teamsData[idx]
-                        .name
-                    }
-                    onChange={(e) =>
-                      updateTeamField(
-                        idx,
-                        "name",
-                        e.target.value
-                      )
-                    }
-                  />
-
-                  <input
-                    placeholder="Tag"
-                    className="bg-slate-950 border border-slate-700 rounded-xl p-3 uppercase"
-                    value={
-                      formData.teamsData[idx]
-                        .tag
-                    }
-                    onChange={(e) =>
-                      updateTeamField(
-                        idx,
-                        "tag",
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
-
-                {/* COLOR */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    value={
-                      formData.teamsData[idx]
-                        .color
-                    }
-                    onChange={(e) =>
-                      updateTeamField(
-                        idx,
-                        "color",
-                        e.target.value
-                      )
-                    }
-                    className="w-14 h-10 rounded cursor-pointer bg-transparent"
-                  />
-
-                  <div className="text-sm text-slate-400 font-mono">
-                    {
-                      formData.teamsData[idx]
-                        .color
-                    }
-                  </div>
-                </div>
-
-                {/* PLAYERS */}
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <Users
-                      size={16}
-                      className="text-slate-400"
-                    />
-
-                    <h3 className="text-sm uppercase text-slate-400 font-bold">
-                      Players
-                    </h3>
-                  </div>
-
-                  <div className="space-y-3 max-h-[350px] overflow-y-auto pr-2">
-                    {formData.teamsData[idx]
-                      .players?.length >
-                    0 ? (
-                      formData.teamsData[
-                        idx
-                      ].players.map(
-                        (player) => (
-                          <div
-                            key={player.id}
-                            className="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center gap-3"
-                          >
-                            <div className="w-12 h-12 bg-slate-800 rounded-xl overflow-hidden">
-                              {player.avatar ? (
-                                <img
-                                  src={
-                                    player.avatar
-                                  }
-                                  alt={
-                                    player.nickname
-                                  }
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <Users
-                                    size={
-                                      18
-                                    }
-                                    className="text-slate-500"
-                                  />
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <div className="font-bold truncate">
-                                {
-                                  player.nickname
-                                }
-                              </div>
-
-                              <div className="text-xs uppercase text-blue-400 mt-1">
-                                {player.role}
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      )
-                    ) : (
-                      <div className="border border-dashed border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm">
-                        No players loaded
+              {/* Cấu hình 2 Đội */}
+              {[0, 1].map((idx) => (
+                <Col xs={24} lg={12} key={`team-section-${idx}`}>
+                  <Card 
+                    title={<span className="text-white">TEAM {idx + 1}</span>}
+                    className="bg-zinc-900 border-zinc-800"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="Tên đội" 
+                          value={teamsData[idx].name}
+                          onChange={(e) => {
+                            const newTeams = [...teamsData];
+                            newTeams[idx].name = e.target.value;
+                            setTeamsData(newTeams);
+                          }}
+                        />
+                        <ColorPicker 
+                          value={teamsData[idx].color}
+                          onChange={(c) => {
+                            const newTeams = [...teamsData];
+                            newTeams[idx].color = c.toHexString();
+                            setTeamsData(newTeams);
+                          }}
+                        />
                       </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
 
-          {/* SUBMIT */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 rounded-2xl p-5 font-bold flex items-center justify-center gap-3 transition-all"
-          >
-            {isSubmitting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <Save size={20} />
-            )}
+                      {/* Fix lỗi Divider orientation */}
+                      <Divider titlePlacement="left" className="border-zinc-800">
+                        <Text className="text-[10px] text-zinc-500 uppercase font-bold">Thành viên</Text>
+                      </Divider>
 
-            {isSubmitting
-              ? "SYNCING..."
-              : "SYNC CURRENT MATCH"}
-          </button>
-        </form>
+                      <div className="space-y-2">
+                        {teamsData[idx].players.map((p, pIdx) => (
+                          <div key={p.id || `p-${idx}-${pIdx}`} className="flex items-center gap-3 p-2 bg-black rounded border border-zinc-800">
+                            <Avatar src={p.avatar} size="small" />
+                            <Text className="text-white text-xs">{p.nickname}</Text>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+
+              <Col span={24}>
+                <Button 
+                  type="primary" 
+                  htmlType="submit" 
+                  block 
+                  size="large"
+                  icon={<SaveOutlined />}
+                  className="bg-white text-black hover:!bg-gray-200 border-none font-bold h-12"
+                >
+                  LƯU CẤU HÌNH
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </div>
       </div>
-    </div>
+
+      <style jsx global>{`
+        .ant-card-head { border-bottom: 1px solid #27272a !important; }
+        .ant-input, .ant-select-selector { border-color: #3f3f46 !important; }
+        .ant-form-item-label label { color: #a1a1aa !important; }
+      `}</style>
+    </ConfigProvider>
   );
 };
 

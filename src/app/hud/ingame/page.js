@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import TopLeftPanel from "./components/topleftpanel";
 import TopCenterPanel from "./components/topcenterpanel";
-import TopRightPanel from "./components/toprightpanel";
 import SkinShowPanel from "./components/centerleftpanel/skinshowpanel";
 import CenterLeftPanel from "./components/centerleftpanel";
 import BottomcenterPanel from "./components/bottomcenterpanel";
@@ -18,7 +17,7 @@ const Ingame = () => {
     showOverlay,
     showTop,
     showBottom,
-    showSkin, // Bạn có thể dùng biến này để ẩn/hiện các thành phần liên quan đến skin nếu cần
+    showSkin,
     setState,
   } = useOverlayStore();
 
@@ -36,27 +35,35 @@ const Ingame = () => {
 
   return (
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none">
-      {/* Nhóm các Panel phía trên (Top) */}
+      
+      {/* --- LAYER PHÍA TRÊN (TOP) --- */}
       {showTop && (
-        <>
+        <div className="absolute top-0 left-0 right-0 flex justify-center items-start">
+          {/* TopLeftPanel tự quản lý vị trí absolute bên trong nó hoặc bạn bọc thêm div */}
           <TopLeftPanel />
+          
+          {/* TopCenterPanel chứa Scoreboard và EventComponent */}
           <TopCenterPanel />
+          
           {/* <TopRightPanel /> */}
-        </>
+        </div>
       )}
 
-      {/* Nhóm các Panel ở giữa (Center) */}
-      {showSkin && <SkinShowPanel />}
+      {/* --- LAYER GIỮA (CENTER) --- */}
+      {/* Dùng absolute để cố định vị trí giữa màn hình, không phụ thuộc vào Top */}
+      <div className="absolute inset-0 flex items-center">
+         {showSkin && <SkinShowPanel />}
+         <CenterLeftPanel />
+      </div>
 
-      <CenterLeftPanel />
-
-      {/* Nhóm các Panel phía dưới (Bottom) */}
+      {/* --- LAYER PHÍA DƯỚI (BOTTOM) --- */}
       {showBottom && (
-        <>
+        <div className="absolute bottom-0 left-0 right-0">
           <BottomcenterPanel />
           <BottomRightLeftPanel />
-        </>
+        </div>
       )}
+      
     </div>
   );
 };

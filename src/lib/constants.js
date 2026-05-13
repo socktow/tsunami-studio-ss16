@@ -23,6 +23,7 @@ export const ICONS = {
 export const OBJECTIVE_ICONS = {
   BARON: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/baron.png",
   GRUB: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/grub.png",
+  RIFTHERALD : "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/riftherald.png",
   DRAGONS: {
     air: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_cloud.png",
     earth: "https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon_mountain.png",

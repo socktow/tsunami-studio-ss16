@@ -1,36 +1,54 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/db";
-
 const CURRENT_MATCH_ID = 5;
 
-//
-// GET CURRENT GAME
-//
 export async function GET() {
   try {
+    // Kiểm tra biến prisma ngay khi hàm bắt đầu
+    if (!prisma || !prisma.match) {
+      console.error("Lỗi: Prisma Client chưa được khởi tạo đúng cách.");
+      return NextResponse.json(
+        { success: false, error: "Database connection error" },
+        { status: 500 }
+      );
+    }
+
     const currentMatch = await prisma.match.findUnique({
       where: {
         id: CURRENT_MATCH_ID,
       },
     });
 
+    // Trường hợp không có Match ID 5 trong Database
     if (!currentMatch) {
       return NextResponse.json(
-        { success: false, message: "Current match not found" },
+        { success: false, message: `Match with ID ${CURRENT_MATCH_ID} not found` },
         { status: 404 }
       );
     }
 
-    // Parse dữ liệu từ String JSON sang Object
-    const rawTeamsData = JSON.parse(currentMatch.teamsData || "[]");
+    // Xử lý teamsData (đảm bảo không bị crash nếu dữ liệu trống hoặc sai format)
+    let rawTeamsData = [];
+    try {
+      if (typeof currentMatch.teamsData === 'string') {
+        rawTeamsData = JSON.parse(currentMatch.teamsData || "[]");
+      } else {
+        rawTeamsData = currentMatch.teamsData || [];
+      }
+    } catch (parseError) {
+      console.error("JSON Parse Error:", parseError);
+      rawTeamsData = [];
+    }
 
-    // Tiến hành lọc bỏ các field dư thừa trong players
-    const cleanedTeamsData = rawTeamsData.map((team) => ({
-      ...team,
-      players: team.players?.map(({ id, teamId, createdAt, updatedAt, ...playerInfo }) => ({
-        ...playerInfo, // Chỉ giữ lại các field như nickname, avatar, role
-      })),
-    }));
+    // Làm sạch dữ liệu players: Chỉ giữ lại nickname, avatar, role...
+    const cleanedTeamsData = Array.isArray(rawTeamsData)
+      ? rawTeamsData.map((team) => ({
+          ...team,
+          players: Array.isArray(team.players)
+            ? team.players.map(({ id, teamId, createdAt, updatedAt, ...playerInfo }) => playerInfo)
+            : [],
+        }))
+      : [];
 
     return NextResponse.json(
       {
@@ -42,10 +60,14 @@ export async function GET() {
       },
       { status: 200 }
     );
+
   } catch (error) {
-    console.error("GET ERROR:", error);
+    console.error("CRITICAL GET ERROR:", error);
     return NextResponse.json(
-      { success: false, error: "GET failed" },
+      { 
+        success: false, 
+        error: error.message || "Internal Server Error" 
+      },
       { status: 500 }
     );
   }

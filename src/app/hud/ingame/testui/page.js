@@ -11,29 +11,31 @@ const Index = () => {
   if (!apiResponse || !apiResponse.matchInfo || !apiResponse.scoreboard) return null;
 
   const { matchInfo, scoreboard } = apiResponse;
+
+  const teamBlueInfo = matchInfo.teamsData[0];
+  const teamRedInfo = matchInfo.teamsData[1];
+
   const teamBlueStats = scoreboard.teams[0];
   const teamRedStats = scoreboard.teams[1];
 
+  console.log(scoreboard)
+
   return (
     <div className="flex items-center justify-center">
-      {/* Container chính của Scoreboard */}
-      <div className="flex flex-row items-start w-fit relative">
+      <div className="flex flex-row items-start w-fit">
 
-        {/* --- TEAM BLUE CONTAINER --- */}
-        <div className="relative"> 
-          {/* Lớp Buff (Absolute): Không chiếm diện tích, không đẩy UI dưới */}
-          <div className="absolute top-0 right-full mr-1 z-50">
-            <EventComponent
-              isRightSide={false}
-              gameTime={scoreboard.gameTime}
-              baronPowerPlay={teamBlueStats.baronPowerPlay}
-              dragonPowerPlay={teamBlueStats.dragonPowerPlay}
-            />
-          </div>
-          {/* Phần hiển thị chính */}
+        {/* --- BÊN TRÁI (BLUE TEAM) --- */}
+        <div className="flex items-start relative">
+          {/* Truyền dữ liệu PowerPlay vào EventComponent */}
+          <EventComponent
+            isRightSide={false}
+            gameTime={scoreboard.gameTime}
+            baronPowerPlay={teamBlueStats.baronPowerPlay}
+            dragonPowerPlay={teamBlueStats.dragonPowerPlay}
+          />
           <SplitComponent
             isRightSide={false}
-            teamData={matchInfo.teamsData[0]}
+            teamData={teamBlueInfo}
             statsData={{
               gold: teamBlueStats.gold,
               towers: teamBlueStats.towers,
@@ -45,27 +47,25 @@ const Index = () => {
           />
         </div>
 
-        {/* --- CENTER --- */}
+        {/* --- TRUNG TÂM (CENTER) --- */}
         <CenterComponent
           blueKills={teamBlueStats.kills}
           redKills={teamRedStats.kills}
           gameTime={scoreboard.gameTime}
         />
 
-        {/* --- TEAM RED CONTAINER --- */}
-        <div className="relative">
-          {/* Lớp Buff (Absolute) */}
-          <div className="absolute top-0 left-full ml-1 z-50">
-            <EventComponent
-              isRightSide={true}
-              gameTime={scoreboard.gameTime}
-              baronPowerPlay={teamRedStats.baronPowerPlay}
-              dragonPowerPlay={teamRedStats.dragonPowerPlay}
-            />
-          </div>
+        {/* --- BÊN PHẢI (RED TEAM) --- */}
+        <div className="flex flex-row-reverse items-start relative">
+          {/* Truyền dữ liệu PowerPlay vào EventComponent */}
+          <EventComponent
+            gameTime={scoreboard.gameTime}
+            isRightSide={true}
+            baronPowerPlay={teamRedStats.baronPowerPlay}
+            dragonPowerPlay={teamRedStats.dragonPowerPlay}
+          />
           <SplitComponent
             isRightSide={true}
-            teamData={matchInfo.teamsData[1]}
+            teamData={teamRedInfo}
             statsData={{
               gold: teamRedStats.gold,
               towers: teamRedStats.towers,
