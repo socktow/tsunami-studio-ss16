@@ -19,7 +19,8 @@
 
 # production
 /build
-
+/prisma/migrations
+/prisma/data.db
 # misc
 .DS_Store
 *.pem
