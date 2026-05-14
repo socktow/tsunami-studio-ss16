@@ -53,3 +53,26 @@ export const ITEM_SLOTS = {
 };
 
 export const IMAGE_BASE_URL = "http://localhost:58869/";
+
+export const perkcategory = {
+  Domination: "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7200_Domination.png",
+  Precision: "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7201_Precision.png",
+  Sorcery: "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7202_Sorcery.png",
+  Whimsy: "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7203_Whimsy.png",
+  Resolve: "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png",
+};
+
+// Định nghĩa các nhóm ID
+const groups = {
+  [perkcategory.Domination]: [8126,8139,8143,8137,8140,8141,8135,8105,8106],
+  [perkcategory.Precision]: [9101,9111,8009,9103,9104,9105,8014,8017,8299], 
+  [perkcategory.Sorcery]: [8224,8226,8275,8210,8233,8234,8237,8236,8232],
+  [perkcategory.Whimsy]: [8306,8304,8321,8313,8352,8345,8347,8410,8316],
+  [perkcategory.Resolve]: [8446,8463,8401,8429,8444,8473,8451,8453,8242]
+};
+
+// Tự động gộp vào một Object duy nhất
+export const perkIdToCategoryImage = Object.entries(groups).reduce((acc, [url, ids]) => {
+  ids.forEach(id => { acc[id] = url; });
+  return acc;
+}, {});
