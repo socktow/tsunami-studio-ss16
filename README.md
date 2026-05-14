@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tsunami Studio SS16
+
+A broadcast dashboard built with Next.js, Prisma, Express-style socket communication, and a small SQLite-backed data model. This app powers tournament team management, player lookup, live overlay state updates, and an in-game HUD for match broadcasts.
+
+## Key Features
+
+- Next.js 16 app using the App Router
+- Live socket server on port `3001` for real-time overlay state events
+- Prisma ORM with SQLite database (`prisma/schema.prisma`)
+- League and tournament dashboard pages, player and team views
+- Custom HUD components and match overlay state handling
+- Concurrent development of Next.js frontend and socket backend via `npm run dev`
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ recommended
+- npm, pnpm, or yarn
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Start development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This runs both:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- `next dev` for the frontend app on `http://localhost:3000`
+- `node socket/server.js` for the socket server on `http://localhost:3001`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Build and start for production
 
-## Learn More
+```bash
+npm run build
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/` - Next.js App Router pages and API routes
+- `src/components/` - shared components such as layout containers and navigation
+- `src/hooks/` - custom React hooks for API data and state management
+- `src/lib/` - utility functions, constants, API route helpers, and Prisma DB utilities
+- `src/store/` - client-side state store
+- `socket/server.js` - standalone socket.io server for overlay state broadcasting
+- `prisma/` - Prisma schema and migrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database
 
-## Deploy on Vercel
+This project uses Prisma with SQLite. The database file is configured in `prisma/schema.prisma`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```prisma
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prisma commands
+
+- Generate Prisma client: `npx prisma generate`
+- Apply migrations: `npx prisma migrate dev`
+- Open Prisma Studio: `npx prisma studio`
+
+## Socket Server
+
+The socket server listens on port `3001` and emits overlay state updates:
+
+- Emits `init` with initial overlay state on connection
+- Listens for `update` events from clients
+- Broadcasts the current state with `state`
+
+## Available Scripts
+
+- `npm run dev` - run Next.js and socket server concurrently
+- `npm run next` - run Next.js in development mode only
+- `npm run socket` - run the socket server only
+- `npm run build` - build Next.js for production
+- `npm start` - start the built Next.js app
+- `npm run lint` - run ESLint
+
+## Notes
+
+- The app uses `reactCompiler: true` in `next.config.mjs`.
+- There is no explicit `.env` requirement in the current repository, but you can add environment configuration if needed.
+
+## License
+
+This repository does not specify a license.
