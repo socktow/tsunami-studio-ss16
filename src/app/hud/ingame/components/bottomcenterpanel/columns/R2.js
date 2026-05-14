@@ -121,7 +121,7 @@ const R2 = () => {
                   {/* STACKS / CHARGES (Ở Red Team thường để góc trái dưới để tránh che hình) */}
                   {(slot.item.stacks > 0 || slot.item.charges > 0) && (
                     <div 
-                      className="absolute bottom-0 left-0 min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-black z-40" 
+                      className="absolute bottom-0 left-0 text-white min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-black z-40" 
                       style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}
                     >
                       {slot.item.stacks || slot.item.charges}
@@ -130,7 +130,7 @@ const R2 = () => {
 
                   {slot.isTrinket && (
                     <>
-                      <div className="absolute -top-[6px] left-1/2 -translate-x-1/2 min-w-[12px] h-[9px] flex items-center justify-center text-[11px] leading-none font-bold z-50" style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}>
+                      <div className="absolute -top-[6px] text-white left-1/2 -translate-x-1/2 min-w-[12px] h-[9px] flex items-center justify-center text-[11px] leading-none font-bold z-50" style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}>
                         {Math.round(visionScore)}
                       </div>
                       <div className={`absolute inset-0 bg-black/10 border pointer-events-none ${isDead ? "border-zinc-500/10" : "border-yellow-500/20"}`} />
