@@ -19,9 +19,13 @@ export const useScoreboardData = () => {
     };
     fetchCurrentMatch();
   }, []);
+  const realData = useMemo(() => {
+    if (!gameData) return null;
+    return gameData.state ? gameData.state : gameData;
+  }, [gameData]);
 
   const allPlayerNames = useMemo(() => {
-    const tabs = gameData?.tabs;
+    const tabs = realData?.tabs;
     if (!tabs) return [];
 
     const standardRoles = ["TOP", "JUNGLE", "MID", "ADC", "SUP"];
@@ -36,11 +40,10 @@ export const useScoreboardData = () => {
       return (players ?? []).map((p, i) => {
         const apiData = getApiPlayerData(sideIndex, standardRoles[i]);
         return {
-          gameName: p.playerName,         // Tên gốc trong game
-          nickname: apiData?.nickname || p.playerName, // Tên tùy chỉnh từ API
-          role: apiData?.role || standardRoles[i],     // Role (TOP, MID...)
-          avatar: apiData?.avatar || null,              // Ảnh thẻ tuyển thủ
-          // Lấy splashCenteredImg từ championAssets của League Client
+          gameName: p.playerName,                        
+          nickname: apiData?.nickname || p.playerName,    
+          role: apiData?.role || standardRoles[i],         
+          avatar: apiData?.avatar || null,                
           championSplash: p.championAssets?.splashCenteredImg || null, 
           side: sideIndex === 0 ? "BLUE" : "RED"
         };
@@ -51,10 +54,10 @@ export const useScoreboardData = () => {
     const redPlayers = mapPlayers(tabs.Chaos?.players, 1);
 
     return [...bluePlayers, ...redPlayers];
-  }, [gameData?.tabs, currentMatch]);
+  }, [realData?.tabs, currentMatch]);
 
   return {
-    scoreboard: gameData?.scoreboard || null,
+    scoreboard: realData?.scoreboard || null,
     allPlayerNames,
     matchInfo: currentMatch,
   };

@@ -18,7 +18,7 @@ export default function LeagueDataProvider({ children }) {
   const [gameData, setGameData] = useState(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:58869/ws/in");
+    const socket = new WebSocket("ws://localhost:58869/ws/pre");
 
     socket.onmessage = (event) => {
       // 1. BỎ QUA: Nếu là tin nhắn KeepAlive thì thoát luôn, không xử lý tiếp
