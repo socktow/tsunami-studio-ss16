@@ -1,96 +1,130 @@
-# Tsunami Studio SS16
+# Tsunami SS16 — VCS overlay control
 
-A broadcast dashboard built with Next.js, Prisma, Express-style socket communication, and a small SQLite-backed data model. This app powers tournament team management, player lookup, live overlay state updates, and an in-game HUD for match broadcasts.
+Next.js broadcast dashboard for League of Legends overlays: tournament data (SQLite / Prisma), a control room at `/dashboard`, and an in-game HUD at `/hud/ingame`. Live game state comes from `@bluebottle_gg/league-broadcast-client` when a compatible League broadcast feed is available.
 
-## Key Features
+## Prerequisites
 
-- Next.js 16 app using the App Router
-- Live socket server on port `3001` for real-time overlay state events
-- Prisma ORM with SQLite database (`prisma/schema.prisma`)
-- League and tournament dashboard pages, player and team views
-- Custom HUD components and match overlay state handling
-- Concurrent development of Next.js frontend and socket backend via `npm run dev`
+- **Node.js** 18+ (LTS recommended)
+- **League of Legends** with whatever tooling exposes the broadcast WebSocket this app expects (default in code: `localhost:58869` — see `src/app/context/LeagueDataContext.js`)
 
-## Getting Started
+## Install (first time or fresh clone)
 
-### Prerequisites
+From the project root `tsunami_ss16`:
 
-- Node.js 18+ recommended
-- npm, pnpm, or yarn
-
-### Install dependencies
-
-```bash
+```powershell
+cd tsunami_ss16
 npm install
+npx prisma generate
+npx prisma migrate deploy
 ```
 
-### Start development server
+SQLite database file: `prisma/data.db` (created by migrations).
 
-```bash
+## Rebuild (clean artifacts)
+
+Use this when builds act stale or after major dependency upgrades.
+
+```powershell
+cd tsunami_ss16
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run build
+```
+
+Optional nuclear reset (reinstalls all packages):
+
+```powershell
+Remove-Item -Recurse -Force node_modules, .next -ErrorAction SilentlyContinue
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run build
+```
+
+## Run — development
+
+`npm run dev` starts **both**:
+
+| Service | Port | Role |
+|--------|------|------|
+| Next.js | [http://localhost:3000](http://localhost:3000) | Web UI and API routes |
+| Socket.IO (`socket/server.js`) | **3001** | Overlay visibility state shared between dashboard and HUD |
+
+```powershell
 npm run dev
 ```
 
-This runs both:
+## Run — production build
 
-- `next dev` for the frontend app on `http://localhost:3000`
-- `node socket/server.js` for the socket server on `http://localhost:3001`
-
-### Build and start for production
-
-```bash
+```powershell
 npm run build
-npm start
 ```
 
-## Project Structure
+Then run **two** processes (the `start` script only launches Next.js, not the socket server):
 
-- `src/app/` - Next.js App Router pages and API routes
-- `src/components/` - shared components such as layout containers and navigation
-- `src/hooks/` - custom React hooks for API data and state management
-- `src/lib/` - utility functions, constants, API route helpers, and Prisma DB utilities
-- `src/store/` - client-side state store
-- `socket/server.js` - standalone socket.io server for overlay state broadcasting
-- `prisma/` - Prisma schema and migrations
+```powershell
+# Terminal 1
+npm run start
 
-## Database
-
-This project uses Prisma with SQLite. The database file is configured in `prisma/schema.prisma`:
-
-```prisma
-datasource db {
-  provider = "sqlite"
-  url      = "file:./data.db"
-}
+# Terminal 2
+node socket/server.js
 ```
 
-### Prisma commands
+Next.js defaults to port **3000**; the socket server listens on **3001**.
 
-- Generate Prisma client: `npx prisma generate`
-- Apply migrations: `npx prisma migrate dev`
-- Open Prisma Studio: `npx prisma studio`
+## How to use
 
-## Socket Server
+1. Start the stack (`npm run dev` or production pair above).
+2. Open **[http://localhost:3000/dashboard](http://localhost:3000/dashboard)** — control overlay modules (scoreboard, rankings, KDA, skin spotlight, strike mode, etc.). Changes sync over Socket.IO to clients on port 3001.
+3. Open **[http://localhost:3000/hud/ingame](http://localhost:3000/hud/ingame)** in a browser source (**OBS**, vMix, etc.) for the transparent overlay; keep the socket server running so the dashboard and HUD stay in sync.
+4. Ensure your **League broadcast** endpoint matches the app (`host` / `port` in `LeagueDataProvider`). Without it, HUD sections that depend on live game data will not update.
+5. **Tournament / teams / players**: use the navbar and routes under `/tournament`, `/team`, `/player`, and REST handlers under `/api/*`. Prisma Studio can be launched from the home page control (`/`) via the API that opens port **5555** when available.
 
-The socket server listens on port `3001` and emits overlay state updates:
+Other useful routes include `/dashboard/current-match`, `/hud/ingame/testui`, and `/hud/ingame/testpage` for layout experiments.
 
-- Emits `init` with initial overlay state on connection
-- Listens for `update` events from clients
-- Broadcasts the current state with `state`
+## Scripts (from `package.json`)
 
-## Available Scripts
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Next dev + socket server (concurrent) |
+| `npm run next` | Next.js only |
+| `npm run socket` | Socket.IO server only |
+| `npm run build` | Production build |
+| `npm run start` | Production Next.js server |
+| `npm run lint` | ESLint |
 
-- `npm run dev` - run Next.js and socket server concurrently
-- `npm run next` - run Next.js in development mode only
-- `npm run socket` - run the socket server only
-- `npm run build` - build Next.js for production
-- `npm start` - start the built Next.js app
-- `npm run lint` - run ESLint
+---
 
-## Notes
+## Roadmap — future work in this project
 
-- The app uses `reactCompiler: true` in `next.config.mjs`.
-- There is no explicit `.env` requirement in the current repository, but you can add environment configuration if needed.
+**In scope (baseline shipped today):** overlay control, HUD ingest, Prisma tournament data, socket sync — treat as **✓** once your branch matches release.
 
-## License
+**Add / todo (not done yet — mark ✗ until implemented):**
 
-This repository does not specify a license.
+| | |
+|--|--|
+| ✗ | Gold graph |
+| ✗ | Rune page |
+| ✗ | CD items (item cooldowns on overlay) |
+| ✗ | Kill-feed events |
+| ✗ | Tower events |
+| ✗ | POST-GAME analysis |
+
+Flip **✗ → ✓** in this file when each feature ships.
+
+---
+
+## Tech stack
+
+- Next.js 16, React 19, Tailwind 4, Ant Design, Framer Motion, Recharts  
+- Prisma + SQLite  
+- Socket.IO (separate Node server)  
+- `@bluebottle_gg/league-broadcast-client` for in-game state  
+
+---
+
+## Learn More (Next.js)
+
+- [Next.js Documentation](https://nextjs.org/docs)
