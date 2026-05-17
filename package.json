@@ -19,6 +19,7 @@
     "child_process": "^1.0.2",
     "express": "^5.2.1",
     "framer-motion": "^12.38.0",
+    "league-connect": "^6.0.0-rc13",
     "lucide-react": "^1.14.0",
     "net": "^1.0.2",
     "next": "16.2.2",
