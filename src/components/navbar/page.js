@@ -65,8 +65,8 @@ export default function Navbar() {
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
         <Link href="/" className="group block">
           <div className="flex items-center gap-3 mb-1">
-            <div className="relative w-6 h-6 border border-emerald-500 flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
-                <div className="w-2 h-2 bg-emerald-500 animate-pulse"></div>
+            <div className="relative size-6 border border-emerald-500 flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
+                <div className="size-2 bg-emerald-500 animate-pulse"></div>
             </div>
             <span className="text-xl font-black tracking-tighter text-white uppercase italic">
               Tsunami<span className="text-emerald-500 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">.ST</span>

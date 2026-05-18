@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 
 const STATUS_CONFIG = {
-  UPCOMING: { color: "#fbbf24", icon: <Clock className="w-3 h-3" />, label: "UPCOMING" },
-  ONGOING: { color: "#10b981", icon: <Activity className="w-3 h-3" />, label: "ONGOING" },
-  FINISHED: { color: "#ef4444", icon: <CheckCircle2 className="w-3 h-3" />, label: "FINISHED" },
+  UPCOMING: { color: "#fbbf24", icon: <Clock className="size-3" />, label: "UPCOMING" },
+  ONGOING: { color: "#10b981", icon: <Activity className="size-3" />, label: "ONGOING" },
+  FINISHED: { color: "#ef4444", icon: <CheckCircle2 className="size-3" />, label: "FINISHED" },
 };
 
 export default function TournamentPage() {
@@ -102,7 +102,7 @@ export default function TournamentPage() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 border-b border-emerald-500/20 pb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Trophy className="w-8 h-8 text-white" />
+              <Trophy className="size-8 text-white" />
               <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">Tournaments<span className="text-emerald-500">.DB</span></h1>
             </div>
             <p className="text-[10px] tracking-[0.5em] opacity-50 uppercase">Global_Event_Coordinator_v2.0</p>
@@ -112,7 +112,7 @@ export default function TournamentPage() {
             onClick={() => openDrawer()}
             className="group relative px-8 py-4 bg-emerald-500 text-black font-black uppercase italic text-sm flex items-center gap-2 overflow-hidden transition-all hover:bg-white"
           >
-            <Plus className="w-4 h-4" /> Initialize_New_Tournament
+            <Plus className="size-4" /> Initialize_New_Tournament
           </button>
         </header>
 
@@ -154,13 +154,13 @@ export default function TournamentPage() {
 
                   {/* Logo & Info */}
                   <div className="flex items-center gap-5 mb-8">
-                    <div className="w-16 h-16 border border-emerald-500/20 p-1 bg-emerald-500/5">
+                    <div className="size-16 border border-emerald-500/20 p-1 bg-emerald-500/5">
                       <img src={t.logo || "/placeholder.png"} className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all" alt="" />
                     </div>
                     <div>
                       <h3 className="text-lg font-black text-white italic uppercase leading-none mb-1 group-hover:text-emerald-500">{t.name}</h3>
                       <div className="flex items-center gap-2 text-[10px] opacity-50 italic">
-                        <Calendar className="w-3 h-3" />
+                        <Calendar className="size-3" />
                         {new Date(t.startDate).toLocaleDateString('vi-VN')}
                       </div>
                     </div>
@@ -174,10 +174,10 @@ export default function TournamentPage() {
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => openDrawer(t)} className="p-2 border border-emerald-500/20 hover:bg-emerald-500 hover:text-black transition-all">
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="size-4" />
                       </button>
                       <button onClick={() => handleDelete(t.id)} className="p-2 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </div>
@@ -199,7 +199,7 @@ export default function TournamentPage() {
             >
               <div className="flex justify-between items-center mb-12">
                 <h2 className="text-2xl font-black text-white italic uppercase">{editingId ? "Update_Registry" : "New_Initialization"}</h2>
-                <button onClick={() => setIsDrawerOpen(false)} className="hover:text-red-500 transition-colors"><X className="w-6 h-6" /></button>
+                <button onClick={() => setIsDrawerOpen(false)} className="hover:text-red-500 transition-colors"><X className="size-6" /></button>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-8 overflow-y-auto pr-2 custom-scrollbar">
@@ -207,9 +207,9 @@ export default function TournamentPage() {
                 {/* Logo Preview Section */}
                 <div className="p-6 bg-emerald-500/5 border border-dashed border-emerald-500/30 flex flex-col items-center">
                    {form.logo ? (
-                     <img src={form.logo} className="w-24 h-24 object-contain mb-4 shadow-[0_0_20px_rgba(16,185,129,0.2)]" />
+                     <img src={form.logo} className="size-24 object-contain mb-4 shadow-[0_0_20px_rgba(16,185,129,0.2)]" />
                    ) : (
-                     <div className="w-24 h-24 border border-emerald-500/10 flex items-center justify-center mb-4"><Trophy className="opacity-10 w-12 h-12" /></div>
+                     <div className="size-24 border border-emerald-500/10 flex items-center justify-center mb-4"><Trophy className="opacity-10 size-12" /></div>
                    )}
                    <p className="text-[10px] uppercase opacity-30 italic">Asset_Visual_Module</p>
                 </div>

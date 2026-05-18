@@ -125,7 +125,7 @@ const KillFeed = ({ gameData }) => {
                   {event.AssistantNames?.length > 0 && (
                     <div className="flex mt-1 -space-x-1.5">
                       {event.AssistantNames.map((name, i) => (
-                        <div key={i} className="w-5 h-5 border border-white/20 overflow-hidden bg-zinc-950 shadow-sm">
+                        <div key={i} className="size-5 border border-white/20 overflow-hidden bg-zinc-950 shadow-sm">
                           <img 
                             src={getImgUrl(allPlayers[name])} 
                             className="w-full h-full object-cover opacity-80" 
@@ -151,7 +151,7 @@ const KillFeed = ({ gameData }) => {
                 <span className="text-[13px] font-black italic tracking-tighter text-zinc-400 uppercase text-right leading-none">
                   {victim.name}
                 </span>
-                <div className="relative border border-white/10 w-8 h-8 overflow-hidden bg-zinc-900 flex-shrink-0">
+                <div className="relative border border-white/10 size-8 overflow-hidden bg-zinc-900 flex-shrink-0">
                   <img 
                     src={getImgUrl(victim)} 
                     className="w-full h-full object-cover grayscale brightness-[0.3]" 

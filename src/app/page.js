@@ -98,7 +98,7 @@ export default function IndustrialUI() {
       <div className="flex justify-between items-center mb-6 border-b border-zinc-800/50 pb-4">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
+            <div className="size-3 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
             <span className="text-[10px] font-black tracking-[0.3em] text-zinc-100">SYSTEM_OPERATIONAL</span>
           </div>
           <div className="h-4 w-[1px] bg-zinc-800" />
@@ -206,7 +206,7 @@ export default function IndustrialUI() {
                 <TerminalIcon size={12} className="text-emerald-500" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Database_Terminal_v1.0</span>
               </div>
-              <div className={`w-2 h-2 rounded-full ${dbStatus === 'ACTIVE' ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-zinc-800'}`} />
+              <div className={`size-2 rounded-full ${dbStatus === 'ACTIVE' ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-zinc-800'}`} />
             </div>
 
             {/* Log Display */}

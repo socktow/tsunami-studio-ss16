@@ -86,7 +86,7 @@ const CenterLeftPanel = () => {
                                                 <span className={`font-mono font-black text-xs ${index === 0 ? 'text-amber-400' : 'text-amber-100/90'}`}>
                                                     {formatGold(player.totalGold)}
                                                 </span>
-                                                <div className="w-1 h-1 rounded-full bg-amber-500 shadow-[0_0_4px_#f59e0b]" />
+                                                <div className="size-1 rounded-full bg-amber-500 shadow-[0_0_4px_#f59e0b]" />
                                             </div>
                                         ) : (
                                             <div className="flex flex-col items-end gap-1">

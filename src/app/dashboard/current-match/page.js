@@ -202,7 +202,7 @@ const Page = () => {
               </div>
             </div>
             <div className="h-10 px-4 bg-rose-500/10 border border-rose-500/20 rounded-full flex items-center gap-2">
-              <div className="w-2 h-2 bg-rose-500 rounded-full animate-ping" />
+              <div className="size-2 bg-rose-500 rounded-full animate-ping" />
               <span className="text-rose-500 font-bold text-xs uppercase tracking-widest">
                 On Air
               </span>

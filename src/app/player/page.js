@@ -89,7 +89,7 @@ export default function PlayerPage() {
 
           <div className="flex flex-wrap gap-4 w-full xl:w-auto">
             <div className="flex-1 min-w-[250px] relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 opacity-40" />
               <input 
                 type="text" placeholder="FILTER_BY_ALIAS..." value={searchName} onChange={handleSearchChange}
                 className="w-full pl-12 pr-4 py-4 bg-emerald-950/10 border border-emerald-500/30 focus:border-emerald-500 outline-none transition-all uppercase text-xs"
@@ -103,7 +103,7 @@ export default function PlayerPage() {
               onClick={() => { setEditingId(null); setForm({nickname:"", avatar:"", role:"MID", teamId:""}); setIsDrawerOpen(true); }}
               className="bg-emerald-500 text-black px-8 py-4 flex items-center gap-3 hover:bg-white transition-all font-black uppercase text-xs italic shadow-[4px_4px_0px_#065f46]"
             >
-              <UserPlus className="w-4 h-4" /> Create_Record
+              <UserPlus className="size-4" /> Create_Record
             </button>
           </div>
         </header>
@@ -120,18 +120,18 @@ export default function PlayerPage() {
                 
                 {/* 🛡️ TOP BAR: ROLE & TEAM LOGO */}
                 <div className="flex justify-between items-center mb-6">
-                  <img src={ROLE_ICONS[p.role]} className="w-7 h-7 invert brightness-150 opacity-60 group-hover:opacity-100 transition-opacity" alt={p.role} title={p.role} />
+                  <img src={ROLE_ICONS[p.role]} className="size-7 invert brightness-150 opacity-60 group-hover:opacity-100 transition-opacity" alt={p.role} title={p.role} />
                   
                   {/* HIỂN THỊ LOGO TEAM TẠI ĐÂY */}
                   {p.team?.logo ? (
-                    <img src={p.team.logo} className="w-8 h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500" alt={p.team.name} title={p.team.name} />
+                    <img src={p.team.logo} className="size-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500" alt={p.team.name} title={p.team.name} />
                   ) : (
                     <span className="text-[8px] opacity-30 italic uppercase tracking-tighter text-white">No_Logo</span>
                   )}
                 </div>
 
                 <div className="flex flex-col items-center mb-6">
-                  <div className="w-24 h-24 border border-emerald-500/20 rounded-full p-1 mb-4 group-hover:border-emerald-500/60 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+                  <div className="size-24 border border-emerald-500/20 rounded-full p-1 mb-4 group-hover:border-emerald-500/60 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.05)]">
                     <img src={p.avatar || "/default.png"} className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-500" alt={p.nickname} />
                   </div>
                   <h3 className="text-xl font-black text-white italic uppercase tracking-tighter">{p.nickname}</h3>
@@ -159,13 +159,13 @@ export default function PlayerPage() {
         <div className="mt-12 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-emerald-500/20 pt-8">
           <p className="text-[9px] uppercase tracking-[0.3em] opacity-40">Database_Entries: {filteredPlayers.length}</p>
           <div className="flex items-center gap-4">
-            <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronLeft className="w-4 h-4" /></button>
+            <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronLeft className="size-4" /></button>
             <div className="flex gap-2">
                {[...Array(totalPages)].map((_, i) => (
-                 <button key={i} onClick={() => setCurrentPage(i+1)} className={`w-8 h-8 text-[10px] font-black italic border ${currentPage === i+1 ? 'bg-emerald-500 text-black border-emerald-500' : 'border-emerald-500/20 text-emerald-500/40 hover:text-emerald-500'}`}>{i+1}</button>
+                 <button key={i} onClick={() => setCurrentPage(i+1)} className={`size-8 text-[10px] font-black italic border ${currentPage === i+1 ? 'bg-emerald-500 text-black border-emerald-500' : 'border-emerald-500/20 text-emerald-500/40 hover:text-emerald-500'}`}>{i+1}</button>
                ))}
             </div>
-            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronRight className="w-4 h-4" /></button>
+            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronRight className="size-4" /></button>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default function PlayerPage() {
                   <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">{editingId ? "Update_Log" : "New_Register"}</h2>
                   <div className="h-0.5 w-16 bg-emerald-500 mt-1 shadow-[0_0_10px_#10b981]"></div>
                 </div>
-                <button onClick={() => setIsDrawerOpen(false)} className="size-10 border border-emerald-500/20 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><X className="w-5 h-5" /></button>
+                <button onClick={() => setIsDrawerOpen(false)} className="size-10 border border-emerald-500/20 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><X className="size-5" /></button>
               </div>
               
               <form 
@@ -200,7 +200,7 @@ export default function PlayerPage() {
                     )}
                   </div>
 
-                  <div className="w-32 h-32 relative mb-4">
+                  <div className="size-32 relative mb-4">
                     <img src={form.avatar || "https://via.placeholder.com/150"} className="w-full h-full object-cover rounded-full border border-emerald-500/50 grayscale group-hover:grayscale-0 transition-all duration-500" alt="" />
                     <div className="absolute -bottom-2 -right-2 bg-zinc-950 border border-emerald-500 p-1.5 size-10 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                       <img src={ROLE_ICONS[form.role]} className="w-full h-full invert brightness-200" alt="" />

@@ -47,7 +47,7 @@ const CT = () => {
                     }} 
                 />
                 <div
-                  className="w-0 h-0 
+                  className="size-0 
                     border-t-[5px] border-t-transparent 
                     border-b-[5px] border-b-transparent"
                   style={{ borderLeft: `6px solid ${blueTeamColor}` }} // Mũi tên màu Blue Team
@@ -72,7 +72,7 @@ const CT = () => {
                     }} 
                 />
                 <div
-                  className="w-0 h-0 
+                  className="size-0 
                     border-t-[5px] border-t-transparent 
                     border-b-[5px] border-b-transparent"
                   style={{ borderRight: `6px solid ${redTeamColor}` }} // Mũi tên màu Red Team

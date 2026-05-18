@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
 import TopLeftPanel from "./components/topleftpanel";
@@ -23,15 +23,32 @@ const Ingame = () => {
     setState,
   } = useOverlayStore();
 
+  // ref giữ handler mới nhất
+  const setStateRef = useRef(setState);
+
+  // update ref khi setState đổi
   useEffect(() => {
-    socket.on("init", setState);
-    socket.on("state", setState);
+    setStateRef.current = setState;
+  }, [setState]);
+
+  // subscribe socket chỉ 1 lần
+  useEffect(() => {
+    const handleInit = (data) => {
+      setStateRef.current(data);
+    };
+
+    const handleState = (data) => {
+      setStateRef.current(data);
+    };
+
+    socket.on("init", handleInit);
+    socket.on("state", handleState);
 
     return () => {
-      socket.off("init");
-      socket.off("state");
+      socket.off("init", handleInit);
+      socket.off("state", handleState);
     };
-  }, [setState]);
+  }, []);
 
   if (!showOverlay) return null;
 

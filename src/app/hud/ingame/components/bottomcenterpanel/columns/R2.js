@@ -88,19 +88,19 @@ const R2 = () => {
         {/* PERKS (Bên trái cho Red Team) */}
         <div className="flex flex-col gap-[4px]">
           {/* PRIMARY RUNE */}
-          <div className={`w-[17px] h-[17px] flex items-center justify-center ${isDead ? "bg-zinc-900 border-white/5" : "bg-zinc-800 border border-white/5"}`}>
+          <div className={`w-[17px] h-[17px] flex items-center justify-center ${isDead}`}>
             {player?.perks?.[0]?.iconPath ? (
               <img src={`${IMAGE_BASE_URL}${player.perks[0].iconPath}`} alt="primary" className="w-full h-full object-cover scale-110" />
             ) : <div className="w-full h-full bg-zinc-800" />}
           </div>
 
           {/* SECONDARY STYLE IMAGE */}
-          <div className={`w-[17px] h-[17px] flex items-center justify-center ${isDead ? "bg-zinc-900 border-zinc-800" : "bg-zinc-800 border border-white/5"}`}>
+          <div className={`w-[17px] h-[17px] flex items-center justify-center ${isDead}`}>
             {secondaryRuneStyleUrl ? (
               <img 
                 src={secondaryRuneStyleUrl} 
                 alt="secondary-style" 
-                className="w-[14px] h-[14px] object-contain opacity-80" 
+                className="size-14 object-contain opacity-80" 
               />
             ) : <div className="w-full h-full bg-zinc-800" />}
           </div>

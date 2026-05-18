@@ -129,7 +129,7 @@ export default function TeamDetail() {
                   className="relative group bg-[#080808] border border-emerald-500/10 p-5 overflow-hidden hover:border-emerald-500/50 transition-all duration-300"
                 >
                   {/* Decorative corner */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 clip-path-corner pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
+                  <div className="absolute top-0 right-0 size-16 bg-emerald-500/5 clip-path-corner pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
 
                   <div className="flex gap-6 relative z-10">
                     {/* Avatar Container */}
@@ -139,7 +139,7 @@ export default function TeamDetail() {
                         
                         {/* Role Indicator Overlay */}
                         <div className="absolute -bottom-2 -left-2 bg-emerald-500 text-black p-1 shadow-lg">
-                           <img src={ROLE_ICONS[p.role]} className="w-5 h-5 invert" alt={p.role} />
+                           <img src={ROLE_ICONS[p.role]} className="size-5 invert" alt={p.role} />
                         </div>
                       </div>
                     </div>
@@ -174,8 +174,8 @@ export default function TeamDetail() {
               ))
             ) : (
               <div className="col-span-full py-32 border border-dashed border-emerald-500/20 flex flex-col items-center justify-center bg-emerald-500/[0.01]">
-                  <div className="w-16 h-16 border border-emerald-500/20 flex items-center justify-center mb-6 animate-spin">
-                    <div className="w-8 h-8 bg-emerald-500/20"></div>
+                  <div className="size-16 border border-emerald-500/20 flex items-center justify-center mb-6 animate-spin">
+                    <div className="size-8 bg-emerald-500/20"></div>
                   </div>
                   <p className="text-[10px] tracking-[0.5em] text-emerald-500/40 uppercase font-black">Data_Node_Empty: No_Operatives_Found</p>
               </div>
@@ -197,7 +197,7 @@ export default function TeamDetail() {
                 </div>
                 <div className="h-12 w-12 border border-emerald-500/30 flex items-center justify-center relative group cursor-crosshair">
                     <div className="absolute inset-0 bg-emerald-500/5 group-hover:bg-emerald-500/20 transition-colors"></div>
-                    <div className="w-3 h-3 bg-emerald-500 animate-ping"></div>
+                    <div className="size-3 bg-emerald-500 animate-ping"></div>
                 </div>
             </div>
         </footer>

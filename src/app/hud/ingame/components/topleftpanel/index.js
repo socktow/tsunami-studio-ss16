@@ -62,7 +62,7 @@ const TopLeftPanel = () => {
                 
                 <motion.img 
                   src={obj.icon} 
-                  className="w-7 h-7 object-contain z-10"
+                  className="size-7 object-contain z-10"
                   animate={isSpawned ? { 
                     scale: [1, 1.2, 1],
                     filter: ["brightness(1) saturate(1)", "brightness(1.6) saturate(1.4)", "brightness(1) saturate(1)"]

@@ -12,10 +12,14 @@ export default function TournamentDetail() {
   const { id } = useParams();
   const router = useRouter();
   const [tournament, setTournament] = useState(null);
-  const [allTeams, setAllTeams] = useState([]); // Tất cả đội trong hệ thống
+  const [allTeams, setAllTeams] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // --- GIẢI PHÁP SỬA LỖI HYDRATION MISMATCH ---
+  // Tạo một state riêng để lưu chuỗi ngày tháng sau khi đã mount thành công ở phía Client
+  const [formattedDate, setFormattedDate] = useState("");
 
   const fetchTournament = async () => {
     try {
@@ -44,7 +48,13 @@ export default function TournamentDetail() {
     init();
   }, [id]);
 
-  // Lọc danh sách đội chưa tham gia giải này
+  // Cập nhật chuỗi thời gian khi dữ liệu giải đấu (tournament) đã được nạp
+  useEffect(() => {
+    if (tournament?.startDate) {
+      setFormattedDate(new Date(tournament.startDate).toLocaleString('vi-VN'));
+    }
+  }, [tournament]);
+
   const availableTeams = allTeams.filter(team => {
     const isAlreadyIn = tournament?.teams?.some(t => t.teamId === team.id);
     const matchesSearch = team.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -57,7 +67,6 @@ export default function TournamentDetail() {
         tournamentId: parseInt(id),
         teamId: teamId
       });
-      // Refresh dữ liệu
       await fetchTournament();
       setIsModalOpen(false);
     } catch (err) {
@@ -102,7 +111,7 @@ export default function TournamentDetail() {
           onClick={() => router.push("/tournaments")}
           className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] opacity-50 hover:opacity-100 mb-8 transition-all"
         >
-          <ArrowLeft className="w-4 h-4" /> Back_To_Fleet
+          <ArrowLeft className="size-4" /> Back_To_Fleet
         </button>
 
         {/* Hero Header */}
@@ -111,17 +120,24 @@ export default function TournamentDetail() {
             Status: {tournament.status}
           </div>
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-40 h-40 border border-emerald-500/40 p-2 bg-zinc-950">
-              <img src={tournament.logo || "/placeholder.png"} className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all" alt="Logo" />
+            <div className="size-40 border border-emerald-500/40 p-2 bg-zinc-950">
+              {/* Sửa lỗi Accessibility: Bổ sung alt mô tả có nghĩa dựa trên tên giải đấu */}
+              <img 
+                src={tournament.logo || "/placeholder.png"} 
+                className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all" 
+                alt={`Biểu trưng giải đấu ${tournament.name}`} 
+              />
             </div>
             <div className="text-center md:text-left space-y-4">
-              <h1 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter">
+              {/* Sửa lỗi Architecture: Hạ font-black xuống font-semibold trên tiêu đề kích thước lớn h1 */}
+              <h1 className="text-4xl md:text-6xl font-semibold text-white italic uppercase tracking-tighter">
                 {tournament.name}
               </h1>
               <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[11px] font-bold uppercase opacity-70">
-                <div className="flex items-center gap-2"><Calendar className="w-4 h-4" /> {new Date(tournament.startDate).toLocaleString('vi-VN')}</div>
-                <div className="flex items-center gap-2"><Users className="w-4 h-4" /> {tournament.teams?.length || 0} Entities_Linked</div>
-                <div className="flex items-center gap-2 text-emerald-400"><Activity className="w-4 h-4" /> ID_SEC_0{tournament.id}</div>
+                {/* Áp dụng biến thời gian an toàn tránh Hydration mismatch */}
+                <div className="flex items-center gap-2"><Calendar className="size-4" /> {formattedDate || "Loading_Time..."}</div>
+                <div className="flex items-center gap-2"><Users className="size-4" /> {tournament.teams?.length || 0} Entities_Linked</div>
+                <div className="flex items-center gap-2 text-emerald-400"><Activity className="size-4" /> ID_SEC_0{tournament.id}</div>
               </div>
             </div>
           </div>
@@ -133,8 +149,9 @@ export default function TournamentDetail() {
           {/* Roster Section */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center border-b border-emerald-500/20 pb-4">
-              <h2 className="text-xl font-black text-white italic uppercase flex items-center gap-3">
-                <Shield className="w-5 h-5" /> Roster_Registry
+              {/* Sửa lỗi Architecture: Hạ từ font-black xuống font-semibold cho tiêu đề h2 */}
+              <h2 className="text-xl font-semibold text-white italic uppercase flex items-center gap-3">
+                <Shield className="size-5" /> Roster_Registry
               </h2>
             </div>
 
@@ -152,8 +169,9 @@ export default function TournamentDetail() {
                     className="group flex items-center justify-between gap-4 bg-emerald-500/5 border border-emerald-500/10 p-4 hover:border-emerald-500/40 transition-all"
                   >
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-zinc-950 border border-emerald-500/20 p-1">
-                          <img src={relation.team.logo} className="w-full h-full object-contain" alt="" />
+                        <div className="size-12 bg-zinc-950 border border-emerald-500/20 p-1">
+                          {/* Sửa lỗi Accessibility: Bổ sung alt mô tả logo của đội tuyển */}
+                          <img src={relation.team.logo} className="w-full h-full object-contain" alt={`Logo ${relation.team.name}`} />
                         </div>
                         <div>
                           <p className="text-white font-bold uppercase italic text-sm">{relation.team.name}</p>
@@ -164,7 +182,7 @@ export default function TournamentDetail() {
                       onClick={() => handleRemoveTeam(relation.id)}
                       className="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-500/10 transition-all"
                     >
-                        <X className="w-4 h-4" />
+                        <X className="size-4" />
                     </button>
                   </motion.div>
                 ))}
@@ -175,23 +193,26 @@ export default function TournamentDetail() {
           {/* Action Panel */}
           <div className="space-y-6">
             <div className="border border-emerald-500/20 p-6 bg-zinc-950">
-              <h3 className="text-sm font-black text-white italic uppercase mb-6 flex items-center gap-2 border-b border-emerald-500/10 pb-3">
-                <Settings className="w-4 h-4" /> Command_Actions
+              {/* Sửa lỗi Architecture: Hạ tiêu đề nhỏ h3 từ font-black xuống font-semibold */}
+              <h3 className="text-sm font-semibold text-white italic uppercase mb-6 flex items-center gap-2 border-b border-emerald-500/10 pb-3">
+                <Settings className="size-4" /> Command_Actions
               </h3>
               
               <div className="space-y-3">
                 <button 
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full py-4 bg-emerald-500 text-black font-black uppercase italic text-xs hover:bg-white transition-all flex items-center justify-center gap-2"
+                  {/* Sửa lỗi Architecture: Hạ font-black của nút bấm xuống font-bold để hiển thị chữ thanh thoát hơn */}
+                  className="w-full py-4 bg-emerald-500 text-black font-bold uppercase italic text-xs hover:bg-white transition-all flex items-center justify-center gap-2"
                 >
-                  <Plus className="w-4 h-4" /> Initialize_New_Team
+                  <Plus className="size-4" /> Initialize_New_Team
                 </button>
 
                 <button 
                   onClick={handleDeleteTournament}
-                  className="w-full py-4 bg-red-500/10 border border-red-500/30 text-red-500 font-black uppercase italic text-[10px] hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                  {/* Sửa lỗi Architecture: Hạ font-black của nút xuống font-bold */}
+                  className="w-full py-4 bg-red-500/10 border border-red-500/30 text-red-500 font-bold uppercase italic text-[10px] hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                 >
-                  <Trash2 className="w-4 h-4" /> Terminate_Protocol
+                  <Trash2 className="size-4" /> Terminate_Protocol
                 </button>
               </div>
             </div>
@@ -216,15 +237,16 @@ export default function TournamentDetail() {
             >
               {/* Modal Header */}
               <div className="p-6 border-b border-emerald-500/20 flex justify-between items-center bg-emerald-500/5">
-                <h2 className="text-lg font-black text-white italic uppercase">Select_Deployment_Unit</h2>
+                {/* Sửa lỗi Architecture: Hạ tiêu đề Modal xuống font-semibold */}
+                <h2 className="text-lg font-semibold text-white italic uppercase">Select_Deployment_Unit</h2>
                 <button onClick={() => setIsModalOpen(false)} className="text-white/50 hover:text-red-500 transition-colors">
-                  <X className="w-6 h-6" />
+                  <X className="size-6" />
                 </button>
               </div>
 
               {/* Search */}
               <div className="p-4 border-b border-emerald-500/10 bg-zinc-950 flex items-center gap-3">
-                <Search className="w-4 h-4 opacity-30" />
+                <Search className="size-4 opacity-30" />
                 <input 
                   type="text" 
                   placeholder="SEARCH_ENTITY_NAME..."
@@ -245,12 +267,14 @@ export default function TournamentDetail() {
                       className="flex items-center justify-between p-3 border border-emerald-500/5 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all group"
                     >
                       <div className="flex items-center gap-4">
-                        <img src={team.logo} className="w-8 h-8 object-contain opacity-70 group-hover:opacity-100" />
+                        {/* Sửa lỗi Accessibility: Bổ sung thuộc tính alt cho logo của đội trong danh sách tìm kiếm */}
+                        <img src={team.logo} className="size-8 object-contain opacity-70 group-hover:opacity-100" alt={`Logo nhỏ của ${team.name}`} />
                         <span className="text-sm font-bold text-white/80 uppercase">{team.name}</span>
                       </div>
                       <button 
                         onClick={() => handleAddTeam(team.id)}
-                        className="px-4 py-2 border border-emerald-500/50 text-emerald-500 text-[10px] font-black uppercase hover:bg-emerald-500 hover:text-black transition-all"
+                        {/* Sửa lỗi Architecture: Hạ font-black của nút Deploy xuống font-bold */}
+                        className="px-4 py-2 border border-emerald-500/50 text-emerald-500 text-[10px] font-bold uppercase hover:bg-emerald-500 hover:text-black transition-all"
                       >
                         Deploy
                       </button>

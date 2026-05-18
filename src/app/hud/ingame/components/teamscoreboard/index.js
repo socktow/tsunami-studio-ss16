@@ -26,7 +26,7 @@ const TeamScoreboard = () => {
             <div className="flex flex-col items-end ml-auto mr-4">
                <div className="flex items-center gap-1">
                   <span className="text-white font-bold text-lg leading-none">68.5K</span>
-                  <div className="w-3 h-3 bg-yellow-500/20 border border-yellow-500/50 rotate-45" />
+                  <div className="size-4 bg-yellow-500/20 border border-yellow-500/50 rotate-45" />
                </div>
                <span className="text-blue-400 text-[10px] font-bold mt-1">+1.4K</span>
             </div>
@@ -35,8 +35,8 @@ const TeamScoreboard = () => {
           {/* KILLS CENTER */}
           <div className="flex items-center justify-center gap-6 px-6 bg-gradient-to-b from-white/10 to-transparent h-full border-x border-white/5 shadow-inner">
             <span className="text-white text-3xl font-black italic tracking-tighter w-12 text-center">12</span>
-            <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center border border-white/20 shadow-glow">
-               <div className="w-4 h-4 bg-white/40 rotate-45" />
+            <div className="size-8 bg-white/10 rounded-full flex items-center justify-center border border-white/20 shadow-glow">
+               <div className="size-4 bg-white/40 rotate-45" />
             </div>
             <span className="text-white text-3xl font-black italic tracking-tighter w-12 text-center">10</span>
           </div>
@@ -51,7 +51,7 @@ const TeamScoreboard = () => {
             <div className="flex flex-col items-start mr-auto ml-4">
                <div className="flex items-center gap-1 flex-row-reverse">
                   <span className="text-white font-bold text-lg leading-none">67.1K</span>
-                  <div className="w-3 h-3 bg-yellow-500/20 border border-yellow-500/50 rotate-45" />
+                  <div className="size-4 bg-yellow-500/20 border border-yellow-500/50 rotate-45" />
                </div>
                <span className="text-transparent text-[10px] mt-1">placeholder</span>
             </div>
@@ -65,8 +65,8 @@ const TeamScoreboard = () => {
         <div className="w-[88%] h-[40px] bg-zinc-950/85 flex items-center justify-between px-8 rounded-b-xl border-x border-b border-white/10 backdrop-blur-sm shadow-2xl">
           {/* Drakes Left */}
           <div className="flex gap-2.5">
-             <div className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
-             <div className="w-5 h-5 rounded-full bg-green-500/20 border border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+             <div className="size-5 rounded-full bg-cyan-500/20 border border-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
+             <div className="size-5 rounded-full bg-green-500/20 border border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
           </div>
 
           {/* Time Center */}
@@ -77,8 +77,8 @@ const TeamScoreboard = () => {
 
           {/* Drakes Right */}
           <div className="flex gap-2.5 flex-row-reverse">
-             <div className="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
-             <div className="w-5 h-5 rounded-full bg-zinc-800 border border-white/10" />
+             <div className="size-5 rounded-full bg-purple-500/20 border border-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+             <div className="size-5 rounded-full bg-zinc-800 border border-white/10" />
           </div>
         </div>
 

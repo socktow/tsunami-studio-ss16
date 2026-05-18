@@ -104,10 +104,10 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
           <div className="relative bg-zinc-950 border border-slate-800 p-4 rounded-2xl inline-block shadow-2xl">
             {team.logo ? (
-              <img src={team.logo} alt={team.name} className="w-20 h-20 object-contain" />
+              <img src={team.logo} alt={team.name} className="size-20 object-contain" />
             ) : (
               <div 
-                className="w-20 h-20 rounded-xl flex items-center justify-center font-black text-2xl"
+                className="size-20 rounded-xl flex items-center justify-center font-black text-2xl"
                 style={{ backgroundColor: `${team.color}22`, color: team.color, border: `2px solid ${team.color}` }}
               >
                 {team.tag || "T2"}
@@ -164,7 +164,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
                     <User size={16} className="text-slate-600" />
                   </div>
                 )}
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full" />
+                <div className="absolute -bottom-1 -right-1 size-3 bg-emerald-500 border-2 border-slate-900 rounded-full" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-slate-200 font-bold text-xs truncate uppercase tracking-wide">{p.nickname}</p>

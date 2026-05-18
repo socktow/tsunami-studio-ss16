@@ -92,7 +92,7 @@ const MatchData = ({ currentMatch, fetchData }) => {
           <span className="text-xs font-bold font-mono text-slate-300 uppercase tracking-tighter">
             Data Engine v2.0
           </span>
-          <div className={`w-2 h-2 rounded-full animate-pulse ${isEditing ? 'bg-yellow-500' : 'bg-green-500'}`} />
+          <div className={`size-2 rounded-full animate-pulse ${isEditing ? 'bg-yellow-500' : 'bg-green-500'}`} />
         </div>
 
         <div className="flex gap-2">

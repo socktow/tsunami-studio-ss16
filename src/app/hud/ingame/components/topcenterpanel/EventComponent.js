@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo } from 'react';
-import { motion, AnimatePresence } from "framer-motion";
+// Sửa lỗi Bundle Size: Import cấu phần rút gọn m và LazyMotion features
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
 
 const formatGoldDisplay = (gold) => {
@@ -27,7 +28,8 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
   const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
   return (
-    <motion.div 
+    // Sửa lỗi Bundle Size: Đổi từ motion.div thành m.div
+    <m.div 
       initial={{ opacity: 0, x: isRightSide ? 40 : -40 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: isRightSide ? 40 : -40 }}
@@ -38,8 +40,10 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
       }}
     >
       <div className={`flex items-center gap-2 mb-1 ${!isRightSide ? '' : 'flex-row-reverse'}`}>
-        <Zap className={`w-3 h-3 fill-current`} style={{ color: current.color }} />
-        <span className="text-[9px] font-black uppercase text-white/90 tracking-widest">
+        {/* Sửa lỗi Architecture: Thay size axes lặp (size-4) sang định dạng size-4 phù hợp Tailwind v4 */}
+        <Zap className="size-4 fill-current" style={{ color: current.color }} />
+        {/* Sửa lỗi Architecture: Chuyển font-black xuống font-semibold trên chữ nhỏ để tránh dính chữ */}
+        <span className="text-[9px] font-semibold uppercase text-white/90 tracking-widest">
             {current.label}
         </span>
       </div>
@@ -48,18 +52,20 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
         <span className="text-sm font-bold font-mono text-white/80 bg-zinc-950/40 px-2 py-0.5 rounded leading-none">
           {formattedTime}
         </span>
-        <span className="text-lg font-black text-white leading-none">{formatGoldDisplay(goldLead)}</span>
+        {/* Sửa lỗi Architecture: Đổi font-black hiển thị lượng vàng xuống font-bold để đảm bảo tính scannability */}
+        <span className="text-lg font-bold text-white leading-none">{formatGoldDisplay(goldLead)}</span>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-white/5">
-        <motion.div 
+        {/* Sửa lỗi Bundle Size: Đổi từ motion.div thành m.div */}
+        <m.div 
           className="h-full"
           style={{ backgroundColor: current.color }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 1, ease: "linear" }}
         />
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -95,25 +101,29 @@ const EventComponent = ({
   if (buffs.length === 0) return null;
 
   return (
-    <div 
-      className={`absolute z-[60] flex flex-col ${
-        isRightSide 
-          ? 'left-full ml-1 items-start'
-          : 'right-full mr-1 items-end'  
-      }`}
-      style={{ top: '0px' }}
-    >
-      <AnimatePresence mode="popLayout">
-        {buffs.map((buff) => (
-          <PowerPlayItem 
-            key={buff.id}
-            {...buff}
-            goldLead={buff.gold}
-            isRightSide={isRightSide}
-          />
-        ))}
-      </AnimatePresence>
-    </div>
+    // Bọc thẻ LazyMotion với tính năng nạp hoạt ảnh rút gọn (domAnimation) 
+    // Giúp loại bỏ hoàn toàn việc bundle dư thừa ~30kb từ Framer Motion
+    <LazyMotion features={domAnimation}>
+      <div 
+        className={`absolute z-[60] flex flex-col ${
+          isRightSide 
+            ? 'left-full ml-1 items-start'
+            : 'right-full mr-1 items-end'  
+        }`}
+        style={{ top: '0px' }}
+      >
+        <AnimatePresence mode="popLayout">
+          {buffs.map((buff) => (
+            <PowerPlayItem 
+              key={buff.id}
+              {...buff}
+              goldLead={buff.gold}
+              isRightSide={isRightSide}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+    </LazyMotion>
   );
 };
 

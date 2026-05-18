@@ -213,7 +213,7 @@ const SettingMatch = () => {
                   type="color"
                   value={formData.teamsData[idx].color}
                   onChange={(e) => updateTeamField(idx, "color", e.target.value)}
-                  className="w-8 h-8 rounded-full cursor-pointer bg-transparent border-2 border-slate-800 overflow-hidden"
+                  className="size-8 rounded-full cursor-pointer bg-transparent border-2 border-slate-800 overflow-hidden"
                 />
               </div>
 
@@ -259,7 +259,7 @@ const SettingMatch = () => {
                   {formData.teamsData[idx].players?.length > 0 ? (
                     formData.teamsData[idx].players.map((player, pIdx) => (
                       <div key={`player-${idx}-${player.id || pIdx}`} className="bg-zinc-950/40 border border-slate-800/50 rounded-xl p-2 flex items-center gap-3 hover:border-blue-500/30 transition-all">
-                        <div className="w-9 h-9 bg-slate-800 rounded border border-slate-700 flex-none overflow-hidden">
+                        <div className="size-9 bg-slate-800 rounded border border-slate-700 flex-none overflow-hidden">
                           {player.avatar ? (
                             <img src={player.avatar} alt="" className="w-full h-full object-cover" />
                           ) : (
