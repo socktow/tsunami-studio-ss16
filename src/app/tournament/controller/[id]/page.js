@@ -86,7 +86,7 @@ export default function TournamentDetail() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-black flex items-center justify-center text-emerald-500 font-mono italic animate-pulse">
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-emerald-500 font-mono italic animate-pulse">
       SYNCING_TOURNAMENT_RESOURCES_v2.0...
     </div>
   );
@@ -111,7 +111,7 @@ export default function TournamentDetail() {
             Status: {tournament.status}
           </div>
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-40 h-40 border border-emerald-500/40 p-2 bg-black">
+            <div className="w-40 h-40 border border-emerald-500/40 p-2 bg-zinc-950">
               <img src={tournament.logo || "/placeholder.png"} className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all" alt="Logo" />
             </div>
             <div className="text-center md:text-left space-y-4">
@@ -152,7 +152,7 @@ export default function TournamentDetail() {
                     className="group flex items-center justify-between gap-4 bg-emerald-500/5 border border-emerald-500/10 p-4 hover:border-emerald-500/40 transition-all"
                   >
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-black border border-emerald-500/20 p-1">
+                        <div className="w-12 h-12 bg-zinc-950 border border-emerald-500/20 p-1">
                           <img src={relation.team.logo} className="w-full h-full object-contain" alt="" />
                         </div>
                         <div>
@@ -174,7 +174,7 @@ export default function TournamentDetail() {
 
           {/* Action Panel */}
           <div className="space-y-6">
-            <div className="border border-emerald-500/20 p-6 bg-black">
+            <div className="border border-emerald-500/20 p-6 bg-zinc-950">
               <h3 className="text-sm font-black text-white italic uppercase mb-6 flex items-center gap-2 border-b border-emerald-500/10 pb-3">
                 <Settings className="w-4 h-4" /> Command_Actions
               </h3>
@@ -207,7 +207,7 @@ export default function TournamentDetail() {
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-sm" 
+              className="absolute inset-0 bg-zinc-950/90 backdrop-blur-sm" 
             />
             
             <motion.div 
@@ -223,7 +223,7 @@ export default function TournamentDetail() {
               </div>
 
               {/* Search */}
-              <div className="p-4 border-b border-emerald-500/10 bg-black flex items-center gap-3">
+              <div className="p-4 border-b border-emerald-500/10 bg-zinc-950 flex items-center gap-3">
                 <Search className="w-4 h-4 opacity-30" />
                 <input 
                   type="text" 

@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body 
-        className="min-h-full flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-50"
+        className="min-h-full flex flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50"
         suppressHydrationWarning={true}
       >
         <Navbar />

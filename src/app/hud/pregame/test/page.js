@@ -20,7 +20,7 @@ const Page = () => {
         Pregame Timer
       </h1>
 
-      <div className="bg-gray-200 rounded-2xl p-6 w-fit space-y-2">
+      <div className="bg-zinc-200 rounded-2xl p-6 w-fit space-y-2">
         <p className="text-2xl font-semibold">
           Phase: {data.phaseName}
         </p>
@@ -34,7 +34,7 @@ const Page = () => {
         </p>
       </div>
 
-      <pre className="bg-gray-100 p-4 rounded-2xl overflow-auto text-sm">
+      <pre className="bg-zinc-100 p-4 rounded-2xl overflow-auto text-sm">
         {JSON.stringify(data, null, 2)}
       </pre>
     </div>

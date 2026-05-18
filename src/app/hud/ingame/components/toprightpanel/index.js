@@ -112,7 +112,7 @@ const KillFeed = ({ gameData }) => {
 
               {/* KILLER & ASSISTANTS */}
               <div className="flex items-center gap-3 z-10 skew-x-[15deg]">
-                <div className="relative border-2 w-10 h-10 overflow-hidden shadow-lg bg-black" style={{ borderColor: teamColor }}>
+                <div className="relative border-2 size-10 overflow-hidden shadow-lg bg-zinc-950" style={{ borderColor: teamColor }}>
                   <img src={getImgUrl(killer)} className="w-full h-full object-cover" alt="k" />
                 </div>
                 
@@ -125,7 +125,7 @@ const KillFeed = ({ gameData }) => {
                   {event.AssistantNames?.length > 0 && (
                     <div className="flex mt-1 -space-x-1.5">
                       {event.AssistantNames.map((name, i) => (
-                        <div key={i} className="w-5 h-5 border border-white/20 overflow-hidden bg-black shadow-sm">
+                        <div key={i} className="w-5 h-5 border border-white/20 overflow-hidden bg-zinc-950 shadow-sm">
                           <img 
                             src={getImgUrl(allPlayers[name])} 
                             className="w-full h-full object-cover opacity-80" 

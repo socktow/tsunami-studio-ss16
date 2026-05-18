@@ -133,7 +133,7 @@ const R2 = () => {
                       <div className="absolute -top-[6px] text-white left-1/2 -translate-x-1/2 min-w-[12px] h-[9px] flex items-center justify-center text-[11px] leading-none font-bold z-50" style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}>
                         {Math.round(visionScore)}
                       </div>
-                      <div className={`absolute inset-0 bg-black/10 border pointer-events-none ${isDead ? "border-zinc-500/10" : "border-yellow-500/20"}`} />
+                      <div className={`absolute inset-0 bg-zinc-950/10 border pointer-events-none ${isDead ? "border-zinc-500/10" : "border-yellow-500/20"}`} />
                     </>
                   )}
                 </>

@@ -15,7 +15,7 @@ const CenterComponent = ({ blueKills = 0, redKills = 0, gameTime = 0 }) => {
     <div className="w-[150px] h-[100px] flex flex-col flex-none select-none overflow-hidden shadow-2xl">
 
       {/* PHẦN TRÊN H60: Hiển thị Kills & Logo giải đấu */}
-      <div className="w-full h-[60px] bg-black flex items-center justify-between px-1 relative z-10">
+      <div className="w-full h-[60px] bg-zinc-950 flex items-center justify-between px-1 relative z-10">
 
         {/* Chỉ số hạ gục Đội Xanh */}
         <div className="w-2/5 text-center">

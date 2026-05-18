@@ -156,7 +156,7 @@ export default function Navbar() {
       <div className="p-6 mt-auto bg-emerald-500/[0.02] border-t border-emerald-500/10 relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:100%_4px]"></div>
         <div className="relative z-10 flex items-center gap-4">
-            <div className="w-10 h-10 border border-emerald-500/20 flex items-center justify-center bg-black">
+            <div className="size-10 border border-emerald-500/20 flex items-center justify-center bg-zinc-950">
                <ShieldCheck size={20} className="text-emerald-500/50" />
             </div>
             <div className="flex flex-col">

@@ -17,7 +17,7 @@ const R1 = () => {
   const gameTime = data?.gameTime || 0;
 
   return (
-    <div className="flex-1 flex border border-gray-800 bg-zinc-950/50 flex-row-reverse">
+    <div className="flex-1 flex border border-zinc-800 bg-zinc-950/50 flex-row-reverse">
       {/* RIGHT MAIN COLUMN: Hiển thị Avatar, Bars và Tên */}
       <Column
         renderCell={(i) => {
@@ -86,7 +86,7 @@ const R1 = () => {
                     if (!icon) return <div key={idx} className="w-[22px] h-[22px] bg-zinc-900/50 rounded-sm" />;
 
                     return (
-                      <div key={idx} className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-black">
+                      <div key={idx} className="relative w-[22px] h-[22px] rounded-sm overflow-hidden border border-white/10 bg-zinc-950">
                         <img className="w-full h-full object-cover" src={`${IMAGE_BASE_URL}${icon}`} alt="spell" />
                         {isOnCooldown && (
                           <div

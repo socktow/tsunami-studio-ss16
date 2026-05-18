@@ -165,7 +165,7 @@ const SettingMatch = () => {
             <div className="relative group">
               <select
                 onChange={handleTournamentChange}
-                className="w-full bg-black border border-slate-700 rounded-xl p-3 pl-4 outline-none focus:border-blue-500 appearance-none transition-all cursor-pointer text-sm font-bold"
+                className="w-full bg-zinc-950 border border-slate-700 rounded-xl p-3 pl-4 outline-none focus:border-blue-500 appearance-none transition-all cursor-pointer text-sm font-bold"
               >
                 <option value="">-- CHỌN GIẢI ĐẤU MỤC TIÊU --</option>
                 {tournaments.map((t) => (
@@ -183,13 +183,13 @@ const SettingMatch = () => {
             </div>
             <div className="grid grid-cols-2 gap-3">
                <select
-                 className="bg-black border border-slate-700 rounded-xl p-2.5 outline-none focus:border-blue-500 text-xs font-bold"
+                 className="bg-zinc-950 border border-slate-700 rounded-xl p-2.5 outline-none focus:border-blue-500 text-xs font-bold"
                  value={formData.matchType}
                  onChange={(e) => setFormData({ ...formData, matchType: e.target.value })}
                >
                  {["BO1", "BO3", "BO5"].map(type => <option key={type}>{type}</option>)}
                </select>
-               <div className="bg-black border border-slate-700 rounded-xl p-2.5 text-[10px] font-mono text-blue-400 text-center flex items-center justify-center font-bold">
+               <div className="bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-[10px] font-mono text-blue-400 text-center flex items-center justify-center font-bold">
                  LIVE_CH_01
                </div>
             </div>
@@ -204,7 +204,7 @@ const SettingMatch = () => {
               {/* Team Header */}
               <div className="flex items-center justify-between mb-6 flex-none">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-black rounded-lg border border-slate-800">
+                  <div className="p-2 bg-zinc-950 rounded-lg border border-slate-800">
                     <Shield size={18} className={idx === 0 ? "text-blue-500" : "text-red-500"} />
                   </div>
                   <h2 className="font-black text-lg italic uppercase tracking-tighter">Team {idx + 1}</h2>
@@ -226,7 +226,7 @@ const SettingMatch = () => {
                         const teamEntry = selectedTournament.teams.find(t => t.team.id === parseInt(e.target.value));
                         if (teamEntry) handleSelectTeam(idx, teamEntry.team);
                       }}
-                      className="w-full bg-black border border-slate-700 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-blue-500 disabled:opacity-30"
+                      className="w-full bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-blue-500 disabled:opacity-30"
                     >
                       <option value="">-- SYNC FROM DATABASE --</option>
                       {selectedTournament?.teams.map((t) => (
@@ -236,13 +236,13 @@ const SettingMatch = () => {
                 </div>
                 <input
                   placeholder="Team Name"
-                  className="col-span-2 bg-black border border-slate-700 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-blue-500"
+                  className="col-span-2 bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-blue-500"
                   value={formData.teamsData[idx].name}
                   onChange={(e) => updateTeamField(idx, "name", e.target.value)}
                 />
                 <input
                   placeholder="TAG"
-                  className="bg-black border border-slate-700 rounded-xl p-2.5 text-xs font-black text-center uppercase outline-none focus:border-blue-500"
+                  className="bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-xs font-black text-center uppercase outline-none focus:border-blue-500"
                   value={formData.teamsData[idx].tag}
                   onChange={(e) => updateTeamField(idx, "tag", e.target.value)}
                 />
@@ -258,7 +258,7 @@ const SettingMatch = () => {
                 <div className="flex-1 overflow-y-auto pr-2 space-y-2 custom-scrollbar">
                   {formData.teamsData[idx].players?.length > 0 ? (
                     formData.teamsData[idx].players.map((player, pIdx) => (
-                      <div key={`player-${idx}-${player.id || pIdx}`} className="bg-black/40 border border-slate-800/50 rounded-xl p-2 flex items-center gap-3 hover:border-blue-500/30 transition-all">
+                      <div key={`player-${idx}-${player.id || pIdx}`} className="bg-zinc-950/40 border border-slate-800/50 rounded-xl p-2 flex items-center gap-3 hover:border-blue-500/30 transition-all">
                         <div className="w-9 h-9 bg-slate-800 rounded border border-slate-700 flex-none overflow-hidden">
                           {player.avatar ? (
                             <img src={player.avatar} alt="" className="w-full h-full object-cover" />

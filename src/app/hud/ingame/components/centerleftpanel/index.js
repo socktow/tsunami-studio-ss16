@@ -94,7 +94,7 @@ const CenterLeftPanel = () => {
                                                     <span className="text-[8px] font-black text-cyan-400 opacity-70 uppercase">Lv</span>
                                                     <span className="font-mono font-black text-sm text-white">{player.level}</span>
                                                 </div>
-                                                <div className="w-16 h-1 bg-black/40 rounded-full border border-white/5 overflow-hidden">
+                                                <div className="w-16 h-1 bg-zinc-950/40 rounded-full border border-white/5 overflow-hidden">
                                                     <motion.div
                                                         initial={{ width: 0 }}
                                                         animate={{ width: `${getXPPercent(player.experience)}%` }}
@@ -110,7 +110,7 @@ const CenterLeftPanel = () => {
                     </AnimatePresence>
                 </div>
 
-                <div className="px-4 py-1.5 bg-black/20 flex justify-center border-t border-white/5">
+                <div className="px-4 py-1.5 bg-zinc-950/20 flex justify-center border-t border-white/5">
                     <span className="text-[7px] text-white/20 font-bold uppercase tracking-[0.4em]">VCS Official System</span>
                 </div>
             </motion.div>

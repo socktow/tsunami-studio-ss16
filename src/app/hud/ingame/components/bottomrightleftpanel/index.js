@@ -39,7 +39,7 @@ const BottomRightLeftPanel = () => {
     };
 
     const PlayerCard = ({ player, side }) => {
-        if (!player) return <div style={{ width: '186px', height: '260px' }} className="bg-black/20" />;
+        if (!player) return <div style={{ width: '186px', height: '260px' }} className="bg-zinc-950/20" />;
 
         // --- Cập nhật logic lấy thông tin từ Object mới ---
         const displayName = player.nickname; // Nickname từ API
@@ -83,7 +83,7 @@ const BottomRightLeftPanel = () => {
 
                         <div className="absolute bottom-0 left-0 w-full z-30">
                             <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} className="h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-                            <div className="bg-black/80 backdrop-blur-md py-3 px-2 flex flex-col items-center">
+                            <div className="bg-zinc-950/80 backdrop-blur-md py-3 px-2 flex flex-col items-center">
                                 {/* Hiển thị Role thay cho chữ Authenticated mặc định hoặc giữ nguyên tùy ý */}
                                 <span className="text-white text-[15px] font-black tracking-widest uppercase italic">
                                     {displayName}

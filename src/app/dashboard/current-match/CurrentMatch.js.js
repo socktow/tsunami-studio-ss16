@@ -102,7 +102,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
       <div className={`flex flex-col ${isRight ? 'items-start' : 'items-end'} gap-4 w-full`}>
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-          <div className="relative bg-black border border-slate-800 p-4 rounded-2xl inline-block shadow-2xl">
+          <div className="relative bg-zinc-950 border border-slate-800 p-4 rounded-2xl inline-block shadow-2xl">
             {team.logo ? (
               <img src={team.logo} alt={team.name} className="w-20 h-20 object-contain" />
             ) : (
@@ -158,9 +158,9 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
             >
               <div className="relative">
                 {p.avatar ? (
-                  <img src={p.avatar} alt={p.nickname} className="w-10 h-10 rounded-lg object-cover border border-slate-700" />
+                  <img src={p.avatar} alt={p.nickname} className="size-10 rounded-lg object-cover border border-slate-700" />
                 ) : (
-                  <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center">
+                  <div className="size-10 rounded-lg bg-slate-800 flex items-center justify-center">
                     <User size={16} className="text-slate-600" />
                   </div>
                 )}

@@ -45,7 +45,7 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
       </div>
 
       <div className={`flex items-center justify-between ${!isRightSide ? '' : 'flex-row-reverse'}`}>
-        <span className="text-sm font-bold font-mono text-white/80 bg-black/40 px-2 py-0.5 rounded leading-none">
+        <span className="text-sm font-bold font-mono text-white/80 bg-zinc-950/40 px-2 py-0.5 rounded leading-none">
           {formattedTime}
         </span>
         <span className="text-lg font-black text-white leading-none">{formatGoldDisplay(goldLead)}</span>

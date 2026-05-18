@@ -3,7 +3,7 @@ import React from 'react';
 import { ICONS, OBJECTIVE_ICONS } from '@/lib/constants';
 
 const SplitComponent = ({ isRightSide = false, teamData, statsData, matchType }) => {
-  if (!teamData || !statsData) return <div className="w-[400px] h-[100px] bg-black/50 animate-pulse" />;
+  if (!teamData || !statsData) return <div className="w-[400px] h-[100px] bg-zinc-950/50 animate-pulse" />;
 
   // 1. Logic xử lý số lượng ô hiển thị dựa trên matchType
   const getTotalSlots = (type) => {
@@ -36,7 +36,7 @@ const SplitComponent = ({ isRightSide = false, teamData, statsData, matchType })
     <div className="w-[400px] h-[100px] flex flex-col flex-none select-none overflow-hidden shadow-lg">
 
       {/* --- TẦNG TRÊN (H60) --- */}
-      <div className={`h-[60px] bg-black flex items-center justify-between relative overflow-hidden ${isRightSide ? 'flex-row-reverse pl-4' : 'pr-4'}`}>
+      <div className={`h-[60px] bg-zinc-950 flex items-center justify-between relative overflow-hidden ${isRightSide ? 'flex-row-reverse pl-4' : 'pr-4'}`}>
 
         <div
           className={`absolute top-0 bottom-0 w-[70%] z-0 pointer-events-none opacity-20 ${isRightSide ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'}`}

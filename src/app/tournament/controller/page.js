@@ -140,10 +140,10 @@ export default function TournamentPage() {
               {tournaments.map((t) => (
                 <motion.div
                   key={t.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                  className="group relative bg-black border border-emerald-500/20 hover:border-emerald-500 transition-all p-6 shadow-xl"
+                  className="group relative bg-zinc-950 border border-emerald-500/20 hover:border-emerald-500 transition-all p-6 shadow-xl"
                 >
                   {/* Status Badge */}
-                  <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-black border border-emerald-500/20 rounded-full">
+                  <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-zinc-950 border border-emerald-500/20 rounded-full">
                     <span style={{ color: STATUS_CONFIG[t.status].color }}>
                       {STATUS_CONFIG[t.status].icon}
                     </span>
@@ -192,7 +192,7 @@ export default function TournamentPage() {
       <AnimatePresence>
         {isDrawerOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDrawerOpen(false)} className="fixed inset-0 bg-black/90 backdrop-blur-md z-[100]" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsDrawerOpen(false)} className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-[100]" />
             <motion.div 
               initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
               className="fixed top-0 right-0 h-full w-full max-w-md bg-[#080808] border-l border-emerald-500/30 z-[101] p-10 flex flex-col"
@@ -228,11 +228,11 @@ export default function TournamentPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="opacity-40 italic">03. Start_Cycle</label>
-                      <input type="datetime-local" name="startDate" value={form.startDate} onChange={handleChange} required className="w-full bg-black border border-emerald-500/20 p-3 text-white focus:border-emerald-500 outline-none transition-all" />
+                      <input type="datetime-local" name="startDate" value={form.startDate} onChange={handleChange} required className="w-full bg-zinc-950 border border-emerald-500/20 p-3 text-white focus:border-emerald-500 outline-none transition-all" />
                     </div>
                     <div className="space-y-2">
                       <label className="opacity-40 italic">04. Current_Status</label>
-                      <select name="status" value={form.status} onChange={handleChange} className="w-full bg-black border border-emerald-500/20 p-3 text-white focus:border-emerald-500 outline-none transition-all cursor-pointer">
+                      <select name="status" value={form.status} onChange={handleChange} className="w-full bg-zinc-950 border border-emerald-500/20 p-3 text-white focus:border-emerald-500 outline-none transition-all cursor-pointer">
                         <option value="UPCOMING">UPCOMING</option>
                         <option value="ONGOING">ONGOING</option>
                         <option value="FINISHED">FINISHED</option>

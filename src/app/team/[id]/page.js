@@ -58,7 +58,7 @@ export default function TeamDetail() {
         </button>
 
         {/* 🛡️ COMMAND CENTER (HEADER) */}
-        <header className="relative border border-emerald-500/30 bg-black/90 p-1 md:p-1 mb-16 shadow-[0_0_60px_rgba(16,185,129,0.05)]">
+        <header className="relative border border-emerald-500/30 bg-zinc-950/90 p-1 md:p-1 mb-16 shadow-[0_0_60px_rgba(16,185,129,0.05)]">
           {/* Top Decorative Bar */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"></div>
           
@@ -134,7 +134,7 @@ export default function TeamDetail() {
                   <div className="flex gap-6 relative z-10">
                     {/* Avatar Container */}
                     <div className="relative flex-shrink-0">
-                      <div className="h-24 w-24 bg-black border border-emerald-500/20 p-1 relative group-hover:border-emerald-500/60 transition-colors">
+                      <div className="h-24 w-24 bg-zinc-950 border border-emerald-500/20 p-1 relative group-hover:border-emerald-500/60 transition-colors">
                         <img src={p.avatar} className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                         
                         {/* Role Indicator Overlay */}

@@ -50,7 +50,7 @@ const TopLeftPanel = () => {
               style={isSpawned ? { boxShadow: obj.shadow } : {}}
             >
               {/* ICON BOX */}
-              <div className="relative z-20 flex items-center justify-center w-10 bg-black border border-white/20 overflow-hidden shrink-0">
+              <div className="relative z-20 flex items-center justify-center w-10 bg-zinc-950 border border-white/20 overflow-hidden shrink-0">
                 {isSpawned && (
                   <motion.div 
                     animate={{ opacity: [0.1, 0.5, 0.1] }}
@@ -79,7 +79,7 @@ const TopLeftPanel = () => {
                     initial={{ x: -10, opacity: 0, width: 0 }}
                     animate={{ x: 0, opacity: 1, width: "auto" }}
                     exit={{ x: -10, opacity: 0, width: 0 }}
-                    className="relative flex items-center px-4 min-w-[70px] justify-center bg-black/40 backdrop-blur-md border border-l-0 border-white/10"
+                    className="relative flex items-center px-4 min-w-[70px] justify-center bg-zinc-950/40 backdrop-blur-md border border-l-0 border-white/10"
                   >
                     <span className="text-xl font-black font-mono tracking-tighter text-white tabular-nums drop-shadow-md">
                       {timeDisplay}

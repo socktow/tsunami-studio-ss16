@@ -114,7 +114,7 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
           className={`w-full py-8 border-2 transition-all duration-500 relative group ${
             showOverlay 
               ? "bg-emerald-500 border-emerald-400 text-black shadow-[0_0_30px_rgba(16,185,129,0.4)]" 
-              : "bg-black border-zinc-800 text-zinc-500"
+              : "bg-zinc-950 border-zinc-800 text-zinc-500"
           }`}
         >
           <Power className={`absolute top-2 right-2 ${showOverlay ? "animate-pulse" : ""}`} size={16} />
@@ -124,7 +124,7 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
         </button>
 
         {/* CÁC MODULE CON */}
-        <div className="border border-emerald-500/10 bg-black/40 p-5">
+        <div className="border border-emerald-500/10 bg-zinc-950/40 p-5">
           <h2 className="text-[10px] font-black text-emerald-500/40 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
             <Layers size={12} /> Elements_Control
           </h2>
@@ -169,7 +169,7 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
       {/* CỘT DỮ LIỆU CHI TIẾT BÊN PHẢI */}
       <div className="lg:col-span-8 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border border-emerald-500/10 bg-black/40 p-6 relative">
+          <div className="border border-emerald-500/10 bg-zinc-950/40 p-6 relative">
             <h2 className="text-[11px] font-black text-white uppercase tracking-widest mb-6 flex items-center gap-2">
                <BarChart3 size={16} className="text-emerald-500" /> Comparison_Engine
             </h2>
@@ -238,7 +238,7 @@ function CyberButton({ label, active, onClick, icon, color = "emerald" }) {
         {icon}
         <span className="text-[11px] font-black uppercase tracking-tighter italic">{label}</span>
       </div>
-      <div className={`h-1.5 w-1.5 ${active ? "bg-black animate-pulse" : "bg-current opacity-20"}`} />
+      <div className={`h-1.5 w-1.5 ${active ? "bg-zinc-950 animate-pulse" : "bg-current opacity-20"}`} />
     </button>
   );
 }
@@ -248,7 +248,7 @@ function RankOption({ label, active, onClick }) {
     <button
       onClick={onClick}
       className={`w-full flex items-center justify-between p-4 border transition-all ${
-        active ? "border-emerald-500 bg-emerald-500/10" : "border-zinc-800 bg-black/20 hover:border-zinc-600"
+        active ? "border-emerald-500 bg-emerald-500/10" : "border-zinc-800 bg-zinc-950/20 hover:border-zinc-600"
       }`}
     >
       <div className="flex items-center gap-3">

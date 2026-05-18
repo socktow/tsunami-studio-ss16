@@ -18,10 +18,10 @@ const TeamScoreboard = () => {
           
           {/* Team Left Content */}
           <div className="flex-1 flex items-center px-4 gap-3">
-            <div className="w-10 h-10 bg-gray-800 rounded-sm border border-white/5" /> 
+            <div className="size-10 bg-zinc-800 rounded-sm border border-white/5" /> 
             <div className="flex flex-col">
               <span className="text-white font-black text-xl leading-none italic uppercase">JDG</span>
-              <span className="text-gray-400 text-[10px] font-bold">7 - 4</span>
+              <span className="text-zinc-400 text-[10px] font-bold">7 - 4</span>
             </div>
             <div className="flex flex-col items-end ml-auto mr-4">
                <div className="flex items-center gap-1">
@@ -43,10 +43,10 @@ const TeamScoreboard = () => {
 
           {/* Team Right Content */}
           <div className="flex-1 flex flex-row-reverse items-center px-4 gap-3 text-right">
-            <div className="w-10 h-10 bg-gray-800 rounded-sm border border-white/5" />
+            <div className="size-10 bg-zinc-800 rounded-sm border border-white/5" />
             <div className="flex flex-col">
               <span className="text-white font-black text-xl leading-none italic uppercase">AL</span>
-              <span className="text-gray-400 text-[10px] font-bold">7 - 4</span>
+              <span className="text-zinc-400 text-[10px] font-bold">7 - 4</span>
             </div>
             <div className="flex flex-col items-start mr-auto ml-4">
                <div className="flex items-center gap-1 flex-row-reverse">
@@ -62,7 +62,7 @@ const TeamScoreboard = () => {
         </div>
 
         {/* 2. OBJECTIVE BAR (40px) */}
-        <div className="w-[88%] h-[40px] bg-black/85 flex items-center justify-between px-8 rounded-b-xl border-x border-b border-white/10 backdrop-blur-sm shadow-2xl">
+        <div className="w-[88%] h-[40px] bg-zinc-950/85 flex items-center justify-between px-8 rounded-b-xl border-x border-b border-white/10 backdrop-blur-sm shadow-2xl">
           {/* Drakes Left */}
           <div className="flex gap-2.5">
              <div className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
@@ -78,7 +78,7 @@ const TeamScoreboard = () => {
           {/* Drakes Right */}
           <div className="flex gap-2.5 flex-row-reverse">
              <div className="w-5 h-5 rounded-full bg-purple-500/20 border border-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
-             <div className="w-5 h-5 rounded-full bg-gray-800 border border-white/10" />
+             <div className="w-5 h-5 rounded-full bg-zinc-800 border border-white/10" />
           </div>
         </div>
 

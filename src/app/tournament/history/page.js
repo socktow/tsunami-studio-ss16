@@ -105,7 +105,7 @@ const MatchHistory = () => {
                 <input 
                   type="text" 
                   placeholder="FILTER_BY_GAME_ID..."
-                  className="bg-black border border-emerald-500/20 py-3 pl-10 pr-4 text-[11px] w-full md:w-80 outline-none focus:border-emerald-500/60 transition-all text-emerald-400 placeholder:text-emerald-900"
+                  className="bg-zinc-950 border border-emerald-500/20 py-3 pl-10 pr-4 text-[11px] w-full md:w-80 outline-none focus:border-emerald-500/60 transition-all text-emerald-400 placeholder:text-emerald-900"
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
              </div>
@@ -164,8 +164,8 @@ const MatchHistory = () => {
                            {match.teamA.result === 'WIN' ? 'Victory' : 'Defeat'}
                         </span>
                       </div>
-                      <div className={`h-16 w-16 bg-black border p-2 relative ${match.teamA.result === 'WIN' ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-zinc-800 opacity-40'}`}>
-                         <img src={match.teamA.logo} className="w-full h-full object-contain grayscale-0 group-hover:scale-110 transition-transform" />
+                      <div className={`h-16 w-16 bg-zinc-950 border p-2 relative ${match.teamA.result === 'WIN' ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-zinc-800 opacity-40'}`}>
+                         <img src={match.teamA.logo} alt="teamA logo" className="w-full h-full object-contain grayscale-0 group-hover:scale-110 transition-transform" />
                          {match.blue_side === match.teamA.name && <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 font-bold">BLUE</div>}
                       </div>
                     </div>
@@ -182,8 +182,8 @@ const MatchHistory = () => {
 
                     {/* Team B */}
                     <div className="flex items-center gap-6 flex-1 justify-start">
-                      <div className={`h-16 w-16 bg-black border p-2 relative ${match.teamB.result === 'WIN' ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-zinc-800 opacity-40'}`}>
-                         <img src={match.teamB.logo} className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
+                      <div className={`h-16 w-16 bg-zinc-950 border p-2 relative ${match.teamB.result === 'WIN' ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-zinc-800 opacity-40'}`}>
+                         <img src={match.teamB.logo} alt="teamB logo" className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
                          {match.blue_side === match.teamB.name && <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[7px] px-1 font-bold">BLUE</div>}
                       </div>
                       <div className="text-left flex flex-col">

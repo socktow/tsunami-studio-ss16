@@ -77,10 +77,10 @@ export default function TeamPage() {
       <div className="relative z-10 max-w-[1800px] mx-auto p-4 md:p-10">
         
         {/* 🛰️ HEADER BAR - TACTICAL STYLE */}
-        <header className="flex flex-col xl:flex-row justify-between items-center gap-6 mb-12 border border-emerald-500/40 bg-black/90 p-8 shadow-[0_0_40px_rgba(16,185,129,0.05)]">
+        <header className="flex flex-col xl:flex-row justify-between items-center gap-6 mb-12 border border-emerald-500/40 bg-zinc-950/90 p-8 shadow-[0_0_40px_rgba(16,185,129,0.05)]">
           <div className="flex items-center gap-6">
             <div className="h-16 w-16 bg-emerald-500 flex items-center justify-center shadow-[0_0_15px_#10b981]">
-              <svg className="w-10 h-10 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+              <svg className="size-10 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
             </div>
             <div>
               <h1 className="text-3xl font-black tracking-[0.2em] uppercase leading-none text-white">Org_Commander</h1>
@@ -120,7 +120,7 @@ export default function TeamPage() {
                   <div className="flex justify-between items-start mb-8 relative z-10">
                     <div className="relative h-24 w-24">
                       <div className="absolute inset-0 blur-2xl opacity-20" style={{ backgroundColor: t.color }} />
-                      <div className="relative h-full w-full border border-emerald-500/20 p-2 bg-black/40">
+                      <div className="relative h-full w-full border border-emerald-500/20 p-2 bg-zinc-950/40">
                         <img 
                           src={t.logo || "/default.png"} 
                           className="h-full w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" 
@@ -181,7 +181,7 @@ export default function TeamPage() {
         <AnimatePresence>
           {isModalOpen && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={resetForm} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={resetForm} className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md" />
               
               <motion.div
                 initial={{ scale: 0.9, opacity: 0, x: 20 }}
@@ -203,25 +203,25 @@ export default function TeamPage() {
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">1. Division_Full_Name</label>
-                      <input name="name" value={form.name} onChange={handleChange} required className="w-full bg-black border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans" placeholder="e.g. GAM ESPORTS" />
+                      <input name="name" value={form.name} onChange={handleChange} required className="w-full bg-zinc-950 border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans" placeholder="e.g. GAM ESPORTS" />
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">2. Tactical_Tag</label>
-                      <input name="tagName" value={form.tagName} onChange={handleChange} required className="w-full bg-black border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all uppercase" placeholder="GAM" />
+                      <input name="tagName" value={form.tagName} onChange={handleChange} required className="w-full bg-zinc-950 border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all uppercase" placeholder="GAM" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">3. Commanding_Officer</label>
-                      <input name="coach" value={form.coach} onChange={handleChange} className="w-full bg-black border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans" placeholder="COACH_NAME" />
+                      <input name="coach" value={form.coach} onChange={handleChange} className="w-full bg-zinc-950 border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans" placeholder="COACH_NAME" />
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">4. Brand_Frequency_Color</label>
                       <div className="flex gap-4 items-center h-[57px]">
-                        <input type="color" name="color" value={form.color} onChange={handleChange} className="h-full w-20 bg-black border border-emerald-500/20 cursor-pointer p-1" />
+                        <input type="color" name="color" value={form.color} onChange={handleChange} className="h-full w-20 bg-zinc-950 border border-emerald-500/20 cursor-pointer p-1" />
                         <span className="text-xs font-bold text-white/40">{form.color.toUpperCase()}</span>
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export default function TeamPage() {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">5. Emblem_Resource_URL</label>
                     <div className="flex gap-4">
-                      <input name="logo" value={form.logo} onChange={handleChange} className="flex-1 bg-black border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans text-sm" placeholder="https://..." />
+                      <input name="logo" value={form.logo} onChange={handleChange} className="flex-1 bg-zinc-950 border-b border-emerald-500/30 p-4 text-white focus:outline-none focus:border-emerald-500 transition-all font-sans text-sm" placeholder="https://..." />
                       {form.logo && (
                         <div className="h-14 w-14 bg-white/5 border border-emerald-500/20 p-2">
                           <img src={form.logo} className="h-full w-full object-contain" />

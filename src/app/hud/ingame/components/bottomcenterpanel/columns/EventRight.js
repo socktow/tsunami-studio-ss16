@@ -96,7 +96,7 @@ const EventRight = ({
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-40 flex items-center justify-center bg-black/20"
+              className="absolute inset-0 z-40 flex items-center justify-center bg-zinc-950/20"
             >
               <span className="text-[22px] font-semibold text-white">
                 {displayTimer}
@@ -187,7 +187,7 @@ const EventRight = ({
 
         {/* LEVEL BADGE */}
         {!isLevelingUp && level && !isDead && (
-          <div className="absolute -bottom-1 right-0.25 w-[16px] h-[16px] bg-black flex items-center justify-center z-20 border-t border-l border-white/20">
+          <div className="absolute -bottom-1 right-0.25 w-[16px] h-[16px] bg-zinc-950 flex items-center justify-center z-20 border-t border-l border-white/20">
             <span className="text-[11px] font-bold text-white leading-none">
               {level}
             </span>
@@ -199,7 +199,7 @@ const EventRight = ({
           {isLevelingUp && !isDead && (
             <div className="absolute inset-0 z-30 flex items-center justify-center">
               <motion.div
-                className="absolute inset-0 bg-black"
+                className="absolute inset-0 bg-zinc-950"
                 initial={{ y: "100%" }}
                 animate={{ y: ["100%", "0%", "0%", "-100%"] }}
                 transition={{
@@ -243,7 +243,7 @@ const EventRight = ({
     rounded-full
     border
     overflow-hidden
-    bg-black
+    bg-zinc-950
     z-50
     transition-all duration-500
     ${isDead
@@ -254,7 +254,7 @@ const EventRight = ({
       >
         {/* COOLDOWN OVERLAY */}
         {isUltiOnCooldown && (
-          <div className="absolute inset-0 z-30 bg-black/65 flex items-center justify-center">
+          <div className="absolute inset-0 z-30 bg-zinc-950/65 flex items-center justify-center">
             <span className="text-[10px] font-black text-white drop-shadow">
               {ultiCooldownLeft}
             </span>

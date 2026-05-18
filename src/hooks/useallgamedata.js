@@ -15,30 +15,40 @@ const SPECIAL_CASES = {
 export const useAllGameData = () => {
   const [allPlayers, setAllPlayers] = useState([]);
   const [isReady, setIsReady] = useState(false);
+
   const skinDataRef = useRef(null);
+  const readyTimerRef = useRef(null);
 
   const formatChampName = (name) => {
-    let f = name.replace(/[\s'.]/g, "");
+    const f = name.replace(/[\s'.]/g, "");
     return SPECIAL_CASES[name] || f;
   };
 
   useEffect(() => {
+    let mounted = true;
+
     const initData = async () => {
       try {
-        // 1. Fetch Riot Metadata
         const riotRes = await fetch(
           "https://riot-web-cdn.s3.amazonaws.com/game-data/latest/live/gameData_vi_VN.json"
         );
+
         const riotData = await riotRes.json();
+
+        if (!mounted) return;
+
         skinDataRef.current = riotData.champions;
 
-        // 2. Fetch Game Data
         const res = await fetch("/api/game-data");
         const data = await res.json();
 
+        if (!mounted) return;
+
         if (data.allPlayers?.length > 0) {
           const processedPlayers = data.allPlayers.map((player) => {
-            const champEntry = Object.values(skinDataRef.current).find(
+            const champEntry = Object.values(
+              skinDataRef.current || {}
+            ).find(
               (c) =>
                 c.name === player.championName ||
                 c.alias === player.championName ||
@@ -46,29 +56,42 @@ export const useAllGameData = () => {
             );
 
             let finalImageID = player.skinID;
-            let displayName = player.skinName;
 
-            if (champEntry && champEntry.id) {
+            if (champEntry?.skins) {
               const champIdStr = champEntry.id.toString();
-              const fullSkinIDFromGame =
-                parseInt(champIdStr) * 1000 + parseInt(player.skinID);
 
-              if (champEntry.skins) {
-                const skinList = Object.entries(champEntry.skins)
-                  .map(([id, info]) => ({ id: parseInt(id), name: info.name }))
-                  .sort((a, b) => a.id - b.id);
+              const fullSkinID =
+                parseInt(champIdStr) * 1000 +
+                parseInt(player.skinID);
 
-                const currentSkinInfo = champEntry.skins[fullSkinIDFromGame.toString()];
+              const skinList = Object.entries(
+                champEntry.skins
+              )
+                .map(([id, info]) => ({
+                  id: parseInt(id),
+                  name: info.name,
+                }))
+                .sort((a, b) => a.id - b.id);
 
-                // Logic xử lý Đa sắc (Chroma)
-                if (currentSkinInfo && currentSkinInfo.name.includes("(")) {
-                  const baseSkin = [...skinList]
-                    .reverse()
-                    .find((s) => s.id <= fullSkinIDFromGame && !s.name.includes("("));
+              const currentSkin =
+                champEntry.skins[
+                  fullSkinID.toString()
+                ];
 
-                  if (baseSkin) {
-                    finalImageID = baseSkin.id % 1000;
-                  }
+              if (
+                currentSkin &&
+                currentSkin.name.includes("(")
+              ) {
+                const baseSkin = [...skinList]
+                  .reverse()
+                  .find(
+                    (s) =>
+                      s.id <= fullSkinID &&
+                      !s.name.includes("(")
+                  );
+
+                if (baseSkin) {
+                  finalImageID = baseSkin.id % 1000;
                 }
               }
             }
@@ -76,33 +99,65 @@ export const useAllGameData = () => {
             return {
               ...player,
               imageSkinID: finalImageID,
-              displayName: displayName,
+              displayName: player.skinName,
             };
           });
 
-          // Pre-load images
-          const imagePromises = processedPlayers.map((player) => {
-            return new Promise((resolve) => {
-              const champName = formatChampName(player.championName);
-              const skinUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champName}_${player.imageSkinID}.jpg`;
-              const img = new Image();
-              img.src = skinUrl;
-              img.onload = () => resolve(true);
-              img.onerror = () => resolve(false);
-            });
-          });
+          await Promise.all(
+            processedPlayers.map((player) => {
+              return new Promise((resolve) => {
+                const champ =
+                  formatChampName(
+                    player.championName
+                  );
 
-          await Promise.all(imagePromises);
+                const img = new Image();
+
+                img.src =
+                  `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ}_${player.imageSkinID}.jpg`;
+
+                img.onload = () => resolve(true);
+                img.onerror = () =>
+                  resolve(false);
+              });
+            })
+          );
+
+          if (!mounted) return;
+
           setAllPlayers(processedPlayers);
-          setTimeout(() => setIsReady(true), 500);
+
+          readyTimerRef.current =
+            setTimeout(() => {
+              if (mounted) {
+                setIsReady(true);
+              }
+            }, 500);
         }
       } catch (err) {
-        console.error("Error loading all game data:", err);
+        console.error(
+          "Error loading all game data:",
+          err
+        );
       }
     };
 
     initData();
+
+    return () => {
+      mounted = false;
+
+      if (readyTimerRef.current) {
+        clearTimeout(
+          readyTimerRef.current
+        );
+      }
+    };
   }, []);
 
-  return { allPlayers, isReady, formatChampName };
+  return {
+    allPlayers,
+    isReady,
+    formatChampName,
+  };
 };

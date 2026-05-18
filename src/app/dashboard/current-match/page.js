@@ -136,7 +136,7 @@ const Page = () => {
       {/* SIDEBAR NAVIGATION */}
       <aside className="w-20 lg:w-64 bg-[#161925] border-r border-slate-800 flex flex-col transition-all">
         <div className="p-6 flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
+          <div className="size-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
             <Radio size={24} className="text-white" />
           </div>
           <span className="font-bold text-xl tracking-tight hidden lg:block">

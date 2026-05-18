@@ -212,7 +212,7 @@ export default function IndustrialUI() {
             {/* Log Display */}
             <div 
               ref={scrollRef}
-              className="flex-1 p-4 font-mono text-[10px] overflow-y-auto custom-scrollbar bg-black/40"
+              className="flex-1 p-4 font-mono text-[10px] overflow-y-auto custom-scrollbar bg-zinc-950/40"
             >
               {logs.map((log, i) => (
                 <div key={i} className="mb-2 flex gap-2">

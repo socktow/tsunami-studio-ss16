@@ -90,7 +90,7 @@ const ChampionAvatarLeft = ({
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-40 flex items-center justify-center bg-black/20"
+              className="absolute inset-0 z-40 flex items-center justify-center bg-zinc-950/20"
             >
               <span className="text-[22px] font-black text-red-500 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic">
                 {displayTimer}
@@ -132,7 +132,7 @@ const ChampionAvatarLeft = ({
 
         {/* LEVEL BADGE */}
         {!isLevelingUp && level && !isDead && (
-          <div className="absolute -bottom-1 left-0 w-[16px] h-[16px] bg-black flex items-center justify-center z-20 border-t border-r border-white/20">
+          <div className="absolute -bottom-1 left-0 w-[16px] h-[16px] bg-zinc-950 flex items-center justify-center z-20 border-t border-r border-white/20">
             <span className="text-[11px] font-bold text-white leading-none">
               {level}
             </span>
@@ -143,12 +143,12 @@ const ChampionAvatarLeft = ({
       {/* ULTI ICON */}
       <div
         className={`
-          absolute top-0.5 -right-4.5 w-[25px] h-[25px] rounded-full border overflow-hidden bg-black z-50 transition-all duration-500
+          absolute top-0.5 -right-4.5 w-[25px] h-[25px] rounded-full border overflow-hidden bg-zinc-950 z-50 transition-all duration-500
           ${isDead ? "grayscale opacity-40 scale-75 border-zinc-700" : "grayscale-0 opacity-100 scale-100 border-white/15"}
         `}
       >
         {isUltiOnCooldown && (
-          <div className="absolute inset-0 z-30 bg-black/65 flex items-center justify-center">
+          <div className="absolute inset-0 z-30 bg-zinc-950/65 flex items-center justify-center">
             <span className="text-[10px] font-black text-white drop-shadow">
               {ultiCooldownLeft}
             </span>
