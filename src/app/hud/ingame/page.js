@@ -12,6 +12,8 @@ import MiniMapSponsor from "./components/MiniMapSponsor";
 import PlayerCard from "./components/playercard";
 import PlayerRunes from "./components/PlayerRunes";
 import KillFeed from "./components/toprightpanel";
+import GoldGraph from "./components/goldgraph";
+import TeamFightNoDamage from "./components/teamfightnodamage";
 import { useOverlayStore } from "@/store/overlayStore";
 
 const socket = io("http://localhost:3001");
@@ -23,7 +25,9 @@ const Ingame = () => {
     showBottom,
     showSkin,
     showplayercard,
+    showGoldGraph,
     showplayerRunes,
+    showTeamFightNoDamage,
     setState,
   } = useOverlayStore();
 
@@ -61,6 +65,7 @@ const Ingame = () => {
 
       {/* TOP */}
       {/* <KillFeed /> */}
+      {showGoldGraph && <GoldGraph />}
       {showplayerRunes && <PlayerRunes />}
       <MiniMapSponsor />
       <TopLeftPanel />
@@ -82,6 +87,7 @@ const Ingame = () => {
           <BottomcenterPanel />
         </div>
       )}
+      {/* <TeamFightNoDamage /> */}
       {showplayercard && <PlayerCard />}
     </div>
   );
