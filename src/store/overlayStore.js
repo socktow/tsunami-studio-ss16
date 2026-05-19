@@ -6,9 +6,13 @@ export const useOverlayStore = create((set) => ({
   showBottom: false,
   showLeft: false, 
   showSkin: false,
+  showplayercard: false,
+  showplayerRunes: false,
+  showGoldGraph: false,
+  showkillfeedcustom: false,
   activeRankView: 'gold', 
   allPlayerData: null,
-  lastState: null, // Lưu trữ trạng thái trước khi ẩn hết
+  lastState: null,
 
   setState: (newState) => set((state) => ({ ...state, ...newState })),
 }));

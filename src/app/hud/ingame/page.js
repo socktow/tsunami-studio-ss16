@@ -8,8 +8,10 @@ import TopCenterPanel from "./components/topcenterpanel";
 import SkinShowPanel from "./components/centerleftpanel/skinshowpanel";
 import CenterLeftPanel from "./components/centerleftpanel";
 import BottomcenterPanel from "./components/bottomcenterpanel";
-import BottomRightLeftPanel from "./components/bottomrightleftpanel";
-
+import MiniMapSponsor from "./components/MiniMapSponsor";
+import PlayerCard from "./components/playercard";
+import PlayerRunes from "./components/PlayerRunes";
+import KillFeed from "./components/toprightpanel";
 import { useOverlayStore } from "@/store/overlayStore";
 
 const socket = io("http://localhost:3001");
@@ -20,6 +22,8 @@ const Ingame = () => {
     showTop,
     showBottom,
     showSkin,
+    showplayercard,
+    showplayerRunes,
     setState,
   } = useOverlayStore();
 
@@ -56,9 +60,12 @@ const Ingame = () => {
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none z-[99999]">
 
       {/* TOP */}
+      {/* <KillFeed /> */}
+      {showplayerRunes && <PlayerRunes />}
+      <MiniMapSponsor />
+      <TopLeftPanel />
       {showTop && (
         <div className="absolute top-0 left-0 right-0 flex justify-center items-start">
-          <TopLeftPanel />
           <TopCenterPanel />
         </div>
       )}
@@ -73,9 +80,9 @@ const Ingame = () => {
       {showBottom && (
         <div className="absolute bottom-0 left-0 right-0">
           <BottomcenterPanel />
-          <BottomRightLeftPanel />
         </div>
       )}
+      {showplayercard && <PlayerCard />}
     </div>
   );
 };
