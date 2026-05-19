@@ -68,7 +68,7 @@ export default function Navbar() {
             <div className="relative size-6 border border-emerald-500 flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
                 <div className="size-2 bg-emerald-500 animate-pulse"></div>
             </div>
-            <span className="text-xl font-black tracking-tighter text-white uppercase italic">
+            <span className="text-xl font-semibold tracking-tighter text-white uppercase italic">
               Tsunami<span className="text-emerald-500 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">.ST</span>
             </span>
           </div>
@@ -102,7 +102,7 @@ export default function Navbar() {
                   {link.icon}
                 </span>
                 
-                <span className="uppercase text-[11px] font-black tracking-widest flex-1">
+                <span className="uppercase text-[11px] font-semibold tracking-widest flex-1">
                   {link.name}
                 </span>
 
@@ -160,7 +160,7 @@ export default function Navbar() {
                <ShieldCheck size={20} className="text-emerald-500/50" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[12px] font-black text-white uppercase tracking-tighter italic leading-tight">
+              <span className="text-[12px] font-semibold text-white uppercase tracking-tighter italic leading-tight">
                 ChuChu.Admin
               </span>
               <div className="flex items-center gap-2">

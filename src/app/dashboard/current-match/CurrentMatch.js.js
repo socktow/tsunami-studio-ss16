@@ -30,11 +30,11 @@ const CurrentMatch = ({ currentMatch, updateScore, fetchData, handleSwap }) => {
       <div className="flex flex-col items-center text-center space-y-4">
         <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full">
           <Trophy size={14} className="text-yellow-500" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-blue-400">
             {tournamentName} • {matchType}
           </span>
         </div>
-        <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter sm:text-5xl">
+        <h1 className="text-4xl font-semibold text-white italic uppercase tracking-tighter sm:text-5xl">
           Live <span className="text-blue-500">Control</span> Panel
         </h1>
       </div>
@@ -55,7 +55,7 @@ const CurrentMatch = ({ currentMatch, updateScore, fetchData, handleSwap }) => {
         {/* Central Control Section */}
         <div className="lg:col-span-4 order-1 lg:order-2 flex flex-col items-center space-y-8">
           <div className="relative">
-            <span className="text-9xl font-black italic opacity-5 text-white select-none">VS</span>
+            <span className="text-9xl font-semibold italic opacity-5 text-white select-none">VS</span>
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="w-1 h-16 bg-gradient-to-b from-transparent via-slate-700 to-transparent" />
             </div>
@@ -64,7 +64,7 @@ const CurrentMatch = ({ currentMatch, updateScore, fetchData, handleSwap }) => {
           <div className="flex flex-col gap-3 w-full max-w-[240px]">
             <button 
               onClick={handleSwap}
-              className="group flex items-center justify-center gap-3 h-14 bg-white text-black font-black uppercase tracking-widest rounded-xl hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-xl shadow-white/5"
+              className="group flex items-center justify-center gap-3 h-14 bg-white text-black font-semibold uppercase tracking-widest rounded-xl hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-xl shadow-white/5"
             >
               <ArrowLeftRight size={18} className="group-hover:rotate-180 transition-transform duration-500" />
               Swap Sides
@@ -107,7 +107,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
               <img src={team.logo} alt={team.name} className="size-20 object-contain" />
             ) : (
               <div 
-                className="size-20 rounded-xl flex items-center justify-center font-black text-2xl"
+                className="size-20 rounded-xl flex items-center justify-center font-semibold text-2xl"
                 style={{ backgroundColor: `${team.color}22`, color: team.color, border: `2px solid ${team.color}` }}
               >
                 {team.tag || "T2"}
@@ -115,7 +115,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
             )}
           </div>
         </div>
-        <h2 className="text-2xl font-black text-white uppercase tracking-tight truncate max-w-full">
+        <h2 className="text-2xl font-semibold text-white uppercase tracking-tight truncate max-w-full">
           {team.name}
         </h2>
       </div>
@@ -130,7 +130,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
         </button>
         
         <div className="text-center">
-          <span className="text-7xl font-mono font-black text-white tracking-tighter">
+          <span className="text-7xl font-mono font-semibold text-white tracking-tighter">
             {score}
           </span>
         </div>
@@ -146,7 +146,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
       {/* Lineup */}
       <div className="w-full">
         <div className={`flex items-center gap-2 mb-4 text-slate-600 ${!isRight ? 'justify-end' : ''}`}>
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Live Lineup</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">Live Lineup</span>
           <div className="h-px flex-1 bg-slate-800" />
         </div>
         
@@ -168,7 +168,7 @@ const TeamPanel = ({ team, index, updateScore, isRight }) => {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-slate-200 font-bold text-xs truncate uppercase tracking-wide">{p.nickname}</p>
-                <p className="text-[9px] font-black uppercase" style={{ color: team.color }}>{p.role}</p>
+                <p className="text-[9px] font-semibold uppercase" style={{ color: team.color }}>{p.role}</p>
               </div>
             </div>
           ))}

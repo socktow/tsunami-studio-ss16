@@ -64,7 +64,7 @@ const PlayerCard = ({ player, side }) => {
                     <div className="absolute bottom-0 left-0 w-full z-30">
                         <m.div initial={{ width: 0 }} animate={{ width: "100%" }} className="h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
                         <div className="bg-zinc-950/80 backdrop-blur-md py-3 px-2 flex flex-col items-center">
-                            {/* Sửa lỗi Architecture: Hạ font-black xuống font-semibold để chữ kích thước lớn không bị khít nét */}
+                            {/* Sửa lỗi Architecture: Hạ font-semibold xuống font-semibold để chữ kích thước lớn không bị khít nét */}
                             <span className="text-white text-[15px] font-semibold tracking-widest uppercase italic">
                                 {displayName}
                             </span>
@@ -110,7 +110,7 @@ const BottomRightLeftPanel = () => {
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.4 }}
                             >
-                                 {/* Sửa lỗi Architecture: Hạ font-black của tiêu đề h2 xuống font-semibold */}
+                                 {/* Sửa lỗi Architecture: Hạ font-semibold của tiêu đề h2 xuống font-semibold */}
                                  <h2 className="text-white text-2xl font-semibold tracking-tighter italic">
                                     {sponsors[sponsorIndex].name}<span className="text-cyan-500 animate-pulse">_</span>
                                 </h2>

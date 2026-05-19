@@ -56,7 +56,7 @@ const CT = () => {
             )}
 
             {/* VALUE DISPLAY */}
-            <span className="text-[14px] font-black tracking-tighter tabular-nums text-white">
+            <span className="text-[14px] font-semibold tracking-tighter tabular-nums text-white">
               {isBlueLead ? `${formattedDiff}` : isRedLead ? `${formattedDiff}` : "0"}
             </span>
 

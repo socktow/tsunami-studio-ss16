@@ -129,7 +129,7 @@ export default function TournamentDetail() {
               />
             </div>
             <div className="text-center md:text-left space-y-4">
-              {/* Sửa lỗi Architecture: Hạ font-black xuống font-semibold trên tiêu đề kích thước lớn h1 */}
+              {/* Sửa lỗi Architecture: Hạ font-semibold xuống font-semibold trên tiêu đề kích thước lớn h1 */}
               <h1 className="text-4xl md:text-6xl font-semibold text-white italic uppercase tracking-tighter">
                 {tournament.name}
               </h1>
@@ -149,7 +149,7 @@ export default function TournamentDetail() {
           {/* Roster Section */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center border-b border-emerald-500/20 pb-4">
-              {/* Sửa lỗi Architecture: Hạ từ font-black xuống font-semibold cho tiêu đề h2 */}
+              {/* Sửa lỗi Architecture: Hạ từ font-semibold xuống font-semibold cho tiêu đề h2 */}
               <h2 className="text-xl font-semibold text-white italic uppercase flex items-center gap-3">
                 <Shield className="size-5" /> Roster_Registry
               </h2>
@@ -193,7 +193,7 @@ export default function TournamentDetail() {
           {/* Action Panel */}
           <div className="space-y-6">
             <div className="border border-emerald-500/20 p-6 bg-zinc-950">
-              {/* Sửa lỗi Architecture: Hạ tiêu đề nhỏ h3 từ font-black xuống font-semibold */}
+              {/* Sửa lỗi Architecture: Hạ tiêu đề nhỏ h3 từ font-semibold xuống font-semibold */}
               <h3 className="text-sm font-semibold text-white italic uppercase mb-6 flex items-center gap-2 border-b border-emerald-500/10 pb-3">
                 <Settings className="size-4" /> Command_Actions
               </h3>
@@ -201,7 +201,7 @@ export default function TournamentDetail() {
               <div className="space-y-3">
                 <button 
                   onClick={() => setIsModalOpen(true)}
-                  {/* Sửa lỗi Architecture: Hạ font-black của nút bấm xuống font-bold để hiển thị chữ thanh thoát hơn */}
+                  {/* Sửa lỗi Architecture: Hạ font-semibold của nút bấm xuống font-bold để hiển thị chữ thanh thoát hơn */}
                   className="w-full py-4 bg-emerald-500 text-black font-bold uppercase italic text-xs hover:bg-white transition-all flex items-center justify-center gap-2"
                 >
                   <Plus className="size-4" /> Initialize_New_Team
@@ -209,7 +209,7 @@ export default function TournamentDetail() {
 
                 <button 
                   onClick={handleDeleteTournament}
-                  {/* Sửa lỗi Architecture: Hạ font-black của nút xuống font-bold */}
+                  {/* Sửa lỗi Architecture: Hạ font-semibold của nút xuống font-bold */}
                   className="w-full py-4 bg-red-500/10 border border-red-500/30 text-red-500 font-bold uppercase italic text-[10px] hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                 >
                   <Trash2 className="size-4" /> Terminate_Protocol
@@ -273,7 +273,7 @@ export default function TournamentDetail() {
                       </div>
                       <button 
                         onClick={() => handleAddTeam(team.id)}
-                        {/* Sửa lỗi Architecture: Hạ font-black của nút Deploy xuống font-bold */}
+                        {/* Sửa lỗi Architecture: Hạ font-semibold của nút Deploy xuống font-bold */}
                         className="px-4 py-2 border border-emerald-500/50 text-emerald-500 text-[10px] font-bold uppercase hover:bg-emerald-500 hover:text-black transition-all"
                       >
                         Deploy

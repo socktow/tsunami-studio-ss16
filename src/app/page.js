@@ -99,7 +99,7 @@ export default function IndustrialUI() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="size-3 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
-            <span className="text-[10px] font-black tracking-[0.3em] text-zinc-100">SYSTEM_OPERATIONAL</span>
+            <span className="text-[10px] font-semibold tracking-[0.3em] text-zinc-100">SYSTEM_OPERATIONAL</span>
           </div>
           <div className="h-4 w-[1px] bg-zinc-800" />
           <div className="flex items-center gap-2 text-[10px] font-mono">
@@ -127,7 +127,7 @@ export default function IndustrialUI() {
         {/* --- LEFT: MAIN MANIFEST --- */}
         <div className="col-span-12 lg:col-span-8 flex flex-col min-h-0">
           <header className="mb-4">
-            <h1 className="text-6xl font-black tracking-tighter text-zinc-100 flex items-baseline gap-2">
+            <h1 className="text-6xl font-semibold tracking-tighter text-zinc-100 flex items-baseline gap-2">
               MANIFEST<span className="text-emerald-500 text-2xl">.</span>CORE
             </h1>
           </header>
@@ -143,7 +143,7 @@ export default function IndustrialUI() {
             <div className="flex-1 overflow-y-auto custom-scrollbar">
               <table className="w-full text-left border-collapse">
                 <thead className="sticky top-0 z-10 bg-[#0b0b0d] shadow-sm">
-                  <tr className="text-[9px] text-zinc-600 uppercase font-black tracking-widest border-b border-zinc-800">
+                  <tr className="text-[9px] text-zinc-600 uppercase font-semibold tracking-widest border-b border-zinc-800">
                     <th className="p-4 w-12 text-center">ID</th>
                     <th className="p-4">Module_Path</th>
                     <th className="p-4 w-24 text-right">Local</th>
@@ -191,8 +191,8 @@ export default function IndustrialUI() {
           {/* Identity Card */}
           <div className="bg-emerald-500 p-5 rounded-sm relative overflow-hidden group">
             <div className="relative z-10">
-              <p className="text-[9px] font-black text-emerald-950/60 uppercase tracking-[0.2em] mb-1">Lead_Architect</p>
-              <h3 className="text-4xl font-black text-[#09090b] italic tracking-tighter uppercase">ChuChu</h3>
+              <p className="text-[9px] font-semibold text-emerald-950/60 uppercase tracking-[0.2em] mb-1">Lead_Architect</p>
+              <h3 className="text-4xl font-semibold text-[#09090b] italic tracking-tighter uppercase">ChuChu</h3>
             </div>
             <div className="absolute right-[-10px] bottom-[-10px] opacity-10 rotate-12 transition-transform group-hover:rotate-0">
               <Cpu size={120} color="#000" />
@@ -248,7 +248,7 @@ export default function IndustrialUI() {
                 }`}
               >
                 <Database size={16} />
-                <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">
                   {dbStatus === "CONNECTING" ? "Opening_Port..." : "Launch_Prisma_Studio"}
                 </span>
                 

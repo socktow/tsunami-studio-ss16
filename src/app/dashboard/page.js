@@ -60,7 +60,7 @@ export default function CyberpunkDashboard() {
               <Cpu size={32} />
             </div>
             <div>
-              <h1 className="text-3xl font-black italic tracking-tighter text-white uppercase leading-none">
+              <h1 className="text-3xl font-semibold italic tracking-tighter text-white uppercase leading-none">
                 TSUNAMI<span className="text-emerald-500">.OS</span>
               </h1>
               <p className="text-[10px] font-bold text-emerald-500/40 mt-1 uppercase tracking-widest">Broadcast_System_v3.2</p>
@@ -118,14 +118,14 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
           }`}
         >
           <Power className={`absolute top-2 right-2 ${showOverlay ? "animate-pulse" : ""}`} size={16} />
-          <span className="text-xl font-black italic tracking-widest uppercase">
+          <span className="text-xl font-semibold italic tracking-widest uppercase">
             {showOverlay ? "SYSTEM_ONLINE" : "INITIATE_LINK"}
           </span>
         </button>
 
         {/* CÁC MODULE CON */}
         <div className="border border-emerald-500/10 bg-zinc-950/40 p-5">
-          <h2 className="text-[10px] font-black text-emerald-500/40 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+          <h2 className="text-[10px] font-semibold text-emerald-500/40 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
             <Layers size={12} /> Elements_Control
           </h2>
           <div className="grid grid-cols-1 gap-3">
@@ -138,11 +138,11 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
 
         {/* TACTICAL OVERRIDES */}
         <div className="border border-orange-500/20 bg-orange-500/[0.02] p-5">
-           <h2 className="text-[10px] font-black text-orange-500/40 uppercase tracking-[0.3em] mb-4">Tactical_Override</h2>
+           <h2 className="text-[10px] font-semibold text-orange-500/40 uppercase tracking-[0.3em] mb-4">Tactical_Override</h2>
            <div className="space-y-3">
               <button 
                 onClick={() => update({ showTop: true, showBottom: false, showLeft: false, showSkin: false })}
-                className={`w-full py-4 text-xs font-black transition-all border ${
+                className={`w-full py-4 text-xs font-semibold transition-all border ${
                     isTopFocusActive ? "bg-orange-500 text-black shadow-lg" : "border-orange-500/30 text-orange-500/60 hover:bg-orange-500/10"
                 }`}
               >
@@ -151,7 +151,7 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
               
               <button 
                 onClick={toggleCombatHideAll}
-                className={`w-full py-4 text-xs font-black transition-all border border-dashed ${
+                className={`w-full py-4 text-xs font-semibold transition-all border border-dashed ${
                   (!showTop && !showBottom && !showLeft && !showSkin && lastState) 
                   ? "bg-white text-black border-white" 
                   : "border-orange-500/20 text-orange-500/40 hover:border-orange-500"
@@ -170,7 +170,7 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
       <div className="lg:col-span-8 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="border border-emerald-500/10 bg-zinc-950/40 p-6 relative">
-            <h2 className="text-[11px] font-black text-white uppercase tracking-widest mb-6 flex items-center gap-2">
+            <h2 className="text-[11px] font-semibold text-white uppercase tracking-widest mb-6 flex items-center gap-2">
                <BarChart3 size={16} className="text-emerald-500" /> Comparison_Engine
             </h2>
             <div className="space-y-3">
@@ -189,14 +189,14 @@ function IngameView({ showOverlay, showTop, showBottom, showLeft, showSkin, acti
         {/* DANGER ZONE - EMERGENCY RESET */}
         <div className="mt-12 bg-rose-500/5 border border-rose-500/20 p-8 flex items-center justify-between group hover:border-rose-500 transition-all">
           <div>
-            <h3 className="text-rose-500 font-black italic tracking-widest uppercase flex items-center gap-2">
+            <h3 className="text-rose-500 font-semibold italic tracking-widest uppercase flex items-center gap-2">
                 <RotateCcw size={16} /> Emergency_Purge
             </h3>
             <p className="text-[10px] text-rose-500/40 mt-1 uppercase">Kill all active layers and reset global state</p>
           </div>
           <button 
             onClick={() => update({ showTop: false, showBottom: false, showLeft: false, showSkin: false, lastState: null })}
-            className="px-6 py-3 bg-rose-500/20 border border-rose-500 text-rose-500 text-xs font-black hover:bg-rose-500 hover:text-black transition-all"
+            className="px-6 py-3 bg-rose-500/20 border border-rose-500 text-rose-500 text-xs font-semibold hover:bg-rose-500 hover:text-black transition-all"
           >
             EXECUTE_RESET
           </button>
@@ -212,7 +212,7 @@ function TabButton({ label, isActive, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all skew-x-[-12deg] border ${
+      className={`px-4 py-2 text-[10px] font-semibold uppercase tracking-widest transition-all skew-x-[-12deg] border ${
         isActive 
           ? "bg-emerald-500 text-black border-emerald-500" 
           : "bg-transparent text-emerald-500/40 border-emerald-500/10 hover:text-emerald-500"
@@ -236,7 +236,7 @@ function CyberButton({ label, active, onClick, icon, color = "emerald" }) {
     >
       <div className="flex items-center gap-3">
         {icon}
-        <span className="text-[11px] font-black uppercase tracking-tighter italic">{label}</span>
+        <span className="text-[11px] font-semibold uppercase tracking-tighter italic">{label}</span>
       </div>
       <div className={`h-1.5 w-1.5 ${active ? "bg-zinc-950 animate-pulse" : "bg-current opacity-20"}`} />
     </button>
@@ -257,7 +257,7 @@ function RankOption({ label, active, onClick }) {
           {label}
         </span>
       </div>
-      {active && <span className="text-[9px] font-black text-emerald-500 animate-pulse">LIVE_SYNC</span>}
+      {active && <span className="text-[9px] font-semibold text-emerald-500 animate-pulse">LIVE_SYNC</span>}
     </button>
   );
 }

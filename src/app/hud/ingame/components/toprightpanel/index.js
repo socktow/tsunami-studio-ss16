@@ -103,7 +103,7 @@ const KillFeed = ({ gameData }) => {
               {/* STREAK BADGE */}
               {event.Streak && (
                 <div 
-                  className="absolute -top-4 left-0 bg-white text-black text-[9px] font-black px-2 py-0.5 skew-x-[15deg] italic border-b-2"
+                  className="absolute -top-4 left-0 bg-white text-black text-[9px] font-semibold px-2 py-0.5 skew-x-[15deg] italic border-b-2"
                   style={{ borderColor: teamColor }}
                 >
                   {event.Streak}
@@ -117,7 +117,7 @@ const KillFeed = ({ gameData }) => {
                 </div>
                 
                 <div className="flex flex-col">
-                  <span className="text-[14px] font-black italic tracking-tighter text-white uppercase leading-none">
+                  <span className="text-[14px] font-semibold italic tracking-tighter text-white uppercase leading-none">
                     {killer.name}
                   </span>
                   
@@ -148,7 +148,7 @@ const KillFeed = ({ gameData }) => {
 
               {/* VICTIM */}
               <div className="flex items-center gap-3 z-10 skew-x-[15deg] ml-auto">
-                <span className="text-[13px] font-black italic tracking-tighter text-zinc-400 uppercase text-right leading-none">
+                <span className="text-[13px] font-semibold italic tracking-tighter text-zinc-400 uppercase text-right leading-none">
                   {victim.name}
                 </span>
                 <div className="relative border border-white/10 size-8 overflow-hidden bg-zinc-900 flex-shrink-0">

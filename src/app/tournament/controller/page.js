@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -11,6 +11,22 @@ const STATUS_CONFIG = {
   UPCOMING: { color: "#fbbf24", icon: <Clock className="size-3" />, label: "UPCOMING" },
   ONGOING: { color: "#10b981", icon: <Activity className="size-3" />, label: "ONGOING" },
   FINISHED: { color: "#ef4444", icon: <CheckCircle2 className="size-3" />, label: "FINISHED" },
+};
+
+// 🛠️ Simple sub-component to prevent the Date string hydration mismatch
+const FormattedDate = ({ dateString }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Render a safe skeleton/blank space on the server to match the initial structure
+    return <span className="opacity-0">00/00/0000</span>;
+  }
+
+  return <>{new Date(dateString).toLocaleDateString('vi-VN')}</>;
 };
 
 export default function TournamentPage() {
@@ -48,7 +64,6 @@ export default function TournamentPage() {
   const openDrawer = (tournament = null) => {
     if (tournament) {
       setEditingId(tournament.id);
-      // Format date cho input datetime-local
       const formattedDate = tournament.startDate 
         ? new Date(tournament.startDate).toISOString().slice(0, 16) 
         : "";
@@ -103,14 +118,14 @@ export default function TournamentPage() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Trophy className="size-8 text-white" />
-              <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">Tournaments<span className="text-emerald-500">.DB</span></h1>
+              <h1 className="text-4xl font-semibold italic tracking-tighter uppercase text-white">Tournaments<span className="text-emerald-500">.DB</span></h1>
             </div>
             <p className="text-[10px] tracking-[0.5em] opacity-50 uppercase">Global_Event_Coordinator_v2.0</p>
           </div>
 
           <button 
             onClick={() => openDrawer()}
-            className="group relative px-8 py-4 bg-emerald-500 text-black font-black uppercase italic text-sm flex items-center gap-2 overflow-hidden transition-all hover:bg-white"
+            className="group relative px-8 py-4 bg-emerald-500 text-black font-semibold uppercase italic text-sm flex items-center gap-2 overflow-hidden transition-all hover:bg-white"
           >
             <Plus className="size-4" /> Initialize_New_Tournament
           </button>
@@ -126,7 +141,7 @@ export default function TournamentPage() {
           ].map((s, i) => (
             <div key={i} className="border border-emerald-500/10 bg-emerald-500/5 p-4">
               <p className="text-[9px] uppercase opacity-40 mb-1">{s.label}</p>
-              <p className="text-2xl font-black text-white italic">{s.val.toString().padStart(2, '0')}</p>
+              <p className="text-2xl font-semibold text-white italic">{s.val.toString().padStart(2, '0')}</p>
             </div>
           ))}
         </div>
@@ -158,10 +173,11 @@ export default function TournamentPage() {
                       <img src={t.logo || "/placeholder.png"} className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all" alt="" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-black text-white italic uppercase leading-none mb-1 group-hover:text-emerald-500">{t.name}</h3>
+                      <h3 className="text-lg font-semibold text-white italic uppercase leading-none mb-1 group-hover:text-emerald-500">{t.name}</h3>
                       <div className="flex items-center gap-2 text-[10px] opacity-50 italic">
                         <Calendar className="size-3" />
-                        {new Date(t.startDate).toLocaleDateString('vi-VN')}
+                        {/* 🌟 Mounted Component Wrapper used here */}
+                        <FormattedDate dateString={t.startDate} />
                       </div>
                     </div>
                   </div>
@@ -170,7 +186,7 @@ export default function TournamentPage() {
                   <div className="flex justify-between items-end border-t border-emerald-500/10 pt-4">
                     <div>
                       <p className="text-[9px] uppercase opacity-40">Registered_Teams</p>
-                      <p className="text-xl font-black text-white">{(t.teams?.length || 0).toString().padStart(2, '0')}</p>
+                      <p className="text-xl font-semibold text-white">{(t.teams?.length || 0).toString().padStart(2, '0')}</p>
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => openDrawer(t)} className="p-2 border border-emerald-500/20 hover:bg-emerald-500 hover:text-black transition-all">
@@ -198,7 +214,7 @@ export default function TournamentPage() {
               className="fixed top-0 right-0 h-full w-full max-w-md bg-[#080808] border-l border-emerald-500/30 z-[101] p-10 flex flex-col"
             >
               <div className="flex justify-between items-center mb-12">
-                <h2 className="text-2xl font-black text-white italic uppercase">{editingId ? "Update_Registry" : "New_Initialization"}</h2>
+                <h2 className="text-2xl font-semibold text-white italic uppercase">{editingId ? "Update_Registry" : "New_Initialization"}</h2>
                 <button onClick={() => setIsDrawerOpen(false)} className="hover:text-red-500 transition-colors"><X className="size-6" /></button>
               </div>
 
@@ -241,7 +257,7 @@ export default function TournamentPage() {
                   </div>
                 </div>
 
-                <button type="submit" className="w-full bg-emerald-500 text-black py-5 font-black uppercase italic tracking-tighter hover:bg-white transition-all shadow-[0_10px_40px_rgba(16,185,129,0.1)]">
+                <button type="submit" className="w-full bg-emerald-500 text-black py-5 font-semibold uppercase italic tracking-tighter hover:bg-white transition-all shadow-[0_10px_40px_rgba(16,185,129,0.1)]">
                   {editingId ? "Push_Update_Chain" : "Commit_New_Data"}
                 </button>
               </form>

@@ -51,7 +51,7 @@ export default function TeamDetail() {
         {/* 🛰️ NAV SYSTEM */}
         <button 
           onClick={() => router.back()}
-          className="mb-8 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500/60 hover:text-white transition-all group"
+          className="mb-8 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.4em] text-emerald-500/60 hover:text-white transition-all group"
         >
           <span className="border border-emerald-500/30 px-2 py-1 group-hover:border-emerald-500 transition-colors">{"<<"}</span> 
           Return_to_Main_Frame
@@ -74,28 +74,28 @@ export default function TeamDetail() {
             {/* Content Section */}
             <div className="flex-1 p-8 relative overflow-hidden">
                {/* Background Watermark */}
-              <div className="absolute top-1/2 right-0 -translate-y-1/2 text-[18rem] font-black text-white/[0.02] italic pointer-events-none uppercase select-none">
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 text-[18rem] font-semibold text-white/[0.02] italic pointer-events-none uppercase select-none">
                 {team?.tagName}
               </div>
 
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-[2px] w-12 bg-emerald-500"></div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-emerald-500/60">Division_Established</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.5em] text-emerald-500/60">Division_Established</span>
                 </div>
 
-                <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase italic leading-none mb-8">
+                <h1 className="text-5xl md:text-8xl font-semibold text-white tracking-tighter uppercase italic leading-none mb-8">
                   {team?.name} <span className="text-emerald-500 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">.{team?.tagName}</span>
                 </h1>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl">
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500 p-4">
                     <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Coach</span>
-                    <span className="text-lg font-black text-white uppercase italic">{team?.coach || "CLASSIFIED"}</span>
+                    <span className="text-lg font-semibold text-white uppercase italic">{team?.coach || "CLASSIFIED"}</span>
                   </div>
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500/20 p-4">
                     <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Player_Active</span>
-                    <span className="text-lg font-black text-white uppercase italic">{team?.players?.length || 0} Player </span>
+                    <span className="text-lg font-semibold text-white uppercase italic">{team?.players?.length || 0} Player </span>
                   </div>
                   <div className="bg-white/[0.03] border-l-2 border-emerald-500/20 p-4">
                     <span className="block text-[9px] text-emerald-500/40 uppercase tracking-widest mb-1">Division_Color</span>
@@ -112,7 +112,7 @@ export default function TeamDetail() {
 
         {/* 🧬 OPERATIVES GRID (BENTO NODES) */}
         <div className="mb-8 flex items-end gap-6 border-b border-emerald-500/10 pb-6">
-            <h3 className="text-2xl font-black uppercase tracking-[0.2em] italic">Active_Roster_Manifest</h3>
+            <h3 className="text-2xl font-semibold uppercase tracking-[0.2em] italic">Active_Roster_Manifest</h3>
             <div className="flex-1 h-[1px] bg-emerald-500/10 mb-2"></div>
             <span className="text-[10px] text-emerald-500/40 font-bold">TOTAL_RECORDS: {team?.players?.length || 0}</span>
         </div>
@@ -150,7 +150,7 @@ export default function TeamDetail() {
                          <span className="text-[8px] text-emerald-500/40 uppercase tracking-widest font-bold">Operative_ID: {p.id.toString().padStart(3, '0')}</span>
                          <div className="h-[1px] w-6 bg-emerald-500/20"></div>
                       </div>
-                      <h4 className="text-3xl font-black text-white uppercase tracking-tighter group-hover:text-emerald-400 transition-colors mb-2">
+                      <h4 className="text-3xl font-semibold text-white uppercase tracking-tighter group-hover:text-emerald-400 transition-colors mb-2">
                         {p.nickname}
                       </h4>
                       <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export default function TeamDetail() {
                     {/* Side Action/Status */}
                     <div className="flex flex-col justify-between items-end">
                        <div className="w-1 h-8 bg-emerald-500/20 group-hover:bg-emerald-500 group-hover:animate-pulse"></div>
-                       <span className="text-[8px] text-emerald-500/20 group-hover:text-emerald-500 font-black uppercase transform -rotate-90 origin-right transition-colors">Verified</span>
+                       <span className="text-[8px] text-emerald-500/20 group-hover:text-emerald-500 font-semibold uppercase transform -rotate-90 origin-right transition-colors">Verified</span>
                     </div>
                   </div>
 
@@ -177,7 +177,7 @@ export default function TeamDetail() {
                   <div className="size-16 border border-emerald-500/20 flex items-center justify-center mb-6 animate-spin">
                     <div className="size-8 bg-emerald-500/20"></div>
                   </div>
-                  <p className="text-[10px] tracking-[0.5em] text-emerald-500/40 uppercase font-black">Data_Node_Empty: No_Operatives_Found</p>
+                  <p className="text-[10px] tracking-[0.5em] text-emerald-500/40 uppercase font-semibold">Data_Node_Empty: No_Operatives_Found</p>
               </div>
             )}
           </AnimatePresence>
@@ -193,7 +193,7 @@ export default function TeamDetail() {
             <div className="flex justify-end items-center gap-8">
                 <div className="hidden md:block text-right">
                     <span className="block text-[8px] text-emerald-500/40 uppercase mb-1">Terminal_Security</span>
-                    <span className="text-xs font-black text-white bg-emerald-500/10 px-3 py-1 border border-emerald-500/30">LEVEL_04_ENCRYPTION</span>
+                    <span className="text-xs font-semibold text-white bg-emerald-500/10 px-3 py-1 border border-emerald-500/30">LEVEL_04_ENCRYPTION</span>
                 </div>
                 <div className="h-12 w-12 border border-emerald-500/30 flex items-center justify-center relative group cursor-crosshair">
                     <div className="absolute inset-0 bg-emerald-500/5 group-hover:bg-emerald-500/20 transition-colors"></div>

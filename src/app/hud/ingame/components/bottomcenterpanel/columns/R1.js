@@ -96,7 +96,7 @@ const R1 = () => {
                         )}
                         {isOnCooldown && cdLeft <= 10 && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-[15px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
+                            <span className="text-[15px] font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,1)]"
                                   style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,0 0 8px rgba(0,0,0,1)` }}>
                               {Math.ceil(cdLeft)}
                             </span>

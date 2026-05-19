@@ -74,7 +74,7 @@ const SplitComponent = ({ isRightSide = false, teamData, statsData, matchType })
           </div>
 
           <img src={teamData.logo} alt="logo" className="h-12 w-12 object-contain brightness-110" />
-          <span className="text-white text-[30px] font-black tracking-tighter uppercase leading-none">
+          <span className="text-white text-[30px] font-semibold tracking-tighter uppercase leading-none">
             {teamData.tag}
           </span>
         </div>

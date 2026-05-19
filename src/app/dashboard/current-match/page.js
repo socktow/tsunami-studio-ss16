@@ -164,7 +164,7 @@ const Page = () => {
             label={
               <div className="flex items-center gap-2">
                 <span>Raw Engine</span>
-                <span className="bg-blue-500 text-[8px] font-black px-1.5 py-0.5 rounded-full text-white uppercase tracking-tighter animate-pulse">
+                <span className="bg-blue-500 text-[8px] font-semibold px-1.5 py-0.5 rounded-full text-white uppercase tracking-tighter animate-pulse">
                   New
                 </span>
               </div>

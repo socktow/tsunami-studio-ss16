@@ -19,7 +19,7 @@ const CenterComponent = ({ blueKills = 0, redKills = 0, gameTime = 0 }) => {
 
         {/* Chỉ số hạ gục Đội Xanh */}
         <div className="w-2/5 text-center">
-          <span className="text-white text-4xl font-black tabular-nums tracking-tight ">
+          <span className="text-white text-4xl font-semibold tabular-nums tracking-tight ">
             {blueKills}
           </span>
         </div>
@@ -35,7 +35,7 @@ const CenterComponent = ({ blueKills = 0, redKills = 0, gameTime = 0 }) => {
 
         {/* Chỉ số hạ gục Đội Đỏ */}
         <div className="w-2/5 text-center">
-          <span className="text-white text-4xl font-black tabular-nums tracking-tight ">
+          <span className="text-white text-4xl font-semibold tabular-nums tracking-tight ">
             {redKills}
           </span>
         </div>
@@ -48,7 +48,7 @@ const CenterComponent = ({ blueKills = 0, redKills = 0, gameTime = 0 }) => {
         <div className="absolute inset-0 bg-zinc-900/40" />
 
         <div className="relative h-full flex items-center justify-center">
-          <span className="text-[22px] font-black text-white font-mono leading-none drop-shadow-md">
+          <span className="text-[22px] font-semibold text-white font-mono leading-none drop-shadow-md">
             {formatTime(gameTime)}
           </span>
         </div>

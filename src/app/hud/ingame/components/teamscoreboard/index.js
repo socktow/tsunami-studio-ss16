@@ -20,7 +20,7 @@ const TeamScoreboard = () => {
           <div className="flex-1 flex items-center px-4 gap-3">
             <div className="size-10 bg-zinc-800 rounded-sm border border-white/5" /> 
             <div className="flex flex-col">
-              <span className="text-white font-black text-xl leading-none italic uppercase">JDG</span>
+              <span className="text-white font-semibold text-xl leading-none italic uppercase">JDG</span>
               <span className="text-zinc-400 text-[10px] font-bold">7 - 4</span>
             </div>
             <div className="flex flex-col items-end ml-auto mr-4">
@@ -34,18 +34,18 @@ const TeamScoreboard = () => {
 
           {/* KILLS CENTER */}
           <div className="flex items-center justify-center gap-6 px-6 bg-gradient-to-b from-white/10 to-transparent h-full border-x border-white/5 shadow-inner">
-            <span className="text-white text-3xl font-black italic tracking-tighter w-12 text-center">12</span>
+            <span className="text-white text-3xl font-semibold italic tracking-tighter w-12 text-center">12</span>
             <div className="size-8 bg-white/10 rounded-full flex items-center justify-center border border-white/20 shadow-glow">
                <div className="size-4 bg-white/40 rotate-45" />
             </div>
-            <span className="text-white text-3xl font-black italic tracking-tighter w-12 text-center">10</span>
+            <span className="text-white text-3xl font-semibold italic tracking-tighter w-12 text-center">10</span>
           </div>
 
           {/* Team Right Content */}
           <div className="flex-1 flex flex-row-reverse items-center px-4 gap-3 text-right">
             <div className="size-10 bg-zinc-800 rounded-sm border border-white/5" />
             <div className="flex flex-col">
-              <span className="text-white font-black text-xl leading-none italic uppercase">AL</span>
+              <span className="text-white font-semibold text-xl leading-none italic uppercase">AL</span>
               <span className="text-zinc-400 text-[10px] font-bold">7 - 4</span>
             </div>
             <div className="flex flex-col items-start mr-auto ml-4">
@@ -71,7 +71,7 @@ const TeamScoreboard = () => {
 
           {/* Time Center */}
           <div className="flex flex-col items-center">
-            <span className="text-white font-mono font-black text-lg tracking-[0.2em]">38:09</span>
+            <span className="text-white font-mono font-semibold text-lg tracking-[0.2em]">38:09</span>
             <div className="w-12 h-[2px] bg-blue-500 mt-0.5 shadow-[0_0_5px_rgba(59,130,246,1)]" />
           </div>
 

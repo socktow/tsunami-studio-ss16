@@ -97,7 +97,7 @@ const L1 = () => {
                 <>
                   <img src={`${IMAGE_BASE_URL}${slot.item.assetUrl}`} className="w-full h-full object-cover rounded-[2px]" alt="item" />
                   {(slot.item.stacks > 0 || slot.item.charges > 0) && (
-                    <div className="absolute bottom-0 right-0 text-white min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-black z-40 shadow-[0_0_4px_rgba(0,0,0,0.9)]" style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}>
+                    <div className="absolute bottom-0 right-0 text-white min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-semibold z-40 shadow-[0_0_4px_rgba(0,0,0,0.9)]" style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}>
                       {slot.item.stacks || slot.item.charges}
                     </div>
                   )}

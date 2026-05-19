@@ -121,7 +121,7 @@ const R2 = () => {
                   {/* STACKS / CHARGES (Ở Red Team thường để góc trái dưới để tránh che hình) */}
                   {(slot.item.stacks > 0 || slot.item.charges > 0) && (
                     <div 
-                      className="absolute bottom-0 left-0 text-white min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-black z-40" 
+                      className="absolute bottom-0 left-0 text-white min-w-[10px] h-[10px] px-[1px] flex items-center justify-center text-[9px] leading-none font-semibold z-40" 
                       style={{ textShadow: `0 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000` }}
                     >
                       {slot.item.stacks || slot.item.charges}

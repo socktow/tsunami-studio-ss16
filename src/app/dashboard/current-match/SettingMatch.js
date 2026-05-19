@@ -134,7 +134,7 @@ const SettingMatch = () => {
       {/* --- HEADER (Fixed Height) --- */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-6 flex-none">
         <div>
-          <h1 className="text-2xl font-black tracking-tighter flex items-center gap-3 text-white uppercase italic">
+          <h1 className="text-2xl font-semibold tracking-tighter flex items-center gap-3 text-white uppercase italic">
             <Zap className="text-yellow-500 fill-yellow-500" size={24} />
             Broadcast Config
           </h1>
@@ -160,7 +160,7 @@ const SettingMatch = () => {
           <div className="lg:col-span-2 bg-slate-900/40 border border-slate-800 rounded-2xl p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-3 text-blue-400">
               <Trophy size={14} />
-              <h2 className="font-black uppercase tracking-widest text-[10px]">Tournament Selection</h2>
+              <h2 className="font-semibold uppercase tracking-widest text-[10px]">Tournament Selection</h2>
             </div>
             <div className="relative group">
               <select
@@ -179,7 +179,7 @@ const SettingMatch = () => {
           <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3 text-purple-400">
               <LayoutGrid size={14} />
-              <h2 className="font-black uppercase tracking-widest text-[10px]">Technical Specs</h2>
+              <h2 className="font-semibold uppercase tracking-widest text-[10px]">Technical Specs</h2>
             </div>
             <div className="grid grid-cols-2 gap-3">
                <select
@@ -207,7 +207,7 @@ const SettingMatch = () => {
                   <div className="p-2 bg-zinc-950 rounded-lg border border-slate-800">
                     <Shield size={18} className={idx === 0 ? "text-blue-500" : "text-red-500"} />
                   </div>
-                  <h2 className="font-black text-lg italic uppercase tracking-tighter">Team {idx + 1}</h2>
+                  <h2 className="font-semibold text-lg italic uppercase tracking-tighter">Team {idx + 1}</h2>
                 </div>
                 <input
                   type="color"
@@ -242,7 +242,7 @@ const SettingMatch = () => {
                 />
                 <input
                   placeholder="TAG"
-                  className="bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-xs font-black text-center uppercase outline-none focus:border-blue-500"
+                  className="bg-zinc-950 border border-slate-700 rounded-xl p-2.5 text-xs font-semibold text-center uppercase outline-none focus:border-blue-500"
                   value={formData.teamsData[idx].tag}
                   onChange={(e) => updateTeamField(idx, "tag", e.target.value)}
                 />
@@ -251,7 +251,7 @@ const SettingMatch = () => {
               {/* Players List (The only scrollable part if needed) */}
               <div className="flex-1 flex flex-col min-h-0">
                 <div className="flex items-center justify-between mb-3 px-1">
-                  <h3 className="text-[9px] uppercase text-slate-500 font-black tracking-widest">Active Roster</h3>
+                  <h3 className="text-[9px] uppercase text-slate-500 font-semibold tracking-widest">Active Roster</h3>
                   <div className="h-px flex-1 mx-4 bg-slate-800" />
                 </div>
 
@@ -268,7 +268,7 @@ const SettingMatch = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-bold text-[13px] text-slate-200 truncate uppercase tracking-tight">{player.nickname}</div>
-                          <div className="text-[8px] uppercase font-black text-blue-500 tracking-tighter">{player.role || 'Member'}</div>
+                          <div className="text-[8px] uppercase font-semibold text-blue-500 tracking-tighter">{player.role || 'Member'}</div>
                         </div>
                         <Hash size={12} className="text-slate-700 mr-2" />
                       </div>
@@ -290,7 +290,7 @@ const SettingMatch = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="group relative w-full bg-white text-black disabled:bg-slate-800 disabled:text-slate-500 rounded-xl p-4 font-black uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-3 overflow-hidden transition-all active:scale-[0.99]"
+            className="group relative w-full bg-white text-black disabled:bg-slate-800 disabled:text-slate-500 rounded-xl p-4 font-semibold uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-3 overflow-hidden transition-all active:scale-[0.99]"
           >
             {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
             <span className="relative z-10">{isSubmitting ? "Processing..." : "Sync Broadcast Engine"}</span>

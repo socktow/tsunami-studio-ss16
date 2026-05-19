@@ -49,7 +49,7 @@ const ChampionAvatarLeft = ({
   const buffType = getBuffType();
 
   return (
-    <div className="relative w-[45px] h-[45px]">
+    <div className="relative size-[45px]">
       <div
         className={`
           relative w-full h-full overflow-hidden rounded
@@ -92,7 +92,7 @@ const ChampionAvatarLeft = ({
               exit={{ opacity: 0 }}
               className="absolute inset-0 z-40 flex items-center justify-center bg-zinc-950/20"
             >
-              <span className="text-[22px] font-black text-red-500 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic">
+              <span className="text-[22px] font-semibold text-red-500 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] italic">
                 {displayTimer}
               </span>
             </motion.div>
@@ -149,7 +149,7 @@ const ChampionAvatarLeft = ({
       >
         {isUltiOnCooldown && (
           <div className="absolute inset-0 z-30 bg-zinc-950/65 flex items-center justify-center">
-            <span className="text-[10px] font-black text-white drop-shadow">
+            <span className="text-[10px] font-semibold text-white drop-shadow">
               {ultiCooldownLeft}
             </span>
           </div>

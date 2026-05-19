@@ -52,7 +52,7 @@ const EventRight = ({
   const buffType = getBuffType();
 
   return (
-    <div className="relative w-[45px] h-[45px]">
+    <div className="relative size-[45px]">
       {/* CONTAINER */}
       <div
         className={`
@@ -222,11 +222,11 @@ const EventRight = ({
                   ease: "anticipate",
                 }}
               >
-                <span className="text-[14px] font-black text-white/80 leading-none">
+                <span className="text-[14px] font-semibold text-white/80 leading-none">
                   ^
                 </span>
 
-                <span className="text-[20px] font-black text-white leading-none italic">
+                <span className="text-[20px] font-semibold text-white leading-none italic">
                   {level}
                 </span>
               </motion.div>
@@ -255,7 +255,7 @@ const EventRight = ({
         {/* COOLDOWN OVERLAY */}
         {isUltiOnCooldown && (
           <div className="absolute inset-0 z-30 bg-zinc-950/65 flex items-center justify-center">
-            <span className="text-[10px] font-black text-white drop-shadow">
+            <span className="text-[10px] font-semibold text-white drop-shadow">
               {ultiCooldownLeft}
             </span>
           </div>

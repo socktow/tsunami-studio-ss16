@@ -81,7 +81,7 @@ const TopLeftPanel = () => {
                     exit={{ x: -10, opacity: 0, width: 0 }}
                     className="relative flex items-center px-4 min-w-[70px] justify-center bg-zinc-950/40 backdrop-blur-md border border-l-0 border-white/10"
                   >
-                    <span className="text-xl font-black font-mono tracking-tighter text-white tabular-nums drop-shadow-md">
+                    <span className="text-xl font-semibold font-mono tracking-tighter text-white tabular-nums drop-shadow-md">
                       {timeDisplay}
                     </span>
                     

@@ -42,7 +42,7 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
       <div className={`flex items-center gap-2 mb-1 ${!isRightSide ? '' : 'flex-row-reverse'}`}>
         {/* Sửa lỗi Architecture: Thay size axes lặp (size-4) sang định dạng size-4 phù hợp Tailwind v4 */}
         <Zap className="size-4 fill-current" style={{ color: current.color }} />
-        {/* Sửa lỗi Architecture: Chuyển font-black xuống font-semibold trên chữ nhỏ để tránh dính chữ */}
+        {/* Sửa lỗi Architecture: Chuyển font-semibold xuống font-semibold trên chữ nhỏ để tránh dính chữ */}
         <span className="text-[9px] font-semibold uppercase text-white/90 tracking-widest">
             {current.label}
         </span>
@@ -52,7 +52,7 @@ const PowerPlayItem = ({ goldLead, timeLeft, progress, type, isRightSide }) => {
         <span className="text-sm font-bold font-mono text-white/80 bg-zinc-950/40 px-2 py-0.5 rounded leading-none">
           {formattedTime}
         </span>
-        {/* Sửa lỗi Architecture: Đổi font-black hiển thị lượng vàng xuống font-bold để đảm bảo tính scannability */}
+        {/* Sửa lỗi Architecture: Đổi font-semibold hiển thị lượng vàng xuống font-bold để đảm bảo tính scannability */}
         <span className="text-lg font-bold text-white leading-none">{formatGoldDisplay(goldLead)}</span>
       </div>
 

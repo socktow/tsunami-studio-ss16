@@ -41,7 +41,7 @@ const CenterLeftPanel = () => {
                             <div className={`w-1.5 h-4 rounded-full ${
                                 activeRankView === 'gold' ? 'bg-amber-400 shadow-[0_0_8px_#fbbf24]' : 'bg-cyan-400 shadow-[0_0_8px_#22d3ee]'
                             }`} />
-                            <span className="text-white font-black text-[10px] uppercase tracking-widest">
+                            <span className="text-white font-semibold text-[10px] uppercase tracking-widest">
                                 {activeRankView === 'gold' ? 'Economy Leader' : 'Level Ranking'}
                             </span>
                         </div>
@@ -72,7 +72,7 @@ const CenterLeftPanel = () => {
 
                                 <div className="relative z-10 flex items-center h-full px-3 justify-between">
                                     <div className="flex items-center gap-3">
-                                        <span className={`text-xs font-black italic w-4 ${index === 0 ? 'text-white' : 'text-zinc-500'}`}>
+                                        <span className={`text-xs font-semibold italic w-4 ${index === 0 ? 'text-white' : 'text-zinc-500'}`}>
                                             {index + 1}
                                         </span>
                                         <span className="text-white font-extrabold text-[10px] uppercase truncate max-w-[90px]">
@@ -83,7 +83,7 @@ const CenterLeftPanel = () => {
                                     <div className="flex flex-col items-end min-w-[70px]">
                                         {activeRankView === 'gold' ? (
                                             <div className="flex items-center gap-1.5">
-                                                <span className={`font-mono font-black text-xs ${index === 0 ? 'text-amber-400' : 'text-amber-100/90'}`}>
+                                                <span className={`font-mono font-semibold text-xs ${index === 0 ? 'text-amber-400' : 'text-amber-100/90'}`}>
                                                     {formatGold(player.totalGold)}
                                                 </span>
                                                 <div className="size-1 rounded-full bg-amber-500 shadow-[0_0_4px_#f59e0b]" />
@@ -91,8 +91,8 @@ const CenterLeftPanel = () => {
                                         ) : (
                                             <div className="flex flex-col items-end gap-1">
                                                 <div className="flex items-baseline gap-1">
-                                                    <span className="text-[8px] font-black text-cyan-400 opacity-70 uppercase">Lv</span>
-                                                    <span className="font-mono font-black text-sm text-white">{player.level}</span>
+                                                    <span className="text-[8px] font-semibold text-cyan-400 opacity-70 uppercase">Lv</span>
+                                                    <span className="font-mono font-semibold text-sm text-white">{player.level}</span>
                                                 </div>
                                                 <div className="w-16 h-1 bg-zinc-950/40 rounded-full border border-white/5 overflow-hidden">
                                                     <motion.div

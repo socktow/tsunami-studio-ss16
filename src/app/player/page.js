@@ -83,7 +83,7 @@ export default function PlayerPage() {
         {/* Header */}
         <header className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-6 mb-12 border border-emerald-500/20 bg-zinc-950/80 p-8 backdrop-blur-sm shadow-[0_0_50px_rgba(16,185,129,0.05)]">
           <div>
-            <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">Roster<span className="text-white">.OS</span></h1>
+            <h1 className="text-4xl font-semibold tracking-tighter uppercase italic leading-none">Roster<span className="text-white">.OS</span></h1>
             <p className="text-[9px] tracking-[0.5em] mt-2 opacity-50 uppercase italic">Central_Database_Link_Active</p>
           </div>
 
@@ -101,7 +101,7 @@ export default function PlayerPage() {
             </select>
             <button 
               onClick={() => { setEditingId(null); setForm({nickname:"", avatar:"", role:"MID", teamId:""}); setIsDrawerOpen(true); }}
-              className="bg-emerald-500 text-black px-8 py-4 flex items-center gap-3 hover:bg-white transition-all font-black uppercase text-xs italic shadow-[4px_4px_0px_#065f46]"
+              className="bg-emerald-500 text-black px-8 py-4 flex items-center gap-3 hover:bg-white transition-all font-semibold uppercase text-xs italic shadow-[4px_4px_0px_#065f46]"
             >
               <UserPlus className="size-4" /> Create_Record
             </button>
@@ -134,7 +134,7 @@ export default function PlayerPage() {
                   <div className="size-24 border border-emerald-500/20 rounded-full p-1 mb-4 group-hover:border-emerald-500/60 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.05)]">
                     <img src={p.avatar || "/default.png"} className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-500" alt={p.nickname} />
                   </div>
-                  <h3 className="text-xl font-black text-white italic uppercase tracking-tighter">{p.nickname}</h3>
+                  <h3 className="text-xl font-semibold text-white italic uppercase tracking-tighter">{p.nickname}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: p.team?.color || '#10b981' }}></span>
                     <p className="text-[10px] opacity-60 uppercase tracking-widest font-bold">{p.team?.name || "Independent"}</p>
@@ -142,12 +142,12 @@ export default function PlayerPage() {
                 </div>
 
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
-                  <button onClick={() => { setEditingId(p.id); setForm({...p, teamId: p.teamId.toString()}); setIsDrawerOpen(true); }} className="flex-1 py-2 bg-emerald-500/10 hover:bg-emerald-500 hover:text-black text-[10px] font-black transition-all border border-emerald-500/20 uppercase italic">Edit_Data</button>
-                  <button onClick={async () => { if(confirm("PURGE_RECORD?")) { await fetch(`/api/player/${p.id}`, {method:"DELETE"}); fetchData(); }}} className="flex-1 py-2 bg-red-500/10 hover:bg-red-500 hover:text-white text-[10px] font-black transition-all border border-red-500/20 uppercase italic">Purge</button>
+                  <button onClick={() => { setEditingId(p.id); setForm({...p, teamId: p.teamId.toString()}); setIsDrawerOpen(true); }} className="flex-1 py-2 bg-emerald-500/10 hover:bg-emerald-500 hover:text-black text-[10px] font-semibold transition-all border border-emerald-500/20 uppercase italic">Edit_Data</button>
+                  <button onClick={async () => { if(confirm("PURGE_RECORD?")) { await fetch(`/api/player/${p.id}`, {method:"DELETE"}); fetchData(); }}} className="flex-1 py-2 bg-red-500/10 hover:bg-red-500 hover:text-white text-[10px] font-semibold transition-all border border-red-500/20 uppercase italic">Purge</button>
                 </div>
 
                 {/* Chữ số ID chìm phía sau */}
-                <span className="absolute bottom-[-15px] right-2 text-7xl font-black text-white/[0.03] italic pointer-events-none group-hover:text-emerald-500/[0.05] transition-colors">
+                <span className="absolute bottom-[-15px] right-2 text-7xl font-semibold text-white/[0.03] italic pointer-events-none group-hover:text-emerald-500/[0.05] transition-colors">
                    #{p.id.toString().padStart(3, '0')}
                 </span>
               </motion.div>
@@ -162,7 +162,7 @@ export default function PlayerPage() {
             <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronLeft className="size-4" /></button>
             <div className="flex gap-2">
                {[...Array(totalPages)].map((_, i) => (
-                 <button key={i} onClick={() => setCurrentPage(i+1)} className={`size-8 text-[10px] font-black italic border ${currentPage === i+1 ? 'bg-emerald-500 text-black border-emerald-500' : 'border-emerald-500/20 text-emerald-500/40 hover:text-emerald-500'}`}>{i+1}</button>
+                 <button key={i} onClick={() => setCurrentPage(i+1)} className={`size-8 text-[10px] font-semibold italic border ${currentPage === i+1 ? 'bg-emerald-500 text-black border-emerald-500' : 'border-emerald-500/20 text-emerald-500/40 hover:text-emerald-500'}`}>{i+1}</button>
                ))}
             </div>
             <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="p-2 border border-emerald-500/20 disabled:opacity-20 hover:bg-emerald-500/10 transition-all active:scale-95"><ChevronRight className="size-4" /></button>
@@ -181,7 +181,7 @@ export default function PlayerPage() {
             >
               <div className="flex justify-between items-center mb-10">
                 <div>
-                  <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">{editingId ? "Update_Log" : "New_Register"}</h2>
+                  <h2 className="text-2xl font-semibold text-white italic uppercase tracking-tighter">{editingId ? "Update_Log" : "New_Register"}</h2>
                   <div className="h-0.5 w-16 bg-emerald-500 mt-1 shadow-[0_0_10px_#10b981]"></div>
                 </div>
                 <button onClick={() => setIsDrawerOpen(false)} className="size-10 border border-emerald-500/20 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><X className="size-5" /></button>
@@ -206,12 +206,12 @@ export default function PlayerPage() {
                       <img src={ROLE_ICONS[form.role]} className="w-full h-full invert brightness-200" alt="" />
                     </div>
                   </div>
-                  <span className="text-[9px] font-black tracking-[0.4em] opacity-30 uppercase italic">Aesthetic_Module_Preview</span>
+                  <span className="text-[9px] font-semibold tracking-[0.4em] opacity-30 uppercase italic">Aesthetic_Module_Preview</span>
                 </div>
 
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest opacity-50 italic flex items-center gap-2">
+                    <label className="text-[10px] font-semibold uppercase tracking-widest opacity-50 italic flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-emerald-500"></span> 1. Operative_Name
                     </label>
                     <input value={form.nickname} onChange={e => setForm({...form, nickname: e.target.value})} required className="w-full bg-transparent border-b border-emerald-500/30 py-4 text-white focus:border-emerald-500 outline-none text-xl font-bold uppercase transition-all placeholder:text-emerald-900" placeholder="ENTER_NICKNAME..." />
@@ -219,13 +219,13 @@ export default function PlayerPage() {
 
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest opacity-50 italic">2. Class_Role</label>
+                      <label className="text-[10px] font-semibold uppercase tracking-widest opacity-50 italic">2. Class_Role</label>
                       <select value={form.role} onChange={e => setForm({...form, role: e.target.value})} className="w-full bg-zinc-950 border border-emerald-500/30 p-4 text-xs font-bold uppercase outline-none focus:border-emerald-500 transition-colors cursor-pointer">
                         {Object.keys(ROLE_ICONS).map(r => <option key={r} value={r} className="bg-zinc-950">{r}</option>)}
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest opacity-50 italic">3. Division</label>
+                      <label className="text-[10px] font-semibold uppercase tracking-widest opacity-50 italic">3. Division</label>
                       <select value={form.teamId} onChange={e => setForm({...form, teamId: e.target.value})} required className="w-full bg-zinc-950 border border-emerald-500/30 p-4 text-xs font-bold uppercase outline-none focus:border-emerald-500 transition-colors cursor-pointer">
                         <option value="">SELECT_TEAM</option>
                         {teams.map(t => <option key={t.id} value={t.id} className="bg-zinc-950">{t.name}</option>)}
@@ -234,7 +234,7 @@ export default function PlayerPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest opacity-50 italic flex items-center gap-2">
+                    <label className="text-[10px] font-semibold uppercase tracking-widest opacity-50 italic flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-emerald-500"></span> 4. Asset_Source_URL
                     </label>
                     <input value={form.avatar} onChange={e => setForm({...form, avatar: e.target.value})} className="w-full bg-transparent border border-emerald-500/30 p-4 text-[10px] focus:border-emerald-500 outline-none transition-all placeholder:text-emerald-900" placeholder="HTTP://IMAGE_SERVER/ASSET_NODE.PNG" />
@@ -242,10 +242,10 @@ export default function PlayerPage() {
                 </div>
 
                 <div className="pt-10 space-y-4">
-                  <button type="submit" className="w-full bg-emerald-500 text-black py-6 font-black uppercase italic tracking-widest hover:bg-white transition-all shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95 active:shadow-none">
+                  <button type="submit" className="w-full bg-emerald-500 text-black py-6 font-semibold uppercase italic tracking-widest hover:bg-white transition-all shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95 active:shadow-none">
                     Confirm_Data_Push
                   </button>
-                  <button type="button" onClick={() => setIsDrawerOpen(false)} className="w-full text-[9px] font-black uppercase tracking-[0.5em] opacity-30 hover:opacity-100 transition-opacity">
+                  <button type="button" onClick={() => setIsDrawerOpen(false)} className="w-full text-[9px] font-semibold uppercase tracking-[0.5em] opacity-30 hover:opacity-100 transition-opacity">
                     Disconnect_Session
                   </button>
                 </div>
