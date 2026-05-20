@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useOverlayStore } from "@/store/overlayStore";
 import {
-  Activity, Swords, Award, TrendingUp, Flame, Shield, 
+  Activity, Swords, Award, TrendingUp, Flame, Shield,
   Layers, Power, Terminal, EyeOff, RefreshCw, Lock, CheckCircle2
 } from "lucide-react";
 
@@ -12,7 +12,7 @@ const socket = io("http://localhost:3001");
 export default function MinimalistDashboard() {
   const [activeTab, setActiveTab] = useState("ingame");
   const {
-    showOverlay, showTop, showBottom, showLeft, showSkin, showplayercard, showplayerRunes,
+    showOverlay, showTop, showBottom, showLeft, showSkin, showplayercard, showplayerRunes, showTeamFightNoDamage, showMatchup,
     showGoldGraph, showkillfeedcustom, activeRankView, lastState, setState
   } = useOverlayStore();
 
@@ -30,15 +30,16 @@ export default function MinimalistDashboard() {
   };
 
   const toggleCombatHideAll = () => {
-    const isAnyActive = showTop || showBottom || showLeft || showSkin || showplayercard || showplayerRunes || showGoldGraph || showkillfeedcustom;
-    
+    const isAnyActive = showTop || showBottom || showLeft || showSkin || showTeamFightNoDamage || showplayercard || showplayerRunes || showGoldGraph || showkillfeedcustom;
+
     if (isAnyActive) {
       update({
-        lastState: { showTop, showBottom, showLeft, showSkin, showplayercard, showplayerRunes, showGoldGraph, showkillfeedcustom },
+        lastState: { showTop, showBottom, showLeft, showSkin, showTeamFightNoDamage, showplayercard, showplayerRunes, showGoldGraph, showkillfeedcustom },
         showTop: false,
         showBottom: false,
         showLeft: false,
         showSkin: false,
+        showTeamFightNoDamage: false,
         showplayercard: false,
         showplayerRunes: false,
         showGoldGraph: false,
@@ -83,6 +84,8 @@ export default function MinimalistDashboard() {
             showplayerRunes={showplayerRunes}
             showGoldGraph={showGoldGraph}
             showkillfeedcustom={showkillfeedcustom}
+            showTeamFightNoDamage={showTeamFightNoDamage}
+            showMatchup={showMatchup}
             activeRankView={activeRankView}
             lastState={lastState}
             update={update}
@@ -100,10 +103,10 @@ export default function MinimalistDashboard() {
 }
 
 function IngameView({
-  showOverlay, showTop, showBottom, showLeft, showSkin, showplayercard, 
+  showOverlay, showTop, showBottom, showLeft, showSkin, showTeamFightNoDamage, showplayercard, showMatchup,
   showplayerRunes, showGoldGraph, showkillfeedcustom, activeRankView, lastState, update, toggleCombatHideAll
 }) {
-  const isInterfaceHidden = !showTop && !showBottom && !showLeft && !showSkin && !showplayercard && !showplayerRunes && !showGoldGraph && !showkillfeedcustom && lastState;
+  const isInterfaceHidden = !showTop && !showBottom && !showLeft && !showSkin && !showTeamFightNoDamage && !showplayercard && !showplayerRunes && !showGoldGraph && !showkillfeedcustom && !showMatchup && lastState;
 
   return (
     <>
@@ -111,9 +114,8 @@ function IngameView({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={() => update({ showOverlay: !showOverlay })}
-            className={`md:col-span-2 p-5 border rounded-xl transition-all duration-300 flex items-center justify-between relative group overflow-hidden shadow-lg ${
-              showOverlay ? "bg-gradient-to-r from-cyan-600 to-blue-600 border-cyan-400 text-white shadow-cyan-950/50" : "bg-[#161f2c] border-slate-800 text-slate-400 hover:border-slate-700"
-            }`}
+            className={`md:col-span-2 p-5 border rounded-xl transition-all duration-300 flex items-center justify-between relative group overflow-hidden shadow-lg ${showOverlay ? "bg-gradient-to-r from-cyan-600 to-blue-600 border-cyan-400 text-white shadow-cyan-950/50" : "bg-[#161f2c] border-slate-800 text-slate-400 hover:border-slate-700"
+              }`}
           >
             <div className="flex flex-col text-left z-10">
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-70">Main Stream Link</span>
@@ -124,9 +126,8 @@ function IngameView({
 
           <button
             onClick={toggleCombatHideAll}
-            className={`p-5 text-xs font-bold rounded-xl transition-all border flex flex-col justify-center items-center gap-2 shadow-lg ${
-              isInterfaceHidden ? "bg-amber-500/10 border-amber-500/40 text-amber-400" : "bg-[#161f2c] border-slate-800 text-slate-400 hover:border-slate-700"
-            }`}
+            className={`p-5 text-xs font-bold rounded-xl transition-all border flex flex-col justify-center items-center gap-2 shadow-lg ${isInterfaceHidden ? "bg-amber-500/10 border-amber-500/40 text-amber-400" : "bg-[#161f2c] border-slate-800 text-slate-400 hover:border-slate-700"
+              }`}
           >
             <EyeOff size={18} />
             <span className="tracking-wider uppercase text-[10px]">{isInterfaceHidden ? "RESTORE UI" : "STRIKE MODE"}</span>
@@ -139,17 +140,19 @@ function IngameView({
               <Layers size={14} className="text-cyan-400" /> Overlay Elements Registry
             </h2>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <CyberButton label="Scoreboard (Top)" active={showTop} onClick={() => update({ showTop: !showTop })} icon={<Swords size={16} />} />
             <CyberButton label="Rankings (Left)" active={showLeft} onClick={() => update({ showLeft: !showLeft })} icon={<Award size={16} />} />
             <CyberButton label="KDA Stats (Bottom)" active={showBottom} onClick={() => update({ showBottom: !showBottom, ...(!showBottom && { showplayerRunes: false }) })} icon={<Flame size={16} />} />
-            <CyberButton label="Custom Killfeed" active={showkillfeedcustom} onClick={() => update({ showkillfeedcustom: !showkillfeedcustom })} icon={<Shield size={16} />} theme="cyan" />
+            <CyberButton label="Custom Killfeed ( DEV Mode ) " active={showkillfeedcustom} onClick={() => update({ showkillfeedcustom: !showkillfeedcustom })} icon={<Shield size={16} />} theme="cyan" />
             <CyberButton label="Player Cards" active={showplayercard} onClick={() => update({ showplayercard: !showplayercard, ...(!showplayercard && { showplayerRunes: false }) })} icon={<Layers size={16} />} />
-            <CyberButton label="Player Runes" active={showplayerRunes} onClick={() => update({ showplayerRunes: !showplayerRunes, ...(!showplayerRunes && { showBottom: false, showplayercard: false }) })} icon={<Terminal size={16} />} />
+            <CyberButton label="Player Runes ( DEV Mode )" active={showplayerRunes} onClick={() => update({ showplayerRunes: !showplayerRunes, ...(!showplayerRunes && { showBottom: false, showplayercard: false }) })} icon={<Terminal size={16} />} />
             <div className="sm:col-span-2 my-1 border-t border-slate-800/60" />
-            <CyberButton label="Gold Graph" active={showGoldGraph} onClick={() => update({ showGoldGraph: !showGoldGraph })} icon={<TrendingUp size={16} />} theme="amber" />
+            <CyberButton label="Gold Graph ( DEV Mode ) " active={showGoldGraph} onClick={() => update({ showGoldGraph: !showGoldGraph })} icon={<TrendingUp size={16} />} theme="amber" />
             <CyberButton label="Skin Spotlight" active={showSkin} onClick={() => update({ showSkin: !showSkin })} icon={<Flame size={16} />} theme="purple" />
+            <CyberButton label="TeamFight-NoDame ( DEV Mode )" active={showTeamFightNoDamage} onClick={() => update({ showTeamFightNoDamage: !showTeamFightNoDamage })} icon={<Flame size={16} />} theme="purple" />
+            <CyberButton label="Matchup up Open" active={showMatchup} onClick={() => update({ showMatchup: !showMatchup })} icon={<Swords size={16} />} theme="purple" />
           </div>
         </div>
       </div>

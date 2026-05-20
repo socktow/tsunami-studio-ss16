@@ -13,6 +13,7 @@ import PlayerCard from "./components/playercard";
 import PlayerRunes from "./components/PlayerRunes";
 import KillFeed from "./components/toprightpanel";
 import GoldGraph from "./components/goldgraph";
+import Matchup from "./components/matchup";
 import TeamFightNoDamage from "./components/teamfightnodamage";
 import { useOverlayStore } from "@/store/overlayStore";
 
@@ -28,6 +29,7 @@ const Ingame = () => {
     showGoldGraph,
     showplayerRunes,
     showTeamFightNoDamage,
+    showMatchup,
     setState,
   } = useOverlayStore();
 
@@ -62,7 +64,7 @@ const Ingame = () => {
 
   return (
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none z-[99999]">
-
+      {showMatchup && <Matchup />}
       {/* TOP */}
       {/* <KillFeed /> */}
       {showGoldGraph && <GoldGraph />}
@@ -89,6 +91,7 @@ const Ingame = () => {
       )}
       {/* <TeamFightNoDamage /> */}
       {showplayercard && <PlayerCard />}
+      {showTeamFightNoDamage && <TeamFightNoDamage />}
     </div>
   );
 };

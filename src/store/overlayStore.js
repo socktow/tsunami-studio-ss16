@@ -11,6 +11,7 @@ export const useOverlayStore = create((set) => ({
   showGoldGraph: false,
   showkillfeedcustom: false,
   showTeamFightNoDamage : false,
+  showMatchup: false,
   activeRankView: 'gold', 
   allPlayerData: null,
   lastState: null,
