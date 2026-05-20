@@ -64,10 +64,10 @@ const Ingame = () => {
 
   return (
     <div className="fixed inset-0 bg-transparent pointer-events-none select-none z-[99999]">
+      <GoldGraph show={showGoldGraph} />
       {showMatchup && <Matchup />}
       {/* TOP */}
       {/* <KillFeed /> */}
-      {showGoldGraph && <GoldGraph />}
       {showplayerRunes && <PlayerRunes />}
       <MiniMapSponsor />
       <TopLeftPanel />

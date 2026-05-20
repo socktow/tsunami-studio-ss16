@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { AnimatePresence, m, LazyMotion, domAnimation } from "framer-motion";
+import { useScoreboardData } from "@/hooks/useApiTeamData";
 
 const sponsors = [
     {
@@ -23,6 +24,11 @@ const sponsors = [
 
 const MiniMapSponsor = () => {
     const [sponsorIndex, setSponsorIndex] = useState(0);
+
+    // 1. Trích xuất dữ liệu màu của 2 Team từ Database API
+    const { matchInfo } = useScoreboardData();
+    const blueColor = useMemo(() => matchInfo?.teamsData?.[0]?.color || "#3b82f6", [matchInfo]);
+    const redColor = useMemo(() => matchInfo?.teamsData?.[1]?.color || "#f43f5e", [matchInfo]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -109,16 +115,37 @@ const MiniMapSponsor = () => {
                     </div>
                 </div>
 
-                {/* MINIMAP CHUẨN (ĐÃ CẬP NHẬT ĐẦY ĐỦ 4 CẠNH GRADIENT) */}
+                {/* MINIMAP CHUẨN (ĐÃ CẬP NHẬT ĐẦY ĐỦ DYNAMIC GRADIENT THEO MÀU TEAM) */}
                 <div 
                     style={{ width: '280px', height: '280px' }} 
                     className="relative flex items-center justify-center border-[7px] border-black pointer-events-auto"
                 >
                     <div style={{ width: '267px', height: '267px' }} className="relative bg-transparent overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-[5px] z-30 bg-gradient-to-l from-[#FFE14D] to-black" />
-                        <div className="absolute top-0 right-0 w-[5px] h-full z-30 bg-gradient-to-b from-[#FFE14D] to-black" />
-                        <div className="absolute bottom-0 left-0 w-full h-[5px] z-30 bg-gradient-to-r from-cyan-500 to-black" />
-                        <div className="absolute top-0 left-0 w-[5px] h-full z-30 bg-gradient-to-t from-cyan-500 to-black" />
+                        
+                        {/* 1. CẠNH TRÊN (Top Line) - Đổ dốc từ Màu Red Team sang Đen */}
+                        <div 
+                            style={{ backgroundImage: `linear-gradient(to left, ${redColor}, black)` }} 
+                            className="absolute top-0 left-0 w-full h-[5px] z-30" 
+                        />
+                        
+                        {/* 2. CẠNH PHẢI (Right Line) - Đổ dốc từ Màu Red Team xuống Đen */}
+                        <div 
+                            style={{ backgroundImage: `linear-gradient(to bottom, ${redColor}, black)` }} 
+                            className="absolute top-0 right-0 w-[5px] h-full z-30" 
+                        />
+                        
+                        {/* 3. CẠNH DƯỚI (Bottom Line) - Đổ dốc từ Màu Blue Team sang Đen */}
+                        <div 
+                            style={{ backgroundImage: `linear-gradient(to right, ${blueColor}, black)` }} 
+                            className="absolute bottom-0 left-0 w-full h-[5px] z-30" 
+                        />
+                        
+                        {/* 4. CẠNH TRÁI (Left Line) - Đổ dốc từ Màu Blue Team lên Đen */}
+                        <div 
+                            style={{ backgroundImage: `linear-gradient(to top, ${blueColor}, black)` }} 
+                            className="absolute top-0 left-0 w-[5px] h-full z-30" 
+                        />
+                        
                     </div>
                 </div>
             </div>

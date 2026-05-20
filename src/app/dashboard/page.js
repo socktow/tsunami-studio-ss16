@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { useOverlayStore } from "@/store/overlayStore";
 import {
   Activity, Swords, Award, TrendingUp, Flame, Shield,
-  Layers, Power, Terminal, EyeOff, RefreshCw, Lock, CheckCircle2
+  Layers, Power, Terminal, EyeOff, RefreshCw, Lock
 } from "lucide-react";
 
 const socket = io("http://localhost:3001");
@@ -144,14 +144,90 @@ function IngameView({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <CyberButton label="Scoreboard (Top)" active={showTop} onClick={() => update({ showTop: !showTop })} icon={<Swords size={16} />} />
             <CyberButton label="Rankings (Left)" active={showLeft} onClick={() => update({ showLeft: !showLeft })} icon={<Award size={16} />} />
-            <CyberButton label="KDA Stats (Bottom)" active={showBottom} onClick={() => update({ showBottom: !showBottom, ...(!showBottom && { showplayerRunes: false }) })} icon={<Flame size={16} />} />
+
+            {/* 🔴 ĐÃ CẬP NHẬT: KDA Stats (Bottom) */}
+            <CyberButton
+              label="KDA Stats (Bottom)"
+              active={showBottom}
+              onClick={() => {
+                const nextState = !showBottom;
+                update({
+                  showBottom: nextState,
+                  ...(nextState && { showplayerRunes: false, showGoldGraph: false })
+                });
+              }}
+              icon={<Flame size={16} />}
+            />
+
             <CyberButton label="Custom Killfeed ( DEV Mode ) " active={showkillfeedcustom} onClick={() => update({ showkillfeedcustom: !showkillfeedcustom })} icon={<Shield size={16} />} theme="cyan" />
-            <CyberButton label="Player Cards" active={showplayercard} onClick={() => update({ showplayercard: !showplayercard, ...(!showplayercard && { showplayerRunes: false }) })} icon={<Layers size={16} />} />
-            <CyberButton label="Player Runes ( DEV Mode )" active={showplayerRunes} onClick={() => update({ showplayerRunes: !showplayerRunes, ...(!showplayerRunes && { showBottom: false, showplayercard: false }) })} icon={<Terminal size={16} />} />
+
+            {/* 🔴 ĐÃ CẬP NHẬT: Player Cards */}
+            <CyberButton
+              label="Player Cards"
+              active={showplayercard}
+              onClick={() => {
+                const nextState = !showplayercard;
+                update({
+                  showplayercard: nextState,
+                  ...(nextState && { showplayerRunes: false, showGoldGraph: false })
+                });
+              }}
+              icon={<Layers size={16} />}
+            />
+
+            {/* 🔴 ĐÃ CẬP NHẬT: Player Runes */}
+            <CyberButton
+              label="Player Runes ( DEV Mode )"
+              active={showplayerRunes}
+              onClick={() => {
+                const nextState = !showplayerRunes;
+                update({
+                  showplayerRunes: nextState,
+                  ...(nextState
+                    ? { showBottom: false, showplayercard: false, showGoldGraph: false }
+                    : { showBottom: true, showplayercard: true }
+                  )
+                });
+              }}
+              icon={<Terminal size={16} />}
+            />
+
             <div className="sm:col-span-2 my-1 border-t border-slate-800/60" />
-            <CyberButton label="Gold Graph ( DEV Mode ) " active={showGoldGraph} onClick={() => update({ showGoldGraph: !showGoldGraph })} icon={<TrendingUp size={16} />} theme="amber" />
+
+            {/* 🔴 ĐÃ CẬP NHẬT: Gold Graph */}
+            <CyberButton
+              label="Gold Graph"
+              active={showGoldGraph}
+              onClick={() => {
+                const nextState = !showGoldGraph;
+                update({
+                  showGoldGraph: nextState,
+                  ...(nextState
+                    ? { showBottom: false, showplayercard: false }
+                    : { showBottom: true, showplayercard: true }
+                  )
+                });
+              }}
+              icon={<TrendingUp size={16} />}
+              theme="amber"
+            />
+
             <CyberButton label="Skin Spotlight" active={showSkin} onClick={() => update({ showSkin: !showSkin })} icon={<Flame size={16} />} theme="purple" />
-            <CyberButton label="TeamFight-NoDame ( DEV Mode )" active={showTeamFightNoDamage} onClick={() => update({ showTeamFightNoDamage: !showTeamFightNoDamage })} icon={<Flame size={16} />} theme="purple" />
+            <CyberButton
+              label="TeamFight-NoDame ( DEV Mode )"
+              active={showTeamFightNoDamage}
+              onClick={() => {
+                const nextState = !showTeamFightNoDamage;
+                update({
+                  showTeamFightNoDamage: nextState,
+                  ...(nextState
+                    ? { showBottom: false }
+                    : { showBottom: true }
+                  )
+                });
+              }}
+              icon={<Flame size={16} />} t
+              heme="purple" />
             <CyberButton label="Matchup up Open" active={showMatchup} onClick={() => update({ showMatchup: !showMatchup })} icon={<Swords size={16} />} theme="purple" />
           </div>
         </div>
