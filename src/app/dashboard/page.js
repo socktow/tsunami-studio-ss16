@@ -177,7 +177,7 @@ function IngameView({
 
             {/* 🔴 ĐÃ CẬP NHẬT: Player Runes */}
             <CyberButton
-              label="Player Runes ( DEV Mode )"
+              label="Player Runes"
               active={showplayerRunes}
               onClick={() => {
                 const nextState = !showplayerRunes;
